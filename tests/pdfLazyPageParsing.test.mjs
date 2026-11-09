@@ -252,3 +252,29 @@ test("an old in-flight extraction cannot populate a newly selected PDF", async (
     );
     assert.deepEqual(app.state.sentences.map(({ text }) => text), ["New document."]);
 });
+
+test("legacy remote progress only counts a contiguous prefix of parsed pages", async () => {
+    const pages = [1, 2, 3].map((pageNumber) =>
+        makePage(pageNumber, async () => ({ items: [textItem(`Page ${pageNumber}.`)] })),
+    );
+    const { app, loader } = createFixture(makePdf(pages));
+    app.state.pdfSentencesByPage = new Map();
+
+    loader.ensurePageParsed = async (pageNumber) => {
+        app.state.parsedPdfPages.add(pageNumber);
+        app.state.pdfSentencesByPage.set(
+            pageNumber,
+            Array.from({ length: pageNumber === 1 ? 2 : 1 }, (_, offset) => ({
+                pageNumber,
+                pageSentenceIndex: offset,
+            })),
+        );
+    };
+
+    // Simulate the stale page locator having caused page 3 to be parsed first.
+    app.state.parsedPdfPages = new Set([3]);
+    app.state.pdfSentencesByPage.set(3, [{ pageNumber: 3, pageSentenceIndex: 0 }]);
+
+    assert.equal(await loader._ensureLegacySentenceIndex(2), true);
+    assert.deepEqual([...app.state.parsedPdfPages].sort(), [1, 2, 3]);
+});

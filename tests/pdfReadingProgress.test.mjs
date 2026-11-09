@@ -3,6 +3,10 @@ import assert from "node:assert/strict";
 
 import { calculatePdfReadingPercentage } from "../src/modules/storage/pdfThumbnailCache.js";
 import { ProgressManager } from "../src/modules/storage/progressManager.js";
+import {
+    applyRemotePositionToProgressEntry,
+    ServerSync,
+} from "../src/modules/storage/serverSync.js";
 
 test("calculates PDF reading progress from the current page and total pages", () => {
     assert.equal(calculatePdfReadingPercentage(25, 100), 25);
@@ -58,4 +62,38 @@ test("syncs a lazy PDF sentence index only when all preceding pages are parsed",
     assert.equal(manager.canSyncCurrentPosition(), false);
     manager.app.state.parsedPdfPages.add(1);
     assert.equal(manager.canSyncCurrentPosition(), true);
+});
+
+test("a newer remote PDF position invalidates the stale local page locator", () => {
+    const entry = {
+        sentenceIndex: 12,
+        currentPage: 3,
+        pageSentenceIndex: 2,
+        updated: 100,
+    };
+
+    assert.equal(applyRemotePositionToProgressEntry(entry, "87", 500), true);
+    assert.equal(entry.sentenceIndex, 87);
+    assert.equal(entry.updated, 500);
+    assert.equal(entry.serverPositionUpdatedAt, 500);
+    assert.equal("currentPage" in entry, false);
+    assert.equal("pageSentenceIndex" in entry, false);
+});
+
+test("flushes a debounced position immediately when the app is backgrounded", async () => {
+    const sync = Object.create(ServerSync.prototype);
+    const timer = setTimeout(() => {}, 10_000);
+    sync._positionSyncTimers = new Map([["book.pdf", timer]]);
+    sync._pendingPositionByFile = new Map([["book.pdf", 42]]);
+    sync._positionFlushPromise = null;
+    sync.isEnabled = () => true;
+    sync.syncPosition = async (fileId, position) => {
+        assert.equal(fileId, "book.pdf");
+        assert.equal(position, 42);
+        return true;
+    };
+
+    assert.equal(await sync.flushPendingPositionSync(), true);
+    assert.equal(sync._positionSyncTimers.size, 0);
+    assert.equal(sync._pendingPositionByFile.size, 0);
 });

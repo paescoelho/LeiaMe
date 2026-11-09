@@ -18,6 +18,8 @@ export class GoogleDriveSync {
         this.lastSyncTime = 0;
         this.autoSyncListeners = [];
         this.positionTimers = new Map();
+        this.pendingPositions = new Map();
+        this.positionFlushPromise = null;
         this.voiceTimers = new Map();
         this.mutationQueue = Promise.resolve();
         this.rewardsTimer = null;
@@ -459,8 +461,44 @@ export class GoogleDriveSync {
 
     queuePositionSync(fileId, position, { debounceMs = 900 } = {}) {
         if (!this.isEnabled() || !fileId || !Number.isFinite(position)) return;
+        this.pendingPositions.set(fileId, position);
         clearTimeout(this.positionTimers.get(fileId));
-        this.positionTimers.set(fileId, setTimeout(() => this.syncPosition(fileId, position).catch(console.warn), debounceMs));
+        this.positionTimers.set(fileId, setTimeout(() => {
+            this.positionTimers.delete(fileId);
+            const latest = this.pendingPositions.get(fileId);
+            if (!Number.isFinite(latest)) return;
+            this.syncPosition(fileId, latest)
+                .then((ok) => {
+                    if (ok && this.pendingPositions.get(fileId) === latest) {
+                        this.pendingPositions.delete(fileId);
+                    }
+                })
+                .catch(console.warn);
+        }, debounceMs));
+    }
+    async flushPendingPositionSync() {
+        if (!this.isEnabled()) return false;
+        if (this.positionFlushPromise) return await this.positionFlushPromise;
+        for (const timer of this.positionTimers.values()) clearTimeout(timer);
+        this.positionTimers.clear();
+        const pending = [...this.pendingPositions.entries()];
+        if (!pending.length) return true;
+        this.positionFlushPromise = (async () => {
+            let allSynced = true;
+            for (const [fileId, position] of pending) {
+                const ok = await this.syncPosition(fileId, position);
+                allSynced = allSynced && ok;
+                if (ok && this.pendingPositions.get(fileId) === position) {
+                    this.pendingPositions.delete(fileId);
+                }
+            }
+            return allSynced;
+        })();
+        try {
+            return await this.positionFlushPromise;
+        } finally {
+            this.positionFlushPromise = null;
+        }
     }
     queueVoiceSync(fileId, voice, { debounceMs = 900 } = {}) {
         if (!this.isEnabled() || !fileId || !voice) return;
@@ -670,7 +708,14 @@ export class GoogleDriveSync {
                 if (showProgress) this.app.ui?.showInfo?.(`Google Drive: downloaded ${downloadedCount} file${downloadedCount === 1 ? "" : "s"}`);
             }
             const entry = progressMap[compoundKey] || {};
-            if (Number.isFinite(Number(record.position))) entry.sentenceIndex = Number(record.position);
+            if (Number.isFinite(Number(record.position))) {
+                const remotePosition = Number(record.position);
+                if (entry.sentenceIndex !== remotePosition) {
+                    delete entry.currentPage;
+                    delete entry.pageSentenceIndex;
+                }
+                entry.sentenceIndex = remotePosition;
+            }
             if (record.voice) entry.voice = record.voice;
             if (record.translationTarget) entry.translationTarget = record.translationTarget;
             if (record.translationMode) entry.translationMode = record.translationMode;

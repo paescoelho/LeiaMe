@@ -1,3 +1,22 @@
+export function applyRemotePositionToProgressEntry(entry, position, updatedAt) {
+    if (!entry || typeof entry !== "object") return false;
+
+    const parsedPosition = Number.parseInt(position, 10);
+    if (Number.isFinite(parsedPosition) && parsedPosition >= 0) {
+        entry.sentenceIndex = parsedPosition;
+        entry.updated = updatedAt;
+
+        // PDF page locators describe the position last visited on this device.
+        // A remote global sentence index supersedes them; retaining the stale
+        // locator makes PDFLoader resume on the old local page and ignore the
+        // position that was just pulled from another device.
+        delete entry.currentPage;
+        delete entry.pageSentenceIndex;
+    }
+    entry.serverPositionUpdatedAt = updatedAt;
+    return Number.isFinite(parsedPosition) && parsedPosition >= 0;
+}
+
 export class ServerSync {
     constructor(app) {
         this.app = app;
@@ -30,6 +49,7 @@ export class ServerSync {
         this._pendingVoiceByFile = new Map();
         this._positionSyncTimers = new Map();
         this._voiceSyncTimers = new Map();
+        this._positionFlushPromise = null;
         this._rewardsSyncTimer = null;
         this._pendingTrashFlushPromise = null;
 
@@ -519,11 +539,44 @@ export class ServerSync {
             if (!this.isEnabled()) return;
             const latest = this._pendingPositionByFile.get(fileId);
             if (!Number.isFinite(latest)) return;
-            this.syncPosition(fileId, latest).catch((err) => {
-                console.warn("[ServerSync] Position sync failed:", err);
-            });
+            this.syncPosition(fileId, latest)
+                .then((ok) => {
+                    if (ok && this._pendingPositionByFile.get(fileId) === latest) {
+                        this._pendingPositionByFile.delete(fileId);
+                    }
+                })
+                .catch((err) => {
+                    console.warn("[ServerSync] Position sync failed:", err);
+                });
         }, delay);
         this._positionSyncTimers.set(fileId, t);
+    }
+
+    async flushPendingPositionSync() {
+        if (!this.isEnabled()) return false;
+        if (this._positionFlushPromise) return await this._positionFlushPromise;
+
+        for (const timer of this._positionSyncTimers.values()) clearTimeout(timer);
+        this._positionSyncTimers.clear();
+        const pending = [...this._pendingPositionByFile.entries()];
+        if (!pending.length) return true;
+
+        this._positionFlushPromise = (async () => {
+            let allSynced = true;
+            for (const [fileId, position] of pending) {
+                const ok = await this.syncPosition(fileId, position);
+                allSynced = allSynced && ok;
+                if (ok && this._pendingPositionByFile.get(fileId) === position) {
+                    this._pendingPositionByFile.delete(fileId);
+                }
+            }
+            return allSynced;
+        })();
+        try {
+            return await this._positionFlushPromise;
+        } finally {
+            this._positionFlushPromise = null;
+        }
     }
 
     queueVoiceSync(fileId, voice, { debounceMs } = {}) {
@@ -614,13 +667,11 @@ export class ServerSync {
 
                 // Position: if server has newer position than last pulled, update local.
                 if (serverPosMs > localServerPosMs) {
-                    const pos = fileInfo.reading_position != null ? parseInt(fileInfo.reading_position, 10) : null;
-                    if (Number.isFinite(pos) && pos >= 0) {
-                        localEntry.sentenceIndex = pos;
-                        // Use server timestamp so "last timed sync" matches server.
-                        localEntry.updated = serverPosMs;
-                    }
-                    localEntry.serverPositionUpdatedAt = serverPosMs;
+                    applyRemotePositionToProgressEntry(
+                        localEntry,
+                        fileInfo.reading_position,
+                        serverPosMs,
+                    );
                     updatedCount++;
                 }
 

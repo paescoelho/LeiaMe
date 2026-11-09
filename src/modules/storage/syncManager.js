@@ -23,6 +23,7 @@ export class SyncManager {
     get active() { return this.getBackend() === "google-drive" ? this.drive : this.server; }
     isEnabled() { return this.active.isEnabled(); }
     queuePositionSync(...args) { return this.active.queuePositionSync(...args); }
+    flushPendingPositionSync(...args) { return this.active.flushPendingPositionSync?.(...args); }
     queueVoiceSync(...args) { return this.active.queueVoiceSync(...args); }
     syncPosition(...args) { return this.active.syncPosition(...args); }
     syncVoice(...args) { return this.active.syncVoice(...args); }

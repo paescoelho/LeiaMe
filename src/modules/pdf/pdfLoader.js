@@ -364,12 +364,28 @@ export class PDFLoader {
         const { state } = this.app;
         const target = Number.parseInt(sentenceIndex, 10);
         if (!Number.isFinite(target) || target < 0) return false;
+
+        const contiguousSentenceCount = () => {
+            let count = 0;
+            for (let pageNumber = 1; pageNumber <= state.pdf.numPages; pageNumber++) {
+                if (!state.parsedPdfPages.has(pageNumber)) break;
+                const pageSentences = state.pdfSentencesByPage?.get?.(pageNumber);
+                count += Array.isArray(pageSentences)
+                    ? pageSentences.length
+                    : (state.pageSentencesIndex?.get?.(pageNumber) || []).length;
+            }
+            return count;
+        };
+
         for (let pageNumber = 1; pageNumber <= state.pdf.numPages; pageNumber++) {
             await this.ensurePageParsed(pageNumber);
-            if (state.sentences.length > target) return true;
+            // A locally resumed page may already be parsed even though the pages
+            // before it are not. Do not count that non-contiguous page toward a
+            // legacy global index received from another device.
+            if (contiguousSentenceCount() > target) return true;
             await cooperativeYield();
         }
-        return state.sentences.length > target;
+        return contiguousSentenceCount() > target;
     }
 
     async _reparseLoadedPages() {
@@ -657,23 +673,16 @@ export class PDFLoader {
                 }
             }
 
-            // A server-only legacy position is usable when all preceding pages
-            // have been parsed. New local progress resumes by page + page offset.
-            const hasLocalPageLocator = resume && hasSavedPage;
-            if (
-                Number.isFinite(serverPosition) &&
-                serverPosition >= state.sentences.length &&
-                !hasLocalPageLocator
-            ) {
+            // Server progress is the cross-device source of truth. It is stored
+            // as a legacy global sentence index, so reconstruct the contiguous
+            // document prefix before applying it. Previously an older local page
+            // locator won here, making position sync appear broken while remote
+            // highlights still loaded correctly.
+            if (Number.isFinite(serverPosition) && serverPosition >= 0) {
                 await this._ensureLegacySentenceIndex(serverPosition);
-            }
-            if (
-                Number.isFinite(serverPosition) &&
-                (!hasLocalPageLocator || requiresLegacyIndexing) &&
-                serverPosition >= 0 &&
-                serverPosition < state.sentences.length
-            ) {
-                startIndex = serverPosition;
+                if (serverPosition < state.sentences.length) {
+                    startIndex = serverPosition;
+                }
             } else {
                 startIndex = this._resolvePageSentenceIndex(
                     activeResumePage > 0 ? activeResumePage : requestedPage,

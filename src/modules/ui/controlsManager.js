@@ -390,8 +390,20 @@ export class ControlsManager {
             { passive: false },
         );
 
-        // Persist progress on unload
-        window.addEventListener("beforeunload", () => app.progressManager.saveProgress());
+        // Mobile browsers often skip beforeunload when the app is backgrounded.
+        // Save and immediately flush the debounced position while the page still
+        // has a chance to use the network.
+        const persistAndFlushProgress = () => {
+            app.progressManager?.saveProgress?.();
+            app.serverSync
+                ?.flushPendingPositionSync?.()
+                ?.catch?.((error) => console.warn("[Progress] Final position sync failed:", error));
+        };
+        window.addEventListener("beforeunload", persistAndFlushProgress);
+        window.addEventListener("pagehide", persistAndFlushProgress);
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "hidden") persistAndFlushProgress();
+        });
         this.reflectSelectedHighlightColor();
 
         // Orientation
