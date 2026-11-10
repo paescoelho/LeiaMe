@@ -181,15 +181,15 @@ def summarize_reward_snapshot(snapshot: dict | None, window: DigestWindow, timez
 def format_reading_duration(milliseconds: float) -> str:
     minutes = max(0, math.floor(float(milliseconds or 0) / 60000))
     if minutes == 0:
-        return "less than one minute" if milliseconds > 0 else "0 minutes"
+        return "menos de um minuto" if milliseconds > 0 else "0 minutos"
     hours, remainder = divmod(minutes, 60)
     if not hours:
-        return f"{minutes} minute{'s' if minutes != 1 else ''}"
+        return f"{minutes} minuto{'s' if minutes != 1 else ''}"
     if not remainder:
-        return f"{hours} hour{'s' if hours != 1 else ''}"
+        return f"{hours} hora{'s' if hours != 1 else ''}"
     return (
-        f"{hours} hour{'s' if hours != 1 else ''} and "
-        f"{remainder} minute{'s' if remainder != 1 else ''}"
+        f"{hours} hora{'s' if hours != 1 else ''} e "
+        f"{remainder} minuto{'s' if remainder != 1 else ''}"
     )
 
 
@@ -211,27 +211,27 @@ def build_digest_email(
     public_app_url: str = "",
 ) -> tuple[str, str]:
     period_name = {
-        "weekly": "weekly",
-        "monthly": "monthly",
-        "yearly": "yearly",
+        "weekly": "semanal",
+        "monthly": "mensal",
+        "yearly": "anual",
     }[window.digest_type]
     duration = format_reading_duration(summary["activeReadingMs"])
     days = int(summary["readingDays"])
     trees = int(summary["matureTrees"])
     points = int(summary["growthPoints"])
-    subject = f"Your {app_name} {period_name} reading summary"
+    subject = f"{app_name}: seu resumo {period_name} de leitura"
     body = (
-        f"Your {period_name} reading summary\n\n"
-        f"{window.start_date.isoformat()} to {window.end_date.isoformat()}\n\n"
-        f"You read for {duration} across {days} reading day{'s' if days != 1 else ''}.\n"
-        f"You planted {trees} tree{'s' if trees != 1 else ''} and earned {points} growth point"
-        f"{'s' if points != 1 else ''}.\n\n"
-        "Keep reading at your own pace—your existing garden never decays."
+        f"Seu resumo {period_name} de leitura\n\n"
+        f"{window.start_date.strftime('%d/%m/%Y')} a {window.end_date.strftime('%d/%m/%Y')}\n\n"
+        f"Você leu por {duration} em {days} dia{'s' if days != 1 else ''} de leitura.\n"
+        f"Você plantou {trees} árvore{'s' if trees != 1 else ''} e ganhou {points} ponto"
+        f"{'s' if points != 1 else ''} de crescimento.\n\n"
+        "Continue lendo no seu ritmo — o seu jardim nunca murcha."
     )
     planted = summary.get("periodPlants") if isinstance(summary.get("periodPlants"), list) else []
     reflected = [plant for plant in planted if str(plant.get("reflectionText") or "").strip()]
     if reflected:
-        body += "\n\nNotes from the trees you planted"
+        body += "\n\nAnotações das árvores que você plantou"
         for plant in reflected:
             comment = _compact_text(plant.get("reflectionText"), 420)
             title = _compact_text(plant.get("documentTitle"), 100)
@@ -240,7 +240,8 @@ def build_digest_email(
                 body += f"\n— {title}"
     if public_app_url:
         body += f"\n\n{public_app_url.rstrip('/')}/"
-    body += "\n\nYou can turn off reading summary emails in Settings."
+    body += "\n\nVocê pode desativar os e-mails de resumo em Configurações."
+    body += "\n\n—\nLeiaMe · Rodrigo Paes Coelho Santana · paescoelho@gmail.com"
     return subject, body
 
 
@@ -262,7 +263,7 @@ def _tree_html(plant: dict, app_url: str) -> str:
     size = sizes.get(stage, 56)
     opacity = "0.68" if stage == "seed" else "0.82" if stage == "sprout" else "1"
     return (
-        f'<img src="{escape(source, quote=True)}" width="{size}" alt="{escape(str(definition.get("name") or "Tree"), quote=True)}" '
+        f'<img src="{escape(source, quote=True)}" width="{size}" alt="{escape(str(definition.get("name") or "Árvore"), quote=True)}" '
         f'style="display:block;width:{size}px;height:auto;max-height:66px;margin:0 auto;opacity:{opacity};border:0">'
     )
 
@@ -298,15 +299,15 @@ def _garden_html(summary: dict, app_url: str) -> str:
         rows.append(f"<tr>{cells}</tr>")
     if not rows:
         rows.append(
-            '<tr><td align="center" style="height:72px;font:14px Inter,Arial,sans-serif;color:#64748b">'
-            'Your next tree will appear here.</td></tr>'
+            '<tr><td align="center" style="height:72px;font:14px Inter,Arial,sans-serif;color:#7e7466">'
+            'Sua próxima árvore vai aparecer aqui.</td></tr>'
         )
-    tree_label = f"{mature_count} tree{'s' if mature_count != 1 else ''} planted this period"
+    tree_label = f"{mature_count} árvore{'s' if mature_count != 1 else ''} plantada{'s' if mature_count != 1 else ''} no período"
     return (
         '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" '
-        'style="background-color:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;padding:16px 14px 0">'
-        '<tr><td align="center" style="color:#654ef0;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;'
-        f'text-transform:uppercase;padding-bottom:12px">Your new trees · {escape(tree_label)}</td></tr>'
+        'style="background-color:#faf8f4;border-radius:12px;border:1px solid #e7e0d4;padding:16px 14px 0">'
+        '<tr><td align="center" style="color:#2f6f66;font:700 12px Inter,Arial,sans-serif;letter-spacing:.08em;'
+        f'text-transform:uppercase;padding-bottom:12px">Suas novas árvores · {escape(tree_label)}</td></tr>'
         '<tr><td style="background-color:#dff6e8;background-image:linear-gradient(180deg,#dff6e8 0%,#edf8d7 64%,#b9d98b 65%,#8ebc6d 100%);'
         'border-radius:10px 10px 0 0;padding:13px 8px 9px">'
         f'<table role="presentation" width="100%" cellspacing="0" cellpadding="0">{"".join(rows)}</table>'
@@ -321,7 +322,8 @@ def build_digest_html(
     public_app_url: str = "",
 ) -> str:
     """Build a conservative, inline-styled HTML email for broad client support."""
-    period_name = {"weekly": "weekly", "monthly": "monthly", "yearly": "yearly"}[window.digest_type]
+    period_name = {"weekly": "semanal", "monthly": "mensal", "yearly": "anual"}[window.digest_type]
+    period_word = {"weekly": "nesta semana", "monthly": "neste mês", "yearly": "neste ano"}[window.digest_type]
     duration = format_reading_duration(summary["activeReadingMs"])
     days = int(summary["readingDays"])
     trees = int(summary["matureTrees"])
@@ -333,9 +335,9 @@ def build_digest_html(
         if app_url else ""
     )
     button = (
-        f'<a href="{escape(app_url, quote=True)}" style="display:inline-block;background:#654ef0;color:#fff;'
+        f'<a href="{escape(app_url, quote=True)}" style="display:inline-block;background:#2f6f66;color:#fff;'
         'font:700 15px Inter,Arial,sans-serif;text-decoration:none;padding:13px 22px;border-radius:9px">'
-        'Return to your library&nbsp; →</a>'
+        'Voltar à sua biblioteca&nbsp; →</a>'
         if app_url else ""
     )
     reflection_cards = []
@@ -346,47 +348,47 @@ def build_digest_html(
         if not comment:
             continue
         tree = _tree_html(plant, app_url)
-        source = f'<div style="margin-top:9px;font:600 12px Inter,Arial,sans-serif;color:#654ef0">{title}</div>' if title else ""
+        source = f'<div style="margin-top:9px;font:600 12px Inter,Arial,sans-serif;color:#2f6f66">{title}</div>' if title else ""
         reflection_cards.append(
             '<td style="padding:0 0 10px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" '
-            'style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #654ef0;border-radius:10px"><tr>'
+            'style="background:#faf8f4;border:1px solid #e7e0d4;border-left:4px solid #2f6f66;border-radius:10px"><tr>'
             f'<td width="76" align="center" valign="middle" style="padding:14px 5px 14px 14px">{tree}</td>'
             '<td valign="middle" style="padding:15px 16px 15px 8px">'
-            f'<div style="font:15px/1.55 Inter,Arial,sans-serif;color:#334155">“{comment}”</div>{source}'
+            f'<div style="font:15px/1.55 Inter,Arial,sans-serif;color:#3a332c">“{comment}”</div>{source}'
             '</td></tr></table></td>'
         )
     reflections_html = ""
     if reflection_cards:
         reflections_html = (
-            '<tr><td style="padding:28px 32px 0"><div style="font:700 19px Inter,Arial,sans-serif;color:#1e293b;'
-            'margin-bottom:12px">Notes from the trees you planted</div>'
+            '<tr><td style="padding:28px 32px 0"><div style="font:700 19px Inter,Arial,sans-serif;color:#2a2520;'
+            'margin-bottom:12px">Anotações das árvores que você plantou</div>'
             '<table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr>'
             + '</tr><tr>'.join(reflection_cards) + '</tr></table></td></tr>'
         )
     return f'''<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{escape(app_name)} reading summary</title></head>
-<body style="margin:0;background:#f6f7f8;padding:24px 10px;color:#1e293b;font-family:Inter,Arial,sans-serif">
-<div style="display:none;max-height:0;overflow:hidden">{escape(duration)} of reading and {trees} new tree{'s' if trees != 1 else ''} planted.</div>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{escape(app_name)} — resumo de leitura</title></head>
+<body style="margin:0;background:#f4efe6;padding:24px 10px;color:#2a2520;font-family:Inter,Arial,sans-serif">
+<div style="display:none;max-height:0;overflow:hidden">{escape(duration)} de leitura e {trees} árvore{'s' if trees != 1 else ''} nova{'s' if trees != 1 else ''} plantada{'s' if trees != 1 else ''}.</div>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 10px 28px rgba(15,23,42,.08)">
-<tr><td height="5" style="height:5px;background:#654ef0;font-size:0;line-height:0">&nbsp;</td></tr>
-<tr><td style="padding:28px 32px 27px;background:#101922;color:#fff">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td width="58" valign="middle">{brand_icon}</td><td valign="middle"><div style="font:700 14px Inter,Arial,sans-serif;letter-spacing:.08em;color:#cbd5e1">{escape(app_name)}</div><div style="font:12px Inter,Arial,sans-serif;color:#94a3b8;margin-top:3px">Your personal reading space</div></td></tr></table>
-<h1 style="margin:24px 0 8px;font:700 29px/1.2 Inter,Arial,sans-serif;letter-spacing:-.02em">Your {period_name} reading story</h1>
-<div style="font:14px Inter,Arial,sans-serif;color:#cbd5e1">{window.start_date.strftime('%b %d, %Y')} – {window.end_date.strftime('%b %d, %Y')}</div>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#fff;border:1px solid #e7e0d4;border-radius:16px;overflow:hidden;box-shadow:0 10px 28px rgba(28,24,20,.08)">
+<tr><td height="5" style="height:5px;background:#2f6f66;font-size:0;line-height:0">&nbsp;</td></tr>
+<tr><td style="padding:28px 32px 27px;background:#1a1816;color:#fff">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td width="58" valign="middle">{brand_icon}</td><td valign="middle"><div style="font:700 14px Inter,Arial,sans-serif;letter-spacing:.08em;color:#d5ccbd">{escape(app_name)}</div><div style="font:12px Inter,Arial,sans-serif;color:#a99f90;margin-top:3px">Seu espaço pessoal de leitura</div></td></tr></table>
+<h1 style="margin:24px 0 8px;font:700 29px/1.2 Inter,Arial,sans-serif;letter-spacing:-.02em">Sua história de leitura {period_name}</h1>
+<div style="font:14px Inter,Arial,sans-serif;color:#d5ccbd">{window.start_date.strftime('%d/%m/%Y')} – {window.end_date.strftime('%d/%m/%Y')}</div>
 </td></tr>
 <tr><td style="padding:26px 32px 0"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr>
-<td width="31%" align="center" style="padding:14px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px"><div style="font:700 21px Inter,Arial,sans-serif;color:#654ef0">{escape(duration)}</div><div style="font:700 11px Inter,Arial,sans-serif;color:#64748b;margin-top:5px;letter-spacing:.06em">READING</div></td>
+<td width="31%" align="center" style="padding:14px 6px;background:#faf8f4;border:1px solid #e7e0d4;border-radius:10px"><div style="font:700 21px Inter,Arial,sans-serif;color:#2f6f66">{escape(duration)}</div><div style="font:700 11px Inter,Arial,sans-serif;color:#7e7466;margin-top:5px;letter-spacing:.06em">LEITURA</div></td>
 <td width="3%"></td>
-<td width="31%" align="center" style="padding:14px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px"><div style="font:700 21px Inter,Arial,sans-serif;color:#654ef0">{days}</div><div style="font:700 11px Inter,Arial,sans-serif;color:#64748b;margin-top:5px;letter-spacing:.06em">READING DAY{'S' if days != 1 else ''}</div></td>
+<td width="31%" align="center" style="padding:14px 6px;background:#faf8f4;border:1px solid #e7e0d4;border-radius:10px"><div style="font:700 21px Inter,Arial,sans-serif;color:#2f6f66">{days}</div><div style="font:700 11px Inter,Arial,sans-serif;color:#7e7466;margin-top:5px;letter-spacing:.06em">DIA{'S' if days != 1 else ''} DE LEITURA</div></td>
 <td width="3%"></td>
-<td width="31%" align="center" style="padding:14px 6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px"><div style="font:700 21px Inter,Arial,sans-serif;color:#654ef0">+{points}</div><div style="font:700 11px Inter,Arial,sans-serif;color:#64748b;margin-top:5px;letter-spacing:.06em">GROWTH POINTS</div></td>
+<td width="31%" align="center" style="padding:14px 6px;background:#faf8f4;border:1px solid #e7e0d4;border-radius:10px"><div style="font:700 21px Inter,Arial,sans-serif;color:#2f6f66">+{points}</div><div style="font:700 11px Inter,Arial,sans-serif;color:#7e7466;margin-top:5px;letter-spacing:.06em">PONTOS DE CRESCIMENTO</div></td>
 </tr></table></td></tr>
 <tr><td style="padding:27px 32px 0">{_garden_html(summary, app_url)}</td></tr>
-<tr><td style="padding:17px 35px 0;text-align:center;font:14px/1.6 Inter,Arial,sans-serif;color:#64748b">You planted <b style="color:#334155">{trees} new tree{'s' if trees != 1 else ''}</b> this {period_name}. Keep reading at your own pace—your garden never decays.</td></tr>
+<tr><td style="padding:17px 35px 0;text-align:center;font:14px/1.6 Inter,Arial,sans-serif;color:#7e7466">Você plantou <b style="color:#3a332c">{trees} árvore{'s' if trees != 1 else ''} nova{'s' if trees != 1 else ''}</b> {period_word}. Continue lendo no seu ritmo — o seu jardim nunca murcha.</td></tr>
 {reflections_html}
 <tr><td align="center" style="padding:27px 32px 31px">{button}</td></tr>
-<tr><td align="center" style="padding:18px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;font:12px/1.5 Inter,Arial,sans-serif;color:#94a3b8">You can turn off reading summary emails in Settings.</td></tr>
+<tr><td align="center" style="padding:18px 24px;background:#faf8f4;border-top:1px solid #e7e0d4;font:12px/1.5 Inter,Arial,sans-serif;color:#a99f90">Você pode desativar os e-mails de resumo em Configurações.<br>LeiaMe · Rodrigo Paes Coelho Santana · <a href="mailto:paescoelho@gmail.com" style="color:#2f6f66">paescoelho@gmail.com</a></td></tr>
 </table></td></tr></table></body></html>'''
 
 
@@ -398,7 +400,7 @@ class ReadingDigestService:
         *,
         repository,
         send_email,
-        app_name: str = "PocketReader",
+        app_name: str = "LeiaMe",
         public_app_url: str = "",
         poll_interval_seconds: int = 900,
         weekly_hour: int = 18,

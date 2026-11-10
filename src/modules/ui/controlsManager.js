@@ -115,7 +115,7 @@ export class ControlsManager {
         const runNavigation = (operation) => {
             Promise.resolve(operation).catch((error) => {
                 console.warn("Reader navigation failed", error);
-                app.ui?.showInfo?.(`Unable to navigate: ${error.message}`);
+                app.ui?.showInfo?.(`Não foi possível navegar: ${error.message}`);
             });
         };
 
@@ -264,7 +264,7 @@ export class ControlsManager {
             on(this.toggleTranslateBtn, "click", () => {
                 const next = !app.isAutoTranslateEnabled?.();
                 app.setAutoTranslateEnabled?.(next);
-                this.showInfo(next ? "Auto-translate: ON" : "Auto-translate: OFF", 1500);
+                this.showInfo(next ? "Tradução automática: LIGADA" : "Tradução automática: DESLIGADA", 1500);
             });
         }
 
@@ -277,7 +277,7 @@ export class ControlsManager {
             on(this.toggleReadTranslationBtn, "click", () => {
                 const next = !app.isReadTranslationEnabled?.();
                 app.setReadTranslationEnabled?.(next);
-                this.showInfo(next ? "Read translation: ON" : "Read translation: OFF", 1500);
+                this.showInfo(next ? "Ler tradução: LIGADO" : "Ler tradução: DESLIGADO", 1500);
             });
         }
 
@@ -290,7 +290,7 @@ export class ControlsManager {
             on(this.toggleOriginalSubtitlesBtn, "click", () => {
                 const next = !app.isOriginalSubtitlesEnabled?.();
                 app.setOriginalSubtitlesEnabled?.(next);
-                this.showInfo(next ? "Original subtitles: ON" : "Original subtitles: OFF", 1500);
+                this.showInfo(next ? "Legendas originais: LIGADAS" : "Legendas originais: DESLIGADAS", 1500);
             });
         }
 
@@ -313,21 +313,21 @@ export class ControlsManager {
         on(this.textWidthFitToggle, "click", () => {
             const next = !app.isTextWidthFitEnabled?.();
             app.setTextWidthFitEnabled?.(next);
-            this.showInfo(next ? "Maximize reading text: ON" : "Maximize reading text: OFF", 1500);
+            this.showInfo(next ? "Ampliar texto: LIGADO" : "Ampliar texto: DESLIGADO", 1500);
         });
 
         const reconfigureSpeech = async () => {
             try {
                 await app.ttsEngine.reconfigure();
             } catch (error) {
-                if (error.name !== "AbortError") this.showInfo(`Unable to update speech: ${error.message}`);
+                if (error.name !== "AbortError") this.showInfo(`Não foi possível atualizar a voz: ${error.message}`);
             }
         };
         on(this.serverTtsToggle, "change", async () => {
             try {
                 await app.ttsEngine.setServerEnabled(this.serverTtsToggle.checked);
             } catch (error) {
-                if (error.name !== "AbortError") this.showInfo(`Unable to update speech: ${error.message}`);
+                if (error.name !== "AbortError") this.showInfo(`Não foi possível atualizar a voz: ${error.message}`);
             }
         });
         on(this.voiceSelect, "change", reconfigureSpeech);
@@ -444,7 +444,7 @@ export class ControlsManager {
         //
         on(this.btnClearCache, "click", () => {
             {
-                const confirmed = confirm("Are you sure you want to clear all pdfs saved?");
+                const confirmed = confirm("Tem certeza de que quer apagar todos os PDFs salvos?");
                 if (confirmed) {
                     this.app.progressManager.clearPDFCache();
                 }
@@ -475,14 +475,14 @@ export class ControlsManager {
                 const serverLink = this.serverLinkInput.value.trim();
                 if (serverLink) {
                     localStorage.setItem("config.serverLink", serverLink);
-                    this.showInfo("Server link saved");
+                    this.showInfo("Endereço do servidor salvo");
                 } else {
                     localStorage.removeItem("config.serverLink");
                 }
                 void this.refreshReadingDigestPreference();
                 if (app.ttsEngine?.serverEnabled) {
                     void app.ttsEngine.setServerEnabled(true).catch((error) => {
-                        if (error.name !== "AbortError") this.showInfo(`Unable to update speech server: ${error.message}`);
+                        if (error.name !== "AbortError") this.showInfo(`Não foi possível atualizar o servidor de voz: ${error.message}`);
                     });
                 }
             });
@@ -514,13 +514,13 @@ export class ControlsManager {
     reflectTtsProvider(provider, detail = "") {
         if (!this.ttsProviderStatus) return;
         const labels = {
-            server: "Speech: server",
-            local: "Speech: this device",
-            device: "Speech: this device",
-            loading: "Connecting to speech server…",
-            unavailable: "Server unavailable; speech uses this device",
+            server: "Voz: servidor",
+            local: "Voz: este aparelho",
+            device: "Voz: este aparelho",
+            loading: "Conectando ao servidor de voz…",
+            unavailable: "Servidor indisponível; a voz usa este aparelho",
         };
-        this.ttsProviderStatus.textContent = detail || labels[provider] || "Speech: this device";
+        this.ttsProviderStatus.textContent = detail || labels[provider] || "Voz: este aparelho";
         this.ttsProviderStatus.dataset.provider = provider || "local";
     }
 
@@ -540,12 +540,12 @@ export class ControlsManager {
         const authenticated = hasServer && !!localStorage.getItem("localreaderAuthToken");
         if (!authenticated) {
             toggle.disabled = true;
-            status.textContent = "Sign in to configure email summaries.";
+            status.textContent = "Entre na sua conta para configurar os e-mails de resumo.";
             return;
         }
 
         toggle.disabled = true;
-        status.textContent = "Loading email preference…";
+        status.textContent = "Carregando preferência de e-mail…";
         try {
             const preference = await this.app.serverSync.getReadingDigestPreference();
             toggle.checked = preference?.enabled !== false;
@@ -554,12 +554,12 @@ export class ControlsManager {
                 await this.app.serverSync.updateReadingDigestPreference(toggle.checked, timezone);
             }
             status.textContent = toggle.checked
-                ? "Reading summary emails are enabled."
-                : "Reading summary emails are turned off.";
+                ? "Os e-mails de resumo de leitura estão ativados."
+                : "Os e-mails de resumo de leitura estão desativados.";
             toggle.disabled = false;
         } catch (error) {
             toggle.disabled = true;
-            status.textContent = "Email preference is unavailable.";
+            status.textContent = "Preferência de e-mail indisponível.";
             console.warn("[ReadingDigest] Unable to load preference", error);
         }
     }
@@ -575,10 +575,10 @@ export class ControlsManager {
         this.readingReminderPreference = null;
         if (!hasServer || !localStorage.getItem("localreaderAuthToken")) {
             toggle.checked = false;
-            status.textContent = "Sign in to configure reminders.";
+            status.textContent = "Entre na sua conta para configurar lembretes.";
             return;
         }
-        status.textContent = "Loading reminders…";
+        status.textContent = "Carregando lembretes…";
         try {
             let preference = await this.app.serverSync.getReadingReminderPreference();
             const timezone = this._getBrowserTimezone();
@@ -588,7 +588,7 @@ export class ControlsManager {
             this._reflectReadingReminderPreference(preference);
             toggle.disabled = time.disabled = false;
         } catch (error) {
-            status.textContent = "Reading reminders are unavailable.";
+            status.textContent = "Lembretes de leitura indisponíveis.";
             console.warn("[ReadingReminder] Unable to load preference", error);
         }
     }
@@ -598,8 +598,8 @@ export class ControlsManager {
         this.readingReminderToggle.checked = preference.enabled;
         this.readingReminderTime.value = preference.time;
         this.readingReminderStatus.textContent = preference.enabled
-            ? `Daily email at ${preference.time} (${preference.timezone}), if you haven't read.`
-            : "Reading reminders are turned off.";
+            ? `E-mail diário às ${preference.time} (${preference.timezone}), se você ainda não tiver lido.`
+            : "Os lembretes de leitura estão desativados.";
     }
 
     async _saveReadingReminderPreference() {
@@ -613,7 +613,7 @@ export class ControlsManager {
             return;
         }
         toggle.disabled = time.disabled = true;
-        this.readingReminderStatus.textContent = "Saving reminder…";
+        this.readingReminderStatus.textContent = "Salvando lembrete…";
         try {
             const preference = await this.app.serverSync.updateReadingReminderPreference({
                 enabled: toggle.checked, time: time.value, timezone: this._getBrowserTimezone(),
@@ -621,7 +621,7 @@ export class ControlsManager {
             this._reflectReadingReminderPreference(preference);
         } catch (error) {
             this._reflectReadingReminderPreference(previous);
-            this.readingReminderStatus.textContent = "Unable to save reminder. Your previous setting is unchanged.";
+            this.readingReminderStatus.textContent = "Não foi possível salvar o lembrete. A configuração anterior foi mantida.";
             console.warn("[ReadingReminder] Unable to save preference", error);
         } finally {
             toggle.disabled = time.disabled = false;
@@ -633,17 +633,17 @@ export class ControlsManager {
         const status = this.readingDigestEmailStatus;
         if (!toggle || !status) return;
         toggle.disabled = true;
-        status.textContent = "Saving email preference…";
+        status.textContent = "Salvando preferência de e-mail…";
         try {
             await this.app.serverSync.updateReadingDigestPreference(enabled, this._getBrowserTimezone());
             toggle.checked = !!enabled;
             status.textContent = enabled
-                ? "Reading summary emails are enabled."
-                : "Reading summary emails are turned off.";
-            this.showInfo(enabled ? "Reading emails enabled" : "Reading emails turned off");
+                ? "Os e-mails de resumo de leitura estão ativados."
+                : "Os e-mails de resumo de leitura estão desativados.";
+            this.showInfo(enabled ? "E-mails de leitura ativados" : "E-mails de leitura desativados");
         } catch (error) {
             toggle.checked = !enabled;
-            status.textContent = "Unable to save email preference.";
+            status.textContent = "Não foi possível salvar a preferência de e-mail.";
             console.warn("[ReadingDigest] Unable to save preference", error);
         } finally {
             toggle.disabled = false;
@@ -674,11 +674,11 @@ export class ControlsManager {
         const active = !!enabled;
         this.toggleOriginalSubtitlesBtn.setAttribute("aria-pressed", active ? "true" : "false");
         this.toggleOriginalSubtitlesBtn.title = active
-            ? "Hide original-language subtitles"
-            : "Show original-language subtitles";
+            ? "Ocultar legendas no idioma original"
+            : "Mostrar legendas no idioma original";
         this.toggleOriginalSubtitlesBtn.setAttribute(
             "aria-label",
-            active ? "Hide original-language subtitles" : "Show original-language subtitles",
+            active ? "Ocultar legendas no idioma original" : "Mostrar legendas no idioma original",
         );
         this.toggleOriginalSubtitlesBtn.classList.toggle("bg-primary/10", active);
         this.toggleOriginalSubtitlesBtn.classList.toggle("text-primary", active);
@@ -692,8 +692,8 @@ export class ControlsManager {
         const active = !!enabled;
         this.textWidthFitToggle.setAttribute("aria-pressed", active ? "true" : "false");
         this.textWidthFitToggle.title = active
-            ? "Restore full PDF page width"
-            : "Maximize focused PDF text width";
+            ? "Voltar à largura completa da página"
+            : "Ampliar o texto do PDF na largura da tela";
         this.textWidthFitToggle.setAttribute("aria-label", this.textWidthFitToggle.title);
         this.textWidthFitToggle.classList.toggle("bg-primary/10", active);
         this.textWidthFitToggle.classList.toggle("text-primary", active);

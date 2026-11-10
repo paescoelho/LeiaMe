@@ -3,6 +3,7 @@
   font-family: 'Material Symbols Outlined';
   font-style: normal;
   font-weight: 400;
+  font-display: block;
   src: url(./font.woff2) format('woff2');
 }
 
@@ -19,5 +20,16 @@
   word-wrap: normal;
   direction: ltr;
   -moz-font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* LeiaMe: o nome do ícone nunca aparece como texto */
+  max-width: 1em;
+  overflow: hidden;
+}
+
+/* Enquanto a fonte de ícones carrega, o nome do ícone fica invisível */
+html:not(.ms-ready) .material-symbols-outlined {
+  color: transparent !important;
 }

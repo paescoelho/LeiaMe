@@ -66,7 +66,7 @@ test("announces reading only when a reading run starts", () => {
     manager._finishPlaybackPreparationForStart({ continuesReading: false });
     manager._finishPlaybackPreparationForStart({ continuesReading: true });
 
-    assert.deepEqual(begunMessages, ["Checking page layout…"]);
-    assert.deepEqual(preparationMessages, ["Starting reading…"]);
-    assert.deepEqual(finishedMessages, ["Reading started.", ""]);
+    assert.deepEqual(begunMessages, ["Verificando o layout da página…"]);
+    assert.deepEqual(preparationMessages, ["Iniciando a leitura…"]);
+    assert.deepEqual(finishedMessages, ["Leitura iniciada.", ""]);
 });

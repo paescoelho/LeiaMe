@@ -137,20 +137,20 @@ export class RewardsController {
             }));
         }
         this.unsubscribers.push(this.app.eventBus.on(EVENTS.READING_SESSION_IDLE, () => {
-            this.app.ui.showInfo("Reading paused.");
-            this.panel.announce("idle", "Reading paused after four minutes without activity.");
+            this.app.ui.showInfo("Leitura pausada.");
+            this.panel.announce("idle", "Leitura pausada após quatro minutos sem atividade.");
         }));
         this.unsubscribers.push(this.app.eventBus.on(EVENTS.READING_SESSION_RESUMED, () => {
-            this.app.ui.showInfo("Activity resumed.");
+            this.app.ui.showInfo("Atividade retomada.");
         }));
         this.unsubscribers.push(this.app.eventBus.on(EVENTS.READING_SESSION_RESET, ({ reason, previousActiveReadingMs }) => {
             const labels = {
                 "document-changed": "changing documents",
-                "document-closed": "closing the document",
-                "focus-lost": "losing window focus",
-                "left-reader": "leaving the reader",
-                "page-left": "leaving the page",
-                "tab-hidden": "hiding the tab",
+                "document-closed": "fechar o documento",
+                "focus-lost": "sair da janela",
+                "left-reader": "sair do leitor",
+                "page-left": "sair da página",
+                "tab-hidden": "esconder a aba",
                 "idle": "becoming idle",
                 "explicit": "pausing",
             };
@@ -158,7 +158,7 @@ export class RewardsController {
             const readMinutes = Math.floor((Number(previousActiveReadingMs) || 0) / 60000);
             const readSeconds = Math.floor(((Number(previousActiveReadingMs) || 0) % 60000) / 1000);
             const duration = `${readMinutes}:${String(readSeconds).padStart(2, "0")}`;
-            const message = `Focus streak reset after ${cause}. ${duration} of reading remains in your history.`;
+            const message = `A sequência de foco recomeçou ao ${cause}. ${duration} de leitura continuam no seu histórico.`;
             this.app.ui.showInfo(message);
             this.panel.announce(`focus-reset:${Date.now()}`, message);
         }));
@@ -182,7 +182,7 @@ export class RewardsController {
         this.unsubscribers.push(this.app.eventBus.on(EVENTS.PLANT_STAGE_CHANGED, ({ plant, stage }) => {
             if (stage.percent >= 25) this.panel.announce(
                 `plant:${plant.id}:${stage.id}`,
-                `Your plant reached the ${stage.label.toLowerCase()} stage.`,
+                `Sua planta chegou à fase: ${stage.label.toLowerCase()}.`,
             );
         }));
         this.unsubscribers.push(this.app.eventBus.on(EVENTS.HIGHLIGHT_ADDED, (payload) => {
@@ -292,7 +292,7 @@ export class RewardsController {
             return result;
         })().catch((error) => {
             console.error("[RewardsController] Automatic tree completion failed", error);
-            this.app.ui.showInfo("Your reading time was saved; the next tree will resume automatically.");
+            this.app.ui.showInfo("Seu tempo de leitura foi salvo; a próxima árvore continua automaticamente.");
             return null;
         }).finally(() => {
             this.automaticCompletionPromise = null;
@@ -325,7 +325,7 @@ export class RewardsController {
         const plant = this.pendingTreeNotifications.shift();
         if (!plant) return;
         const definition = getPlantDefinition(plant.speciesId);
-        const message = `You earned one Reading Tree — ${definition.name}.`;
+        const message = `Você ganhou uma árvore de leitura — ${definition.name}.`;
         this.panel.announce(`tree-earned:${plant.id}`, message);
         const state = this.storage.getSnapshot();
         const session = state.sessions.find((candidate) => candidate.id === plant.sessionId);
@@ -339,7 +339,7 @@ export class RewardsController {
             }
             this.reflectionDialog?.open(
                 session,
-                `${definition.name} was added to your garden. Reading is paused until you save its paragraph.`,
+                `${definition.name} foi plantada no seu jardim. A leitura fica pausada até você salvar o parágrafo dela.`,
                 this._getSessionHighlights(session),
             );
         }
@@ -414,7 +414,7 @@ export class RewardsController {
         this._refresh();
         this.app.eventBus.emit(EVENTS.GARDEN_UPDATED, { plant: removed, removed: true });
         this._queueSync(true);
-        this.app.ui.showInfo("Tree removed from your garden.");
+        this.app.ui.showInfo("Árvore removida do jardim.");
         return removed;
     }
 
@@ -462,7 +462,7 @@ export class RewardsController {
 
     async saveReflection(session, text) {
         if (!session || meaningfulCharacterCount(text) < this.config.reflectionMinimumCharacters) {
-            throw new Error("The reflection is too short.");
+            throw new Error("O resumo está curto demais.");
         }
         const anchor = this._captureReflectionAnchor(session.document?.id);
         let reflection = null;
@@ -490,7 +490,7 @@ export class RewardsController {
             }
         });
         if (!reflection) {
-            this.app.ui.showInfo("A reflection is already saved for this session.");
+            this.app.ui.showInfo("Já existe um resumo salvo para esta sessão.");
             return null;
         }
         await this.rewardEngine.grantEngagement({
@@ -551,7 +551,7 @@ export class RewardsController {
         this.tracker.setReadingScreen(false);
         let question = "";
         try {
-            question = globalThis.prompt?.("What question would you like to remember from this reading?") || "";
+            question = globalThis.prompt?.("Que pergunta você quer lembrar desta leitura?") || "";
         } finally {
             this.adapter._updateReadingScreen();
             this.tracker.recordActivity("question-saved");
@@ -566,7 +566,7 @@ export class RewardsController {
             entityId,
             metadata: { question: normalized },
         });
-        this.app.ui.showInfo("Reading question saved.");
+        this.app.ui.showInfo("Pergunta de leitura salva.");
     }
 
     async mergeRemote(snapshot) {

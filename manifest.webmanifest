@@ -1,7 +1,7 @@
 {
     "id": "./index.html",
     "name": "LeiaMe",
-    "description": "Leitor de PDF e EPUB com voz local",
+    "description": "Leitor de PDF e EPUB com leitura em voz alta",
     "short_name": "LeiaMe",
     "categories": [
         "education",
@@ -20,7 +20,7 @@
         "client_mode": "auto"
     },
     "protocol_handlers": [],
-    "lang": "en",
+    "lang": "pt-BR",
     "dir": "ltr",
     "display": "fullscreen",
     "background_color": "#1a1816",

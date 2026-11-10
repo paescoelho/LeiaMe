@@ -42,9 +42,9 @@ export function gardenReadingTimeMessage(state, timestamp = Date.now(), weekStar
     const minutes = Math.floor(intervalSeconds / 60);
     const seconds = intervalSeconds % 60;
     const interval = [
-        minutes ? quantity(minutes, "minute") : "",
-        seconds ? quantity(seconds, "second") : "",
-    ].filter(Boolean).join(" and ");
+        minutes ? quantity(minutes, "minuto") : "",
+        seconds ? quantity(seconds, "segundo") : "",
+    ].filter(Boolean).join(" e ");
     const periodMinutes = (period) => Math.floor(
         activeReadingMillisecondsForPeriod(
             state?.activeTimeByDay,
@@ -55,10 +55,10 @@ export function gardenReadingTimeMessage(state, timestamp = Date.now(), weekStar
     );
 
     return [
-        `You are reading in tree-growing intervals of ${interval}.`,
-        `This week you read ${quantity(periodMinutes("week"), "minute")}.`,
-        `This month you read ${quantity(periodMinutes("month"), "minute")}.`,
-        `This year you read ${quantity(periodMinutes("year"), "minute")}.`,
+        `Cada árvore cresce a cada ${interval} de leitura.`,
+        `Nesta semana você leu ${quantity(periodMinutes("week"), "minuto")}.`,
+        `Neste mês você leu ${quantity(periodMinutes("month"), "minuto")}.`,
+        `Neste ano você leu ${quantity(periodMinutes("year"), "minuto")}.`,
     ].join("\n");
 }
 
@@ -162,32 +162,32 @@ export class GardenDialog {
         this.dialog.innerHTML = `
             <section class="grid gap-2 px-3 pb-3 pt-2 overflow-y-auto max-h-[88vh]">
                 <header class="flex items-center justify-between gap-3">
-                    <h2 class="pl-1 text-base font-semibold text-slate-900 dark:text-slate-100">Reading garden</h2>
-                    <button type="button" data-close aria-label="Close"
+                    <h2 class="pl-1 text-base font-semibold text-slate-900 dark:text-slate-100">Jardim de leitura</h2>
+                    <button type="button" data-close aria-label="Fechar"
                         class="flex h-8 w-8 items-center justify-center rounded-md bg-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10">
                         <span class="material-symbols-outlined" aria-hidden="true">close</span>
                     </button>
                 </header>
-                <div class="flex justify-center gap-2" role="group" aria-label="Garden time period">
-                    <button type="button" data-period="week" aria-pressed="true">Week</button>
-                    <button type="button" data-period="month" aria-pressed="false">Month</button>
-                    <button type="button" data-period="year" aria-pressed="false">Year</button>
+                <div class="flex justify-center gap-2" role="group" aria-label="Período do jardim">
+                    <button type="button" data-period="week" aria-pressed="true">Semana</button>
+                    <button type="button" data-period="month" aria-pressed="false">Mês</button>
+                    <button type="button" data-period="year" aria-pressed="false">Ano</button>
                 </div>
                 <p data-reading-time class="rounded-lg bg-primary/10 px-3 py-2 text-left text-xs leading-relaxed text-slate-600 dark:text-slate-300 whitespace-pre-line"></p>
                 <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-black/20">
-                    <canvas class="garden-canvas block w-full max-w-full bg-transparent" aria-label="Reading garden grid"></canvas>
+                    <canvas class="garden-canvas block w-full max-w-full bg-transparent" aria-label="Canteiros do jardim de leitura"></canvas>
                 </div>
                 <div class="rounded-lg bg-slate-100 dark:bg-slate-800 p-3 text-sm text-slate-600 dark:text-slate-300" aria-live="polite">
-                    <p data-tooltip>Select a tree for details.</p>
+                    <p data-tooltip>Escolha uma árvore para ver os detalhes.</p>
                     <blockquote data-comment class="hidden mt-2 border-l-2 border-primary/50 pl-3 text-left italic whitespace-pre-wrap"></blockquote>
                     <div class="mt-3 flex flex-wrap justify-end gap-2">
                         <button type="button" data-copy class="hidden items-center justify-center gap-1 rounded-md border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-white/70 disabled:opacity-60 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-white/10">
                             <span class="material-symbols-outlined text-base" aria-hidden="true">content_copy</span>
-                            <span data-copy-label>Copy reading text</span>
+                            <span data-copy-label>Copiar o texto lido</span>
                         </button>
                         <button type="button" data-remove class="garden-remove-button hidden items-center justify-center gap-1 rounded-md border border-red-300 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60 dark:border-red-800 dark:text-red-300 dark:hover:bg-red-950/30">
                             <span class="material-symbols-outlined text-base" aria-hidden="true">delete</span>
-                            <span>Remove tree</span>
+                            <span>Remover árvore</span>
                         </button>
                     </div>
                     <p data-copy-status class="hidden mt-2 text-xs"></p>
@@ -264,12 +264,12 @@ export class GardenDialog {
         const remove = this.dialog.querySelector("[data-remove]");
         if (!area.plant) {
             this._resetDetails();
-            tooltip.textContent = `Cell ${area.cell.x + 1}, ${area.cell.y + 1} is available.`;
+            tooltip.textContent = `O espaço ${area.cell.x + 1}, ${area.cell.y + 1} está livre.`;
             return;
         }
         this.selectedPlantId = area.plant.id;
         tooltip.textContent = this._plantLabel(area.plant);
-        comment.textContent = area.plant.reflectionText || "No reading note was saved for this tree.";
+        comment.textContent = area.plant.reflectionText || "Nenhuma anotação foi salva para esta árvore.";
         comment.classList.remove("hidden");
         remove.classList.remove("hidden");
         remove.classList.add("flex");
@@ -281,7 +281,7 @@ export class GardenDialog {
         const comment = this.dialog.querySelector("[data-comment]");
         const remove = this.dialog.querySelector("[data-remove]");
         this.selectedPlantId = null;
-        tooltip.textContent = "Select a tree for details.";
+        tooltip.textContent = "Escolha uma árvore para ver os detalhes.";
         comment.textContent = "";
         comment.classList.add("hidden");
         remove.classList.add("hidden");
@@ -298,9 +298,9 @@ export class GardenDialog {
         button.classList.toggle("flex", Boolean(plant));
         button.disabled = !hasText;
         button.title = hasText
-            ? "Copy all text read while growing this tree"
-            : "Text was not recorded for this tree.";
-        label.textContent = hasText ? "Copy reading text" : "No recorded text";
+            ? "Copiar todo o texto lido enquanto esta árvore crescia"
+            : "O texto não foi registrado para esta árvore.";
+        label.textContent = hasText ? "Copiar o texto lido" : "Nenhum texto registrado";
         status.textContent = "";
         status.classList.add("hidden");
     }
@@ -319,8 +319,8 @@ export class GardenDialog {
             button.disabled = false;
             const status = this.dialog.querySelector("[data-copy-status]");
             status.textContent = copied
-                ? "Reading text copied."
-                : "Could not copy reading text. Please try again.";
+                ? "Texto lido copiado."
+                : "Não foi possível copiar o texto. Tente de novo.";
             status.classList.remove("hidden");
         }
         return copied;
@@ -333,7 +333,7 @@ export class GardenDialog {
         if (!plant) return false;
         const definition = getPlantDefinition(plant.speciesId);
         const confirmed = globalThis.confirm?.(
-            `Remove ${definition.name} from your garden? Your reading time and earned points will be kept.`,
+            `Remover ${definition.name} do seu jardim? Seu tempo de leitura e seus pontos serão mantidos.`,
         );
         if (!confirmed) return false;
 

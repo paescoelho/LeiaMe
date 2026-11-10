@@ -60,12 +60,12 @@ export class TTSEngine {
         let response;
         try {
             response = await fetch(url);
-            if (!response.ok) throw new Error("Voice catalogue unavailable");
+            if (!response.ok) throw new Error("Lista de vozes indisponível");
         } catch (err) {
             response = await globalThis.caches?.match(url);
         }
         if (!response?.ok) {
-            const error = new Error("Voice catalogue is not cached. Connect once before reading offline.");
+            const error = new Error("A lista de vozes não está salva. Conecte-se uma vez antes de ler offline.");
             error.code = TTS_OFFLINE_UNAVAILABLE;
             throw error;
         }
@@ -79,7 +79,7 @@ export class TTSEngine {
     }
 
     _abortError() {
-        return new DOMException("Speech request cancelled", "AbortError");
+        return new DOMException("Pedido de voz cancelado", "AbortError");
     }
 
     _assertLifetime(lifetime) {
@@ -185,7 +185,7 @@ export class TTSEngine {
         this.app.ui.updatePlayButton(state.playerState.DONE);
         if (!this._offlineTtsNoticeShown) {
             this._offlineTtsNoticeShown = true;
-            this.app.ui.showInfo("Offline Mode: this voice is not cached yet. Connect once and load Natural Voices before using it offline.");
+            this.app.ui.showInfo("Modo offline: esta voz ainda não foi baixada. Conecte-se uma vez e carregue as vozes antes de usar offline.");
         }
     }
 
@@ -251,7 +251,7 @@ export class TTSEngine {
             return state.piperInstance;
         }
 
-        this.app.ui.showInfo("Loading AI Natural Voices...");
+        this.app.ui.showInfo("Carregando as vozes naturais de IA...");
         this.pendingVoiceId = targetVoiceId;
         const initialization = this._initializeVoice(targetVoiceId, lifetime)
             .then(async () => {
@@ -297,7 +297,7 @@ export class TTSEngine {
                 this.client = null;
                 this.initialized = false;
                 this._serverFailed = true;
-                this.app.ui.showInfo("Server speech unavailable; using this device.");
+                this.app.ui.showInfo("Voz do servidor indisponível; usando este aparelho.");
             }
         }
         return this._initializeLocalVoice(voiceId, lifetime);
@@ -354,7 +354,7 @@ export class TTSEngine {
             if (usesPersonalizedModel) {
                 const customModel = this._getPersonalizedPiperConfig();
                 modelBuffer = await getUncachedModel(customModel.modelUrl, {
-                    onProgress: (pct) => ui.showMessage(`Downloading personalized model: ${pct.toFixed(2)}%`, 1200),
+                    onProgress: (pct) => ui.showMessage(`Baixando o modelo personalizado: ${pct.toFixed(2)}%`, 1200),
                 });
                 voiceConfig = await getUncachedJSON(customModel.configUrl);
             } else {
@@ -381,7 +381,7 @@ export class TTSEngine {
 
                 const modelKey = `${this.modelRevision}/${modelFile}`;
                 modelBuffer = await getCachedModel(modelKey, modelUrl, {
-                    onProgress: (pct) => ui.showMessage(`Downloading model: ${pct.toFixed(2)}%`, 1200),
+                    onProgress: (pct) => ui.showMessage(`Baixando o modelo de voz: ${pct.toFixed(2)}%`, 1200),
                 });
                 // Re-read the model from IndexedDB for the second worker so both
                 // workers can initialize together without cloning the first buffer.
@@ -401,8 +401,8 @@ export class TTSEngine {
             const useWebGpu = backend === INFERENCE_BACKENDS.WEBGPU;
 
             if (!this.initialized) {
-                const workerLabel = client.size === 1 ? "AI voice worker" : `${client.size} AI voice workers`;
-                ui.updateBookLoading?.(`Initializing ${workerLabel}…`);
+                const workerLabel = client.size === 1 ? "processador de voz" : `${client.size} processadores de voz`;
+                ui.updateBookLoading?.(`Iniciando ${workerLabel}…`);
                 const runtime = await client.init({
                     modelBuffer,
                     voiceConfig,
@@ -475,7 +475,7 @@ export class TTSEngine {
             this._fallbackPromise = (async () => {
                 await remote?.close?.();
                 this._assertLifetime(lifetime);
-                this.app.ui.showInfo("Server speech unavailable; using this device for this book.");
+                this.app.ui.showInfo("Voz do servidor indisponível; usando este aparelho neste livro.");
                 return this._initializeLocalVoice(voiceId, lifetime);
             })();
         }
@@ -858,7 +858,7 @@ export class TTSEngine {
                 state.sentences[idx] === sentence) {
                 sentence.audioError = error;
                 if (this._isOfflineTtsUnavailableError(error)) this._handleOfflineTtsUnavailable(sentence, error);
-                else this.app.ui.showMessage(`Unable to generate speech: ${error.message}`, 3200);
+                else this.app.ui.showMessage(`Não foi possível gerar a voz: ${error.message}`, 3200);
             }
             throw error;
         } finally {
@@ -1015,10 +1015,11 @@ export class TTSEngine {
             opt.value = v;
             const lang = voiceDef["language"] || {};
             const flag = this.app.helpers.regionToFlag(lang["region"] || "");
-            const qual = this.app.helpers.capitalizeFirst(voiceDef["quality"] || "");
+            const qualRaw = this.app.helpers.capitalizeFirst(voiceDef["quality"] || "");
+            const qual = { High: "Alta", Medium: "Média", Low: "Baixa", "X_low": "Muito baixa" }[qualRaw] || qualRaw;
             const voiceName = this.app.helpers.capitalizeFirst(voiceDef["name"] || v);
-            if (qual === "High") {
-                opt.textContent = `${flag} ${voiceName} ${qual} - Need Fast CPU`;
+            if (qualRaw === "High") {
+                opt.textContent = `${flag} ${voiceName} ${qual} — exige processador rápido`;
             } else {
                 opt.textContent = `${flag} ${voiceName} ${qual}`;
             }
@@ -1053,7 +1054,7 @@ export class TTSEngine {
         if (announce) {
             console.warn(`[TTS] Restarting engine (attempt ${attemptNo})`, reason || "");
             this.app.ui.showMessage(
-                `TTS warning: restart attempt ${attemptNo}.${preservePlayback ? " Reader keeps playing." : ""}`,
+                `Aviso da voz: tentativa de reinício ${attemptNo}.${preservePlayback ? " A leitura continua." : ""}`,
                 2800,
             );
         } else {

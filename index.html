@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
@@ -36,8 +36,24 @@
                 console.debug("[theme] Unable to load AMOLED preference", error);
             }
         </script>
+        <link rel="preload" href="./thirdparty/fonts/font.woff2" as="font" type="font/woff2" crossorigin />
         <link href="./thirdparty/fonts/Inter.css" rel="stylesheet" />
         <link href="./thirdparty/fonts/Material-symbols-outlined.css" rel="stylesheet" />
+        <script>
+            // Mostra os ícones só quando a fonte de ícones estiver pronta (evita aparecer "settings", "home" etc.)
+            (function () {
+                var root = document.documentElement;
+                var ready = function () { root.classList.add("ms-ready"); };
+                try {
+                    if (!document.fonts || !document.fonts.load) return ready();
+                    document.fonts.load('24px "Material Symbols Outlined"', "home").then(function (faces) {
+                        if (faces && faces.length) return ready();
+                        // nova tentativa quando todas as fontes terminarem de carregar
+                        document.fonts.ready.then(ready);
+                    }, function () { document.fonts.ready.then(ready); });
+                } catch (e) { ready(); }
+            })();
+        </script>
         <link rel="stylesheet" href="./src/css/style.css" />
         <link rel="stylesheet" href="./src/css/output.css" />
         <link rel="stylesheet" href="./src/css/rewards.css" />
@@ -108,10 +124,10 @@
             id="previous-pdf-header"
             class="hidden fixed inset-0 z-10 flex flex-col items-center gap-4 backdrop-blur-lg border border-white/20 dark:border-background-dark/20 shadow-2xl"
         >
-            <img src="./assets/icons/icon-192.png" alt="App Icon" class="w-24 h-24" />
-            <div class="flex flex-col items-center">
-                <h1 class="brand-title text-3xl text-slate-800 dark:text-white">LeiaMe</h1>
-                <span id="appversion-p" class="text-[10px] font-medium text-gray-300 dark:text-gray-300 -mt-1"></span>
+            <div class="flex flex-col items-center pt-3">
+                <img src="./assets/icons/logo-leiame.svg" alt="LeiaMe" class="leiame-logo leiame-logo--library" />
+                <h1 class="sr-only">LeiaMe</h1>
+                <span id="appversion-p" class="text-[11px] font-semibold tracking-wide text-slate-400 dark:text-slate-500 -mt-1"></span>
             </div>
 
             <div id="pdf-previous-list" class="w-full flex-1 overflow-y-auto overflow-x-hidden px-4 py-6">
@@ -137,7 +153,7 @@
                 aria-hidden="true"
             >hourglass_top</span>
             <p id="book-loading-status" class="mt-4 text-sm text-slate-600 dark:text-slate-300">
-                Loading book and AI models…
+                Carregando o livro e os modelos de IA…
             </p>
         </div>
 
@@ -149,48 +165,48 @@
             <div
                 class="w-full max-w-lg p-8 text-center bg-white/50 dark:bg-background-dark/50 rounded-xl shadow-2xl backdrop-blur-lg border border-white/20 dark:border-background-dark/20"
             >
-                <div class="flex justify-center mb-6">
-                    <img src="./assets/icons/icon-512.png" alt="App Icon" class="w-24 h-24" />
+                <div class="flex justify-center mb-3">
+                    <img src="./assets/icons/logo-leiame.svg" alt="LeiaMe" class="leiame-logo leiame-logo--welcome" />
                 </div>
 
-                <h1 class="brand-title text-4xl text-gray-900 dark:text-white mb-2">LeiaMe</h1>
-                <h3 class="text-6l font-bold text-gray-900 dark:text-white mb-2">Please open a PDF or EPUB file.</h3>
+                <h1 class="sr-only">LeiaMe</h1>
+                <h3 class="text-6l font-bold text-gray-900 dark:text-white mb-2">Abra um arquivo PDF ou EPUB.</h3>
                 <div class="hidden sm:block space-y-4 text-left">
                     <div class="flex items-center p-3 bg-background-light dark:bg-background-dark rounded-lg">
                         <kbd class="font-mono text-sm font-semibold bg-primary/10 text-primary px-2 py-1 rounded"
                             >h</kbd
                         >
-                        <span class="ml-4 text-gray-700 dark:text-gray-300">Highlight text</span>
+                        <span class="ml-4 text-gray-700 dark:text-gray-300">Destacar texto</span>
                     </div>
                     <div class="flex items-center p-3 bg-background-light dark:bg-background-dark rounded-lg">
                         <kbd class="font-mono text-sm font-semibold bg-primary/10 text-primary px-2 py-1 rounded"
                             >t</kbd
                         >
-                        <span class="ml-4 text-gray-700 dark:text-gray-300">Translate current phrase</span>
+                        <span class="ml-4 text-gray-700 dark:text-gray-300">Traduzir a frase atual</span>
                     </div>
                     <div class="flex items-center p-3 bg-background-light dark:bg-background-dark rounded-lg">
                         <kbd class="font-mono text-sm font-semibold bg-primary/10 text-primary px-2 py-1 rounded"
                             >f</kbd
                         >
-                        <span class="ml-4 text-gray-700 dark:text-gray-300">Toggle fullscreen</span>
+                        <span class="ml-4 text-gray-700 dark:text-gray-300">Tela cheia</span>
                     </div>
                     <div class="flex items-center p-3 bg-background-light dark:bg-background-dark rounded-lg">
                         <kbd class="font-mono text-sm font-semibold bg-primary/10 text-primary px-2 py-1 rounded"
-                            >Space</kbd
+                            >Espaço</kbd
                         >
-                        <span class="ml-4 text-gray-700 dark:text-gray-300">Play / Pause Text-to-Speech</span>
+                        <span class="ml-4 text-gray-700 dark:text-gray-300">Tocar / pausar leitura em voz alta</span>
                     </div>
                 </div>
                 <button
                     class="mt-8 w-full bg-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-primary/90 transition-all duration-300"
                     id="init-open-pdf"
                 >
-                    Open Document
+                    Abrir documento
                 </button>
                 <span id="appversion" class="text-xs font-medium text-gray-300 dark:text-gray-300"></span>
                 <div class="mt-3 flex justify-center gap-4 text-xs">
-                    <a class="text-primary hover:underline" href="./privacy.html">Privacy Policy</a>
-                    <a class="text-primary hover:underline" href="./terms.html">Terms of Service</a>
+                    <a class="text-primary hover:underline" href="./privacy.html">Política de Privacidade</a>
+                    <a class="text-primary hover:underline" href="./terms.html">Termos de Uso</a>
                 </div>
             </div>
         </div>
@@ -206,14 +222,14 @@
                     class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-800 dark:text-gray-200 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors duration-200 rounded-lg text-sm"
                 >
                     <span class="material-symbols-outlined text-base">login</span>
-                    <span>Login</span>
+                    <span>Entrar</span>
                 </button>
                 <button
                     id="manage-button"
                     class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-800 dark:text-gray-200 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors duration-200 rounded-lg text-sm"
                 >
                     <span class="material-symbols-outlined text-base">manage_accounts</span>
-                    <span>Manage Account</span>
+                    <span>Gerenciar conta</span>
                 </button>
                 <div class="border-t border-gray-200 dark:border-white/10 mx-2 my-1"></div>
                 <button
@@ -221,7 +237,7 @@
                     class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-800 dark:text-gray-200 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors duration-200 rounded-lg text-sm"
                 >
                     <span class="material-symbols-outlined text-base">logout</span>
-                    <span>Logout</span>
+                    <span>Sair</span>
                 </button>
             </div>
         </div>
@@ -237,7 +253,7 @@
             >
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-3">
-                        <img src="./assets/icons/icon-192.png" alt="App Icon" class="w-10 h-10" />
+                        <img src="./assets/icons/icon-192.png" alt="Ícone do app" class="w-10 h-10" />
                         <div>
                             <h2 class="brand-title text-2xl text-slate-800 dark:text-slate-200">LeiaMe</h2>
                             <p id="auth-status" class="text-xs text-slate-500 dark:text-slate-400"></p>
@@ -246,7 +262,7 @@
                     <button
                         id="auth-close"
                         class="p-1 rounded-full text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"
-                        aria-label="Close"
+                        aria-label="Fechar"
                     >
                         <span class="material-symbols-outlined">close</span>
                     </button>
@@ -264,21 +280,21 @@
                             <path fill="#FBBC05" d="M3.963 10.705A5.41 5.41 0 0 1 3.682 9c0-.592.102-1.168.281-1.705V4.963H.956A9 9 0 0 0 0 9c0 1.452.347 2.827.956 4.037l3.007-2.332Z"/>
                             <path fill="#EA4335" d="M9 3.581c1.322 0 2.508.454 3.441 1.346l2.581-2.581C13.464.892 11.426 0 9 0A9 9 0 0 0 .956 4.963l3.007 2.332C4.672 5.166 6.656 3.581 9 3.581Z"/>
                         </svg>
-                        <span>Continue with Google</span>
+                        <span>Continuar com o Google</span>
                     </button>
                     <button
                         id="google-drive-disconnect"
                         type="button"
                         class="hidden w-full rounded-lg border border-red-300 dark:border-red-700 text-red-700 dark:text-red-300 py-2 text-sm font-semibold"
                     >
-                        Disconnect Google Drive
+                        Desconectar o Google Drive
                     </button>
                     <button
                         id="google-drive-import"
                         type="button"
                         class="hidden w-full rounded-lg border border-primary/50 text-primary py-2 text-sm font-semibold hover:bg-primary/10 transition"
                     >
-                        Import converted owner folder
+                        Importar pasta convertida
                     </button>
                     <input id="google-drive-import-input" type="file" webkitdirectory multiple class="hidden" />
                     <p id="google-drive-status" class="text-center text-xs text-slate-500 dark:text-slate-400"></p>
@@ -286,22 +302,22 @@
 
                 <div class="relative flex items-center mb-4" aria-hidden="true">
                     <div class="flex-grow border-t border-slate-300 dark:border-slate-700"></div>
-                    <span class="mx-3 text-xs text-slate-500 dark:text-slate-400">or use your self-host server</span>
+                    <span class="mx-3 text-xs text-slate-500 dark:text-slate-400">ou use seu próprio servidor</span>
                     <div class="flex-grow border-t border-slate-300 dark:border-slate-700"></div>
                 </div>
 
                 <div id="auth-server-hint" class="text-sm text-slate-600 dark:text-slate-300 mb-2"></div>
 
                 <div class="mb-4 space-y-2">
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Server Link</label>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Endereço do servidor</label>
                     <input
                         id="server-link"
                         type="url"
-                        placeholder="Current website URL"
+                        placeholder="Endereço deste site"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-2"
                     />
                     <div class="text-xs text-slate-500 dark:text-slate-400">
-                        Defaults to the URL where this website is open.
+                        Por padrão, usa o endereço onde este site está aberto.
                     </div>
                 </div>
 
@@ -311,21 +327,21 @@
                         data-auth-tab="login"
                         class="auth-tab flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-black/20 py-2 text-sm font-semibold"
                     >
-                        Login
+                        Entrar
                     </button>
                     <button
                         type="button"
                         data-auth-tab="signup"
                         class="auth-tab flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-black/20 py-2 text-sm font-semibold"
                     >
-                        Sign up
+                        Criar conta
                     </button>
                     <button
                         type="button"
                         data-auth-tab="reset"
                         class="auth-tab flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-black/20 py-2 text-sm font-semibold"
                     >
-                        Reset
+                        Recuperar
                     </button>
                 </div>
 
@@ -336,7 +352,7 @@
                         id="auth-login-email"
                         type="email"
                         autocomplete="email"
-                        placeholder="Email"
+                        placeholder="E-mail"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-2"
                         required
                     />
@@ -344,7 +360,7 @@
                         id="auth-login-password"
                         type="password"
                         autocomplete="current-password"
-                        placeholder="Password"
+                        placeholder="Senha"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-2"
                         required
                     />
@@ -352,7 +368,7 @@
                         type="submit"
                         class="w-full rounded-lg bg-primary text-white font-bold py-2 hover:bg-primary/90 transition"
                     >
-                        Login
+                        Entrar
                     </button>
                 </form>
 
@@ -361,7 +377,7 @@
                         id="auth-signup-email"
                         type="email"
                         autocomplete="email"
-                        placeholder="Email"
+                        placeholder="E-mail"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-2"
                         required
                     />
@@ -369,7 +385,7 @@
                         id="auth-signup-password"
                         type="password"
                         autocomplete="new-password"
-                        placeholder="Password (min 8 chars)"
+                        placeholder="Senha (mín. 8 caracteres)"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-2"
                         required
                     />
@@ -377,7 +393,7 @@
                         type="submit"
                         class="w-full rounded-lg bg-primary text-white font-bold py-2 hover:bg-primary/90 transition"
                     >
-                        Create account
+                        Criar conta
                     </button>
                 </form>
 
@@ -386,7 +402,7 @@
                         id="auth-reset-email"
                         type="email"
                         autocomplete="email"
-                        placeholder="Email"
+                        placeholder="E-mail"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-2"
                         required
                     />
@@ -396,13 +412,13 @@
                             type="button"
                             class="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-black/20 py-2 text-sm font-semibold"
                         >
-                            Send code
+                            Enviar código
                         </button>
                         <input
                             id="auth-reset-code"
                             type="text"
                             inputmode="text"
-                            placeholder="Code"
+                            placeholder="Código"
                             class="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-2"
                         />
                     </div>
@@ -410,39 +426,39 @@
                         id="auth-reset-new-password"
                         type="password"
                         autocomplete="new-password"
-                        placeholder="New password"
+                        placeholder="Nova senha"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-2"
                     />
                     <input
                         id="auth-reset-confirm-password"
                         type="password"
                         autocomplete="new-password"
-                        placeholder="Confirm new password"
+                        placeholder="Confirme a nova senha"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-2"
                     />
                     <button
                         type="submit"
                         class="w-full rounded-lg bg-primary text-white font-bold py-2 hover:bg-primary/90 transition"
                     >
-                        Reset password
+                        Redefinir senha
                     </button>
                 </form>
 
                 <div id="auth-loggedin" class="hidden mt-4 space-y-3">
                     <div class="text-sm text-slate-700 dark:text-slate-300">
-                        Logged in as <span id="auth-email" class="font-semibold"></span>
+                        Conectado como <span id="auth-email" class="font-semibold"></span>
                     </div>
                     <button
                         id="auth-logout"
                         type="button"
                         class="w-full rounded-lg border border-red-300 dark:border-red-700 text-red-700 dark:text-red-300 py-2 text-sm font-semibold"
                     >
-                        Logout
+                        Sair
                     </button>
                 </div>
                 <div class="mt-4 flex justify-center gap-4 text-xs">
-                    <a class="text-primary hover:underline" href="./privacy.html">Privacy Policy</a>
-                    <a class="text-primary hover:underline" href="./terms.html">Terms of Service</a>
+                    <a class="text-primary hover:underline" href="./privacy.html">Política de Privacidade</a>
+                    <a class="text-primary hover:underline" href="./terms.html">Termos de Uso</a>
                 </div>
             </div>
         </div>
@@ -453,12 +469,12 @@
             class="fixed hidden bottom-24 w-96 left-1/2 -translate-x-1/2 sm:translate-x-0 bg-gray-100 dark:bg-gray-800 rounded-lg p-4 z-20 shadow-2xl"
         >
             <div class="flex items-center justify-between mb-3">
-                <h2 class="text-xl font-bold text-slate-800 dark:text-slate-200">Settings</h2>
+                <h2 class="text-xl font-bold text-slate-800 dark:text-slate-200">Configurações</h2>
                 <div class="flex items-center gap-2">
                     <button
                         id="trash-button"
-                        aria-label="Open Trash"
-                        title="Open Trash"
+                        aria-label="Abrir lixeira"
+                        title="Abrir lixeira"
                         class="p-1 rounded-full text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"
                         type="button"
                     >
@@ -466,7 +482,7 @@
                     </button>
                     <button
                         id="config-menu-close"
-                        aria-label="Close settings"
+                        aria-label="Fechar configurações"
                         class="p-1 rounded-full text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary"
                         type="button"
                     >
@@ -474,33 +490,33 @@
                     </button>
                 </div>
             </div>
-            <div class="settings-tabs" role="tablist" aria-label="Settings categories">
+            <div class="settings-tabs" role="tablist" aria-label="Categorias de configuração">
                 <button id="settings-tab-audio" type="button" role="tab" aria-selected="true"
-                    aria-controls="settings-panel-audio" tabindex="0">Audio</button>
+                    aria-controls="settings-panel-audio" tabindex="0">Áudio</button>
                 <button id="settings-tab-display" type="button" role="tab" aria-selected="false"
-                    aria-controls="settings-panel-display" tabindex="-1">Display</button>
+                    aria-controls="settings-panel-display" tabindex="-1">Tela</button>
                 <button id="settings-tab-emails" type="button" role="tab" aria-selected="false"
-                    aria-controls="settings-panel-emails" tabindex="-1">Emails</button>
+                    aria-controls="settings-panel-emails" tabindex="-1">E-mails</button>
             </div>
             <div class="settings-content">
                 <div id="settings-panel-audio" class="settings-panel" role="tabpanel"
                     aria-labelledby="settings-tab-audio" tabindex="0">
                     <div>
                         <label class="flex items-center justify-between gap-3 text-sm font-medium text-gray-600 dark:text-gray-400">
-                            <span>Use server speech when available</span>
+                            <span>Usar a voz do servidor quando disponível</span>
                             <input id="server-tts-enabled" type="checkbox" role="switch"
                                 aria-describedby="server-tts-description tts-provider-status"
                                 class="h-5 w-5 accent-primary" />
                         </label>
                         <p id="server-tts-description" class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                            Your server generates speech with the selected voice. This device handles speech when the server is unavailable.
+                            Seu servidor gera a fala com a voz escolhida. Quando ele não está disponível, este aparelho faz a leitura.
                         </p>
                         <p id="tts-provider-status" role="status" aria-live="polite"
-                            class="mt-2 text-xs text-gray-500 dark:text-gray-400">Speech: this device</p>
+                            class="mt-2 text-xs text-gray-500 dark:text-gray-400">Voz: este aparelho</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                            Change voice language
+                            Idioma da voz
                         </label>
                         <select
                             id="voice-select"
@@ -510,13 +526,13 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                            Adjust reading speed
+                            Velocidade de leitura
                         </label>
                         <div class="flex items-center gap-4">
                             <button
                                 id="btn-speed-decrease"
                                 type="button"
-                                aria-label="Decrease reading speed"
+                                aria-label="Diminuir velocidade de leitura"
                                 class="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10"
                             >
                                 <span class="material-symbols-outlined text-lg">remove</span>
@@ -533,7 +549,7 @@
                             <button
                                 id="btn-speed-increase"
                                 type="button"
-                                aria-label="Increase reading speed"
+                                aria-label="Aumentar velocidade de leitura"
                                 class="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10"
                             >
                                 <span class="material-symbols-outlined text-lg">add</span>
@@ -551,7 +567,7 @@
                     -->
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
-                            >Auto-stop Timer</label
+                            >Desligar automaticamente</label
                         >
                         <div
                             class="flex items-center justify-between gap-4 bg-white/50 dark:bg-black/30 p-3 rounded-lg border border-slate-300 dark:border-slate-700"
@@ -564,7 +580,7 @@
                                     <button
                                         id="btn-timer-decrease"
                                         type="button"
-                                        aria-label="Decrease timer by one minute"
+                                        aria-label="Diminuir um minuto"
                                         class="w-9 h-9 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10"
                                     >
                                         <span class="material-symbols-outlined text-lg">remove</span>
@@ -577,12 +593,12 @@
                                         min="1"
                                         step="1"
                                         value="15"
-                                        aria-label="Auto-stop time in minutes"
+                                        aria-label="Tempo para desligar, em minutos"
                                     />
                                     <button
                                         id="btn-timer-increase"
                                         type="button"
-                                        aria-label="Increase timer by one minute"
+                                        aria-label="Aumentar um minuto"
                                         class="w-9 h-9 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10"
                                     >
                                         <span class="material-symbols-outlined text-lg">add</span>
@@ -618,8 +634,8 @@
                     <div class="settings-display-controls">
                         <button
                             id="toggle-original-subtitles"
-                            title="Show original-language subtitles"
-                            aria-label="Show original-language subtitles"
+                            title="Mostrar legendas no idioma original"
+                            aria-label="Mostrar legendas no idioma original"
                             aria-pressed="false"
                             class="flex items-center justify-center rounded p-2"
                         >
@@ -628,12 +644,12 @@
                             >
                                 subtitles_off
                             </span>
-                            <span class="settings-control-label">Original subtitles</span>
+                            <span class="settings-control-label">Legendas originais</span>
                         </button>
 
                         <button
                             id="toggle-fullscreen"
-                            title="Toggle Fullscreen mode"
+                            title="Alternar tela cheia"
                             class="flex items-center justify-center rounded p-2"
                         >
                             <span
@@ -641,13 +657,13 @@
                             >
                                 fullscreen
                             </span>
-                            <span class="settings-control-label">Fullscreen</span>
+                            <span class="settings-control-label">Tela cheia</span>
                         </button>
 
                         <button
                             id="toggle-text-width-fit"
-                            title="Maximize focused PDF text width"
-                            aria-label="Maximize focused PDF text width"
+                            title="Ampliar o texto do PDF na largura da tela"
+                            aria-label="Ampliar o texto do PDF na largura da tela"
                             aria-pressed="false"
                             class="flex items-center justify-center rounded p-2"
                         >
@@ -656,12 +672,12 @@
                             >
                                 fit_screen
                             </span>
-                            <span class="settings-control-label">Fit PDF text</span>
+                            <span class="settings-control-label">Ajustar texto do PDF</span>
                         </button>
 
                         <button
                             id="lock-screen"
-                            title="Lock screen orientation"
+                            title="Travar a orientação da tela"
                             class="flex items-center justify-center rounded p-2"
                         >
                             <span
@@ -669,13 +685,13 @@
                             >
                                 screen_lock_rotation
                             </span>
-                            <span class="settings-control-label">Orientation lock</span>
+                            <span class="settings-control-label">Travar orientação</span>
                         </button>
 
                         <button
                             id="toggle-amoled-mode"
-                            title="Toggle AMOLED black mode"
-                            aria-label="Toggle AMOLED black mode"
+                            title="Alternar modo preto AMOLED"
+                            aria-label="Alternar modo preto AMOLED"
                             aria-pressed="false"
                             class="flex items-center justify-center rounded p-2"
                         >
@@ -684,13 +700,13 @@
                             >
                                 contrast
                             </span>
-                            <span class="settings-control-label">AMOLED mode</span>
+                            <span class="settings-control-label">Modo AMOLED</span>
                         </button>
 
                         <button
                             id="amoled-text-color"
-                            title="Cycle AMOLED reader text brightness"
-                            aria-label="Cycle AMOLED reader text brightness"
+                            title="Alternar o brilho do texto no modo AMOLED"
+                            aria-label="Alternar o brilho do texto no modo AMOLED"
                             class="flex items-center justify-center rounded p-2"
                             type="button"
                         >
@@ -698,12 +714,12 @@
                                 id="amoled-text-color-swatch"
                                 class="block h-5 w-5 rounded-full border border-slate-400 dark:border-slate-600"
                             ></span>
-                            <span class="settings-control-label">Text brightness</span>
+                            <span class="settings-control-label">Brilho do texto</span>
                         </button>
 
                         <button
                             id="toogle-help"
-                            title="Show help menu"
+                            title="Mostrar ajuda"
                             class="flex items-center justify-center rounded p-2"
                         >
                             <span
@@ -711,7 +727,7 @@
                             >
                                 help
                             </span>
-                            <span class="settings-control-label">Help</span>
+                            <span class="settings-control-label">Ajuda</span>
                         </button>
                     </div>
 
@@ -719,24 +735,24 @@
                 <div id="settings-panel-emails" class="settings-panel" role="tabpanel"
                     aria-labelledby="settings-tab-emails" tabindex="0" aria-hidden="true" inert>
                         <p class="settings-email-hint text-sm text-slate-500 dark:text-slate-400">
-                            Sign in from the account menu to configure reading reminders and summary emails.
+                            Entre pela sua conta para configurar lembretes de leitura e e-mails de resumo.
                         </p>
                     <div id="reading-reminder-section" hidden
                         class="rounded-lg border border-slate-300 bg-white/50 p-3 dark:border-slate-700 dark:bg-black/30">
                         <label class="flex items-start gap-3">
                             <input id="reading-reminder-enabled" type="checkbox" disabled class="mt-1 h-5 w-5" />
-                            <span class="text-sm text-slate-700 dark:text-slate-200">Reading reminders</span>
+                            <span class="text-sm text-slate-700 dark:text-slate-200">Lembretes de leitura</span>
                         </label>
                         <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                            A daily email if you haven't read today, based on synced activity.
+                            Um e-mail por dia caso você ainda não tenha lido, com base na atividade sincronizada.
                         </p>
                         <label class="mt-2 block text-sm text-slate-700 dark:text-slate-200">
-                            Reminder time (your local timezone)
+                            Horário do lembrete (seu fuso horário)
                             <input id="reading-reminder-time" type="time" value="19:00" disabled
                                 class="rounded border border-slate-300 bg-white p-1 dark:border-slate-700 dark:bg-black/30" />
                         </label>
                         <p id="reading-reminder-status" aria-live="polite"
-                            class="mt-2 text-xs text-slate-500 dark:text-slate-400">Sign in to configure reminders.</p>
+                            class="mt-2 text-xs text-slate-500 dark:text-slate-400">Entre na sua conta para configurar lembretes.</p>
                     </div>
 
                     <div
@@ -754,10 +770,10 @@
                             />
                             <span class="min-w-0">
                                 <span class="block text-sm font-medium text-slate-700 dark:text-slate-200">
-                                    Reading summary emails
+                                    E-mails de resumo de leitura
                                 </span>
                                 <span class="mt-1 block text-xs text-slate-500 dark:text-slate-400">
-                                    Weekly on Saturday, monthly on day 1, and yearly on December 31.
+                                    Semanal aos sábados, mensal no dia 1 e anual em 31 de dezembro.
                                 </span>
                             </span>
                         </label>
@@ -766,7 +782,7 @@
                             class="mt-2 text-xs text-slate-500 dark:text-slate-400"
                             aria-live="polite"
                         >
-                            Sign in to configure email summaries.
+                            Entre na sua conta para configurar os e-mails de resumo.
                         </p>
                     </div>
 
@@ -774,10 +790,10 @@
             </div>
             <nav
                 class="flex justify-center gap-4 border-t border-slate-300 dark:border-slate-700 p-3 text-xs"
-                aria-label="Legal"
+                aria-label="Informações legais"
             >
-                <a class="text-primary hover:underline" href="./privacy.html">Privacy Policy</a>
-                <a class="text-primary hover:underline" href="./terms.html">Terms of Service</a>
+                <a class="text-primary hover:underline" href="./privacy.html">Política de Privacidade</a>
+                <a class="text-primary hover:underline" href="./terms.html">Termos de Uso</a>
             </nav>
         </div>
 
@@ -793,19 +809,19 @@
             >
                 <header class="trash-dialog-header">
                     <div>
-                        <h2 id="trash-title">Trash</h2>
-                        <p>Restore documents or delete them forever.</p>
+                        <h2 id="trash-title">Lixeira</h2>
+                        <p>Restaure documentos ou apague-os definitivamente.</p>
                     </div>
-                    <button id="trash-close" class="trash-icon-button" type="button" aria-label="Close Trash">
+                    <button id="trash-close" class="trash-icon-button" type="button" aria-label="Fechar lixeira">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </header>
                 <p id="trash-status" class="trash-status" role="status" aria-live="polite"></p>
-                <p id="trash-empty-state" class="trash-empty-state" hidden>No deleted documents.</p>
-                <ul id="trash-list" class="trash-list" aria-label="Deleted documents"></ul>
+                <p id="trash-empty-state" class="trash-empty-state" hidden>Nenhum documento apagado.</p>
+                <ul id="trash-list" class="trash-list" aria-label="Documentos apagados"></ul>
                 <footer class="trash-dialog-footer">
                     <button id="trash-empty-button" class="trash-empty-button" type="button" hidden>
-                        Empty Trash
+                        Esvaziar lixeira
                     </button>
                 </footer>
             </section>
@@ -824,14 +840,14 @@
                     class="flex items-center justify-between px-3 py-2 border-b border-slate-200 dark:border-slate-700"
                 >
                     <div>
-                        <h2 class="text-base font-bold text-slate-800 dark:text-slate-100">Help</h2>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Quick controls</p>
+                        <h2 class="text-base font-bold text-slate-800 dark:text-slate-100">Ajuda</h2>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Atalhos</p>
                     </div>
                     <button
                         id="help-close"
                         type="button"
                         class="p-1 rounded-full text-slate-500 dark:text-slate-300 hover:text-primary dark:hover:text-primary"
-                        aria-label="Close help"
+                        aria-label="Fechar ajuda"
                     >
                         <span class="material-symbols-outlined">close</span>
                     </button>
@@ -840,93 +856,93 @@
                 <div class="p-3 grid gap-3 sm:grid-cols-2">
                     <section class="hidden sm:block">
                         <h3 class="mb-2 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
-                            Computer
+                            Computador
                         </h3>
                         <div class="space-y-1.5 text-xs text-slate-700 dark:text-slate-200">
                             <div class="flex items-center gap-2">
                                 <kbd
                                     class="min-w-12 px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-[11px] text-center"
-                                    >Space</kbd
+                                    >Espaço</kbd
                                 >
-                                <span>Play / pause</span>
+                                <span>Tocar / pausar</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <kbd
                                     class="min-w-12 px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-[11px] text-center"
                                     >← / →</kbd
                                 >
-                                <span>Previous / next</span>
+                                <span>Anterior / próxima</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <kbd
                                     class="min-w-12 px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-[11px] text-center"
                                     >H</kbd
                                 >
-                                <span>Highlight</span>
+                                <span>Destacar</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <kbd
                                     class="min-w-12 px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-[11px] text-center"
                                     >C</kbd
                                 >
-                                <span>Comment</span>
+                                <span>Comentar</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <kbd
                                     class="min-w-12 px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-[11px] text-center"
                                     >T</kbd
                                 >
-                                <span>Translate</span>
+                                <span>Traduzir</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <kbd
                                     class="min-w-12 px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-[11px] text-center"
                                     >F</kbd
                                 >
-                                <span>Fullscreen</span>
+                                <span>Tela cheia</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <kbd
                                     class="min-w-12 px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono text-[11px] text-center"
                                     >1-4</kbd
                                 >
-                                <span>Highlight color</span>
+                                <span>Cor do destaque</span>
                             </div>
                         </div>
                     </section>
 
                     <section>
                         <h3 class="mb-2 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
-                            Smartphone
+                            Celular
                         </h3>
                         <div class="space-y-1.5 text-xs text-slate-700 dark:text-slate-200">
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm text-primary">play_circle</span>
-                                <span>Center button plays / pauses</span>
+                                <span>O botão do meio toca / pausa</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm text-primary">skip_next</span>
-                                <span>Arrow buttons move sentence</span>
+                                <span>As setas mudam de frase</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm text-primary">edit</span>
-                                <span>Tap highlight for colors/comments</span>
+                                <span>Toque no destaque para cores e comentários</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm text-primary">touch_app</span>
-                                <span>Long-press highlight to save fast</span>
+                                <span>Toque longo no destaque salva rápido</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm text-primary">delete</span>
-                                <span>Long-press book card to move it to Trash</span>
+                                <span>Toque longo no livro para mandar para a lixeira</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm text-primary">settings</span>
-                                <span>Settings changes voice, speed, translation</span>
+                                <span>Configurações mudam voz, velocidade e tradução</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm text-primary">screen_lock_rotation</span>
-                                <span>Lock keeps the current orientation</span>
+                                <span>O cadeado mantém a orientação atual</span>
                             </div>
                         </div>
                     </section>
@@ -939,7 +955,7 @@
             id="highlight-menu"
             class="fixed hidden bottom-24 w-64 left-1/2 -translate-x-1/2 sm:translate-x-0 bg-background-light dark:bg-background-dark rounded-lg p-4 z-30 shadow-lg"
         >
-            <p class="px-2 py-1 text-xs font-semibold text-slate-500 dark:text-slate-400">Highlight Color</p>
+            <p class="px-2 py-1 text-xs font-semibold text-slate-500 dark:text-slate-400">Cor do destaque</p>
             <div id="highlight-color-options" class="grid grid-cols-4 gap-6">
                 <button
                     type="button"
@@ -971,8 +987,8 @@
             >
                 <button
                     id="home-btn"
-                    title="Return to main page"
-                    aria-label="Return to main page"
+                    title="Voltar à página inicial"
+                    aria-label="Voltar à página inicial"
                     class="playbar__button flex items-center justify-center rounded p-2 hover:bg-primary/10 dark:hover:bg-primary/20"
                 >
                     <span class="material-symbols-outlined text-xl sm:text-lg text-slate-600 dark:text-slate-300"
@@ -982,8 +998,8 @@
 
                 <button
                     id="open-file"
-                    title="Open a new PDF file"
-                    aria-label="Open a new PDF file"
+                    title="Abrir um novo arquivo"
+                    aria-label="Abrir um novo arquivo"
                     class="playbar__button flex items-center justify-center rounded p-2 hover:bg-primary/10 dark:hover:bg-primary/20"
                 >
                     <span class="material-symbols-outlined text-xl sm:text-lg text-slate-600 dark:text-slate-300"
@@ -993,8 +1009,8 @@
 
                 <button
                     id="export-highlights"
-                    title="Save the current PDF with highlights and Reading Tree notes"
-                    aria-label="Save the current PDF with highlights and Reading Tree notes"
+                    title="Salvar o PDF com destaques e anotações das árvores de leitura"
+                    aria-label="Salvar o PDF com destaques e anotações das árvores de leitura"
                     class="playbar__button flex items-center justify-center rounded p-2 hover:bg-primary/10 dark:hover:bg-primary/20"
                 >
                     <span class="material-symbols-outlined text-xl sm:text-lg text-slate-600 dark:text-slate-300"
@@ -1006,8 +1022,8 @@
 
                 <button
                     id="prev-page"
-                    title="Go to previous sentence"
-                    aria-label="Go to previous sentence"
+                    title="Ir para a frase anterior"
+                    aria-label="Ir para a frase anterior"
                     class="playbar__button flex items-center justify-center rounded p-2 hover:bg-primary/10 dark:hover:bg-primary/20"
                 >
                     <span class="material-symbols-outlined text-xl sm:text-lg text-slate-600 dark:text-slate-300"
@@ -1017,8 +1033,8 @@
 
                 <button
                     id="play-toggle"
-                    title="Play or pause the current sentence"
-                    aria-label="Play or pause the current sentence"
+                    title="Tocar ou pausar a frase atual"
+                    aria-label="Tocar ou pausar a frase atual"
                     class="playbar__button playbar__button--primary flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white shadow"
                 >
                     <span class="material-symbols-outlined">play_arrow</span>
@@ -1026,8 +1042,8 @@
 
                 <button
                     id="next-page"
-                    title="Go to next sentence"
-                    aria-label="Go to next sentence"
+                    title="Ir para a próxima frase"
+                    aria-label="Ir para a próxima frase"
                     class="playbar__button flex items-center justify-center rounded p-2 hover:bg-primary/10 dark:hover:bg-primary/20"
                 >
                     <span class="material-symbols-outlined text-xl sm:text-lg text-slate-600 dark:text-slate-300"
@@ -1039,8 +1055,8 @@
 
                 <button
                     id="save-highlight"
-                    title="Configure highlights"
-                    aria-label="Configure highlights"
+                    title="Configurar destaques"
+                    aria-label="Configurar destaques"
                     class="playbar__button flex items-center justify-center rounded p-2 hover:bg-primary/10 dark:hover:bg-primary/20"
                 >
                     <span class="material-symbols-outlined text-xl sm:text-lg text-slate-600 dark:text-slate-300"
@@ -1051,8 +1067,8 @@
                 <button
                     id="save-comment"
                     class="playbar__button flex items-center justify-center rounded p-2 hover:bg-primary/10 dark:hover:bg-primary/20"
-                    title="Self-Host Server Configurations"
-                    aria-label="Self-Host Server Configurations"
+                    title="Conta e sincronização"
+                    aria-label="Conta e sincronização"
                 >
                     <span class="material-symbols-outlined text-xl sm:text-lg text-slate-600 dark:text-slate-300"
                         >cloud_off</span
@@ -1063,8 +1079,8 @@
                 <div class="playbar__button-slot relative">
                     <button
                         id="settings-button"
-                        title="General configuration and options"
-                        aria-label="General configuration and options"
+                        title="Configurações gerais"
+                        aria-label="Configurações gerais"
                         class="playbar__button flex items-center justify-center rounded p-2 hover:bg-primary/10 dark:hover:bg-primary/20"
                     >
                         <span class="material-symbols-outlined text-lg sm:text-lg text-slate-600 dark:text-slate-300"
@@ -1155,10 +1171,10 @@
                     const connected = !!app.serverSync?.isGoogleDriveConnected?.();
                     if (googleDriveStatus) {
                         googleDriveStatus.textContent = connected
-                            ? "Connected — sync is active"
+                            ? "Conectado — sincronização ativa"
                             : localStorage.getItem("config.googleDriveAuthorized") === "1"
-                              ? "Reconnect required"
-                              : "Not connected";
+                              ? "É preciso reconectar"
+                              : "Não conectado";
                     }
                     googleDriveConnectBtn?.classList.toggle("hidden", connected);
                     googleDriveDisconnectBtn?.classList.toggle("hidden", !connected);
@@ -1167,8 +1183,8 @@
                     if (label) {
                         label.textContent =
                             localStorage.getItem("config.googleDriveAuthorized") === "1"
-                                ? "Reconnect with Google"
-                                : "Continue with Google";
+                                ? "Reconectar com o Google"
+                                : "Continuar com o Google";
                     }
                 };
 
@@ -1215,10 +1231,10 @@
                     if (!amoledModeBtn) return;
 
                     amoledModeBtn.setAttribute("aria-pressed", active ? "true" : "false");
-                    amoledModeBtn.title = active ? "Disable AMOLED black mode" : "Enable AMOLED black mode";
+                    amoledModeBtn.title = active ? "Desativar modo preto AMOLED" : "Ativar modo preto AMOLED";
                     amoledModeBtn.setAttribute(
                         "aria-label",
-                        active ? "Disable AMOLED black mode" : "Enable AMOLED black mode",
+                        active ? "Desativar modo preto AMOLED" : "Ativar modo preto AMOLED",
                     );
                     amoledModeBtn.classList.toggle("bg-primary/10", active);
                     amoledModeBtn.classList.toggle("text-primary", active);
@@ -1261,18 +1277,18 @@
                     authError.classList.remove("hidden");
                 };
 
-                const formatAuthErrorMessage = (err, fallback = "Request failed") => {
+                const formatAuthErrorMessage = (err, fallback = "A solicitação falhou") => {
                     const status = Number(err?.status);
                     const rawMessage = String(err?.message || "").trim();
                     const is502 = status === 502 || /(^|\s)502(\s|$)|bad gateway/i.test(rawMessage);
                     if (is502) {
-                        return "Login failed: server/proxy returned 502 Bad Gateway. Check reverse proxy and upstream server logs.";
+                        return "Falha ao entrar: o servidor/proxy retornou 502 Bad Gateway. Verifique o proxy reverso e os logs do servidor.";
                     }
 
                     const looksLikeNetworkIssue =
                         err?.name === "TypeError" || /failed to fetch|networkerror|network error/i.test(rawMessage);
                     if (looksLikeNetworkIssue) {
-                        return "Login failed: could not reach server. Check Server Link, HTTPS certificate, and CORS/proxy settings.";
+                        return "Falha ao entrar: não foi possível acessar o servidor. Verifique o endereço, o certificado HTTPS e as configurações de CORS/proxy.";
                     }
 
                     return rawMessage || fallback;
@@ -1317,8 +1333,8 @@
                 const showAuthOverlay = ({ force = false } = {}) => {
                     const serverUrl = getServerUrl();
                     authServerHint.textContent = serverUrl
-                        ? `Server: ${serverUrl}`
-                        : "Set Server Link below before logging in.";
+                        ? `Servidor: ${serverUrl}`
+                        : "Informe o endereço do servidor abaixo antes de entrar.";
                     if (force) setTab("login");
                     authOverlay.classList.remove("hidden");
                 };
@@ -1328,7 +1344,7 @@
                 };
 
                 const apiFetch = async (path, opts = {}) => {
-                    if (!app.serverSync?.apiFetch) throw new Error("Server sync not ready");
+                    if (!app.serverSync?.apiFetch) throw new Error("Sincronização com o servidor ainda não está pronta");
                     return await app.serverSync.apiFetch(path, opts);
                 };
 
@@ -1349,20 +1365,20 @@
                     if (app.serverSync?.getBackend?.() === "google-drive") {
                         const connected = !!app.serverSync?.isGoogleDriveConnected?.();
                         loggedInPanel.classList.add("hidden");
-                        authStatus.textContent = connected ? "Google Drive connected" : "Google Drive not connected";
+                        authStatus.textContent = connected ? "Google Drive conectado" : "Google Drive não conectado";
                         if (authButton) {
                             const icon = authButton.querySelector(".material-symbols-outlined");
                             if (icon) icon.textContent = connected ? "cloud_done" : "cloud_off";
-                            authButton.title = connected ? "Google Drive sync connected" : "Configure Google Drive sync";
+                            authButton.title = connected ? "Sincronização com o Google Drive ativa" : "Configurar sincronização com o Google Drive";
                             authButton.setAttribute("aria-label", authButton.title);
                         }
                         reflectGoogleDriveState();
                         return { authenticated: connected };
                     }
-                    const authTitleBase = "Self-Host Server Configurations";
+                    const authTitleBase = "Conta e sincronização";
                     const token = localStorage.getItem("localreaderAuthToken") || "";
                     if (!token) {
-                        authStatus.textContent = "Not authenticated";
+                        authStatus.textContent = "Não autenticado";
                         if (authButton) {
                             const icon = authButton.querySelector(".material-symbols-outlined");
                             if (icon) icon.textContent = "cloud_off";
@@ -1388,7 +1404,7 @@
                             loginForm.classList.add("hidden");
                             signupForm.classList.add("hidden");
                             resetForm.classList.add("hidden");
-                            authStatus.textContent = "Authenticated";
+                            authStatus.textContent = "Autenticado";
                             app.controlsManager?.refreshReadingDigestPreference?.();
                             return { authenticated: true, email: me.email };
                         }
@@ -1397,7 +1413,7 @@
                     }
                     await app.ttsEngine?.deactivate?.();
                     app.serverSync?.clearAuthToken?.();
-                    authStatus.textContent = "Not authenticated";
+                    authStatus.textContent = "Não autenticado";
                     if (authButton) {
                         const icon = authButton.querySelector(".material-symbols-outlined");
                         if (icon) icon.textContent = "cloud_off";
@@ -1419,8 +1435,8 @@
                         else localStorage.removeItem("config.serverLink");
                         const serverUrl = getServerUrl();
                         authServerHint.textContent = serverUrl
-                            ? `Server: ${serverUrl}`
-                            : "Set Server Link below before logging in.";
+                            ? `Servidor: ${serverUrl}`
+                            : "Informe o endereço do servidor abaixo antes de entrar.";
                     };
 
                     serverLinkInput.addEventListener("input", persistAndRefreshHint, { passive: true });
@@ -1428,7 +1444,7 @@
                 }
 
                 googleDriveConnectBtn?.addEventListener("click", async () => {
-                    googleDriveStatus.textContent = "Connecting…";
+                    googleDriveStatus.textContent = "Conectando…";
                     try {
                         await app.serverSync.connectGoogleDrive();
                         await app.ttsEngine?.deactivate?.();
@@ -1440,7 +1456,7 @@
                         await app.showSavedPDFs?.();
                     } catch (error) {
                         console.error("[GoogleDriveSync] Connect failed", error);
-                        googleDriveStatus.textContent = error?.message || "Google Drive connection failed";
+                        googleDriveStatus.textContent = error?.message || "Falha ao conectar ao Google Drive";
                     }
                 });
 
@@ -1459,14 +1475,14 @@
                     const files = event.target.files;
                     if (!files?.length) return;
                     googleDriveImportBtn.disabled = true;
-                    googleDriveStatus.textContent = "Importing converted files…";
+                    googleDriveStatus.textContent = "Importando arquivos convertidos…";
                     try {
                         const result = await app.serverSync.importGoogleDriveFolder(files);
-                        googleDriveStatus.textContent = `Imported ${result.importedCount} file${result.importedCount === 1 ? "" : "s"}`;
+                        googleDriveStatus.textContent = `${result.importedCount} arquivo${result.importedCount === 1 ? "" : "s"} importado${result.importedCount === 1 ? "" : "s"}`;
                         await app.showSavedPDFs?.();
                     } catch (error) {
                         console.error("[GoogleDriveSync] Import failed", error);
-                        googleDriveStatus.textContent = error?.message || "Google Drive import failed";
+                        googleDriveStatus.textContent = error?.message || "Falha ao importar do Google Drive";
                     } finally {
                         googleDriveImportBtn.disabled = false;
                         event.target.value = "";
@@ -1516,7 +1532,7 @@
                         await ensureAppInitialized();
                     } catch (err) {
                         logAuthError("login", err);
-                        setAuthError(formatAuthErrorMessage(err, "Login failed"));
+                        setAuthError(formatAuthErrorMessage(err, "Falha ao entrar"));
                     }
                 });
 
@@ -1533,7 +1549,7 @@
                         hideAuthOverlay();
                         await ensureAppInitialized();
                     } catch (err) {
-                        setAuthError(err.message || "Signup failed");
+                        setAuthError(err.message || "Falha ao criar a conta");
                     }
                 });
 
@@ -1546,9 +1562,9 @@
                         const email = document.getElementById("auth-reset-email").value;
                         await app.serverSync.requestPasswordReset(email);
 
-                        //setAuthError("If the email exists, a reset code was sent.");
+                        //setAuthError("Se o e-mail existir, um código de recuperação foi enviado.");
                     } catch (err) {
-                        setAuthError(err.message || "Failed to request reset");
+                        setAuthError(err.message || "Falha ao solicitar a recuperação");
                     }
                 });
 
@@ -1562,11 +1578,11 @@
                         const confirmPassword = document.getElementById("auth-reset-confirm-password")?.value || "";
 
                         if (!newPassword || !confirmPassword) {
-                            setAuthError("Please enter and confirm the new password");
+                            setAuthError("Digite e confirme a nova senha");
                             return;
                         }
                         if (newPassword !== confirmPassword) {
-                            setAuthError("Passwords do not match");
+                            setAuthError("As senhas não coincidem");
                             return;
                         }
                         await app.serverSync.resetPassword(email, token, newPassword);
@@ -1576,7 +1592,7 @@
                         hideAuthOverlay();
                         await ensureAppInitialized();
                     } catch (err) {
-                        setAuthError(err.message || "Reset failed");
+                        setAuthError(err.message || "Falha ao redefinir");
                     }
                 });
 
@@ -1597,7 +1613,7 @@
                         } else if (/\.epub$/i.test(name)) {
                             await app.loadEPUB?.(file);
                         } else {
-                            alert("Not a valid PDF or EPUB file!");
+                            alert("Este não é um arquivo PDF ou EPUB válido!");
                         }
                     } finally {
                         e.target.value = "";

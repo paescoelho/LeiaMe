@@ -30,8 +30,8 @@ export function mergeTrashEntries(localEntries = [], serverEntries = []) {
         const key = mergeKey(filename || localKey, format);
         merged.set(key, {
             key,
-            filename: filename || actualFilename(localKey) || "Untitled",
-            title: String(entry?.title || filename || actualFilename(localKey) || "Untitled"),
+            filename: filename || actualFilename(localKey) || "Sem título",
+            title: String(entry?.title || filename || actualFilename(localKey) || "Sem título"),
             format,
             deletedAt: entry?.deletedAt || entry?.deleted_at || "",
             size: Number(entry?.size || entry?.document?.blob?.size || 0) || 0,
@@ -61,14 +61,14 @@ export function mergeTrashEntries(localEntries = [], serverEntries = []) {
             existing.serverBacked = true;
             existing.serverId = serverId;
             existing.server = entry;
-            existing.title = String(entry?.title || existing.title || filename || "Untitled");
+            existing.title = String(entry?.title || existing.title || filename || "Sem título");
             existing.size = Math.max(existing.size, Number(entry?.size || 0) || 0);
             if (timestamp(deletedAt) >= timestamp(existing.deletedAt)) existing.deletedAt = deletedAt;
         } else {
             merged.set(key, {
                 key,
-                filename: filename || actualFilename(serverId) || "Untitled",
-                title: String(entry?.title || filename || actualFilename(serverId) || "Untitled"),
+                filename: filename || actualFilename(serverId) || "Sem título",
+                title: String(entry?.title || filename || actualFilename(serverId) || "Sem título"),
                 format,
                 deletedAt,
                 size: Number(entry?.size || 0) || 0,
@@ -94,7 +94,7 @@ export function mergeTrashEntries(localEntries = [], serverEntries = []) {
 
 export function formatTrashDate(value, locales = undefined) {
     const date = new Date(value || "");
-    if (!Number.isFinite(date.getTime())) return "Date unavailable";
+    if (!Number.isFinite(date.getTime())) return "Data indisponível";
     try {
         return new Intl.DateTimeFormat(locales, { dateStyle: "medium", timeStyle: "short" }).format(date);
     } catch {
@@ -110,12 +110,12 @@ export function formatTrashSize(value) {
 }
 
 function sourceLabel(item) {
-    if (item.hasLocal && item.hasServer) return "This device and server";
-    return item.hasServer ? "Server" : "This device";
+    if (item.hasLocal && item.hasServer) return "Este aparelho e o servidor";
+    return item.hasServer ? "Servidor" : "Este aparelho";
 }
 
 function errorMessage(error, fallback) {
-    return String(error?.message || fallback || "Something went wrong");
+    return String(error?.message || fallback || "Algo deu errado");
 }
 
 export function initTrashDialog({ app, documentRef = globalThis.document, windowRef = globalThis.window } = {}) {
@@ -137,16 +137,16 @@ export function initTrashDialog({ app, documentRef = globalThis.document, window
     const driveConnected = () => !!app.serverSync?.isGoogleDriveConnected?.();
     const restoreBlockReason = (item) => {
         if (item?.serverBacked && !serverTrashAvailable()) {
-            return "Reconnect to the self-hosted server before restoring this synced document";
+            return "Reconecte ao seu servidor antes de restaurar este documento sincronizado";
         }
         if (item?.googleDriveBacked && !driveConnected()) {
-            return "Reconnect Google Drive before restoring this synced document";
+            return "Reconecte o Google Drive antes de restaurar este documento sincronizado";
         }
         return "";
     };
     const deleteBlockReason = (item) => {
         if ((item?.serverBacked || item?.pendingServerDelete) && !serverTrashAvailable()) {
-            return "Reconnect to the self-hosted server before deleting this synced document forever";
+            return "Reconecte ao seu servidor antes de apagar definitivamente este documento sincronizado";
         }
         return "";
     };
@@ -172,7 +172,7 @@ export function initTrashDialog({ app, documentRef = globalThis.document, window
         const blocked = restoreBlockReason(item);
         if (blocked) throw new Error(blocked);
         setBusy(true);
-        setStatus(`Restoring ${item.title}…`);
+        setStatus(`Restaurando ${item.title}…`);
         const warnings = [];
 
         if (item.hasServer || item.serverBacked) {
@@ -182,14 +182,14 @@ export function initTrashDialog({ app, documentRef = globalThis.document, window
                 await app.serverSync.restoreTrashFile(item.localKey);
             } catch (error) {
                 if (!/404|not found|not in trash/i.test(errorMessage(error))) {
-                    warnings.push(`server Trash was not cleared: ${errorMessage(error)}`);
+                    warnings.push(`a lixeira do servidor não foi limpa: ${errorMessage(error)}`);
                 }
             }
         }
 
         if (item.hasLocal && !item.hasServer && !item.serverBacked && serverTrashAvailable()) {
             const uploaded = await app.serverSync.uploadRestoredTrashFile(item.local);
-            if (!uploaded) warnings.push("the server copy could not be re-uploaded");
+            if (!uploaded) warnings.push("a cópia do servidor não pôde ser reenviada");
         }
 
         if (item.googleDriveBacked && item.hasLocal) {
@@ -211,19 +211,19 @@ export function initTrashDialog({ app, documentRef = globalThis.document, window
 
         await refreshLibraryIfVisible();
         return warnings.length
-            ? `Restored ${item.title} on this device; ${warnings.join("; ")}.`
-            : `Restored ${item.title}.`;
+            ? `${item.title} restaurado neste aparelho; ${warnings.join("; ")}.`
+            : `${item.title} restaurado.`;
     };
 
     const deleteItem = async (item) => {
         const blocked = deleteBlockReason(item);
         if (blocked) throw new Error(blocked);
-        if (!windowRef.confirm(`Delete "${item.title}" forever? This cannot be undone.`)) return null;
+        if (!windowRef.confirm(`Apagar "${item.title}" definitivamente? Isso não pode ser desfeito.`)) return null;
         setBusy(true);
-        setStatus(`Deleting ${item.title} forever…`);
+        setStatus(`Apagando ${item.title} definitivamente…`);
         if (item.hasServer) await app.serverSync.deleteTrashFile(item.serverId);
         if (item.hasLocal) await app.progressManager.deleteTrashDocument(item.localTrashId);
-        return `Deleted ${item.title} forever.`;
+        return `${item.title} apagado definitivamente.`;
     };
 
     const createActionButton = (label, className, handler, { blocked = false, title = "" } = {}) => {
@@ -267,35 +267,35 @@ export function initTrashDialog({ app, documentRef = globalThis.document, window
             actions.className = "trash-item-actions";
             const restoreBlockedReason = restoreBlockReason(item);
             const restore = createActionButton(
-                "Restore",
+                "Restaurar",
                 "trash-action trash-action-restore",
                 async () => {
                     try {
                         const message = await restoreItem(item);
                         await refresh(message);
                     } catch (error) {
-                        await refresh(`Could not restore ${item.title}: ${errorMessage(error)}`, true);
+                        await refresh(`Não foi possível restaurar ${item.title}: ${errorMessage(error)}`, true);
                     }
                 },
                 {
                     blocked: !!restoreBlockedReason,
-                    title: restoreBlockedReason || `Restore ${item.title}`,
+                    title: restoreBlockedReason || `Restaurar ${item.title}`,
                 },
             );
             const remove = createActionButton(
-                "Delete forever",
+                "Apagar definitivamente",
                 "trash-action trash-action-delete",
                 async () => {
                     try {
                         const message = await deleteItem(item);
                         if (message) await refresh(message);
                     } catch (error) {
-                        await refresh(`Could not delete ${item.title}: ${errorMessage(error)}`, true);
+                        await refresh(`Não foi possível apagar ${item.title}: ${errorMessage(error)}`, true);
                     }
                 },
                 {
                     blocked: !!deleteBlockReason(item),
-                    title: deleteBlockReason(item) || `Delete ${item.title} forever`,
+                    title: deleteBlockReason(item) || `Apagar ${item.title} definitivamente`,
                 },
             );
             actions.append(restore, remove);
@@ -306,7 +306,7 @@ export function initTrashDialog({ app, documentRef = globalThis.document, window
 
     async function refresh(message = "", messageIsError = false) {
         setBusy(true);
-        setStatus("Loading Trash…");
+        setStatus("Carregando a lixeira…");
         let localEntries = [];
         let serverEntries = [];
         let localError = null;
@@ -330,15 +330,15 @@ export function initTrashDialog({ app, documentRef = globalThis.document, window
         if (message) {
             setStatus(message, messageIsError);
         } else if (localError) {
-            setStatus(`Device Trash is unavailable: ${errorMessage(localError)}`, true);
+            setStatus(`A lixeira deste aparelho está indisponível: ${errorMessage(localError)}`, true);
         } else if (serverError) {
-            setStatus(`Showing device Trash. Server Trash is unavailable: ${errorMessage(serverError)}`, true);
+            setStatus(`Mostrando a lixeira deste aparelho. A lixeira do servidor está indisponível: ${errorMessage(serverError)}`, true);
         } else if (!serverTrashAvailable()) {
-            setStatus("Showing device Trash. Sign in to your self-hosted server to see synced items.");
+            setStatus("Mostrando a lixeira deste aparelho. Entre no seu servidor para ver os itens sincronizados.");
         } else if (items.some((item) => restoreBlockReason(item))) {
-            setStatus("Reconnect the relevant sync service before restoring synced items.");
+            setStatus("Reconecte o serviço de sincronização antes de restaurar itens sincronizados.");
         } else {
-            setStatus(items.length ? `${items.length} item${items.length === 1 ? "" : "s"} in Trash.` : "Trash is empty.");
+            setStatus(items.length ? `${items.length} ${items.length === 1 ? "item" : "itens"} na lixeira.` : "A lixeira está vazia.");
         }
         return items;
     }
@@ -367,18 +367,18 @@ export function initTrashDialog({ app, documentRef = globalThis.document, window
     emptyButton.addEventListener("click", async () => {
         if (!items.length) return;
         if (items.some((item) => deleteBlockReason(item))) {
-            setStatus("Reconnect the self-hosted server before emptying synced Trash items.", true);
+            setStatus("Reconecte ao seu servidor antes de esvaziar itens sincronizados.", true);
             return;
         }
-        if (!windowRef.confirm("Delete everything in Trash forever? This cannot be undone.")) return;
+        if (!windowRef.confirm("Apagar definitivamente tudo o que está na lixeira? Isso não pode ser desfeito.")) return;
         setBusy(true);
-        setStatus("Emptying Trash…");
+        setStatus("Esvaziando a lixeira…");
         try {
             if (items.some((item) => item.hasServer)) await app.serverSync.emptyServerTrash();
             await app.progressManager.emptyTrash();
-            await refresh("Trash emptied.");
+            await refresh("Lixeira esvaziada.");
         } catch (error) {
-            await refresh(`Could not empty Trash: ${errorMessage(error)}`, true);
+            await refresh(`Não foi possível esvaziar a lixeira: ${errorMessage(error)}`, true);
         }
     });
 

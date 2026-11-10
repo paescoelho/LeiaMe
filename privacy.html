@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="color-scheme" content="light dark" />
-        <title>Privacy Policy — LeiaMe</title>
+        <title>Política de Privacidade — LeiaMe</title>
         <meta
             name="description"
-            content="LeiaMe privacy policy, including local storage and optional Google Drive synchronization."
+            content="Política de privacidade do LeiaMe: armazenamento local e sincronização opcional com o Google Drive."
         />
         <style>
             :root {
@@ -57,113 +57,109 @@
     </head>
     <body>
         <main>
-            <nav aria-label="Policy navigation">
+            <nav aria-label="Navegação">
                 <a href="./">LeiaMe</a>
-                <a href="./terms.html">Terms of Service</a>
-                <a href="https://github.com/paescoelho/LeiaMe">Source code</a>
+                <a href="./terms.html">Termos de Uso</a>
+                <a href="https://github.com/paescoelho/LeiaMe">Código-fonte</a>
             </nav>
 
-            <h1>Privacy Policy</h1>
-            <p class="updated">Effective July 30, 2026</p>
-            <p class="updated">LeiaMe é um fork do <a href="https://github.com/charlesneimog/PocketReader">PocketReader</a>, de Charles Neimog, distribuído sob a GPL-3.0.</p>
+            <h1>Política de Privacidade</h1>
+            <p class="updated">Vigente desde 10 de novembro de 2026 · Responsável: Rodrigo Paes Coelho Santana</p>
+            <p class="updated">O LeiaMe é derivado do <a href="https://github.com/charlesneimog/PocketReader">PocketReader</a>, de Charles Neimog, e distribuído sob a licença GPL-3.0.</p>
 
             <p>
-                LeiaMe is an open-source, offline-first PDF and EPUB reader. This policy explains what data
-                LeiaMe processes and what happens when you optionally connect a self-hosted server or Google
-                Drive.
+                O LeiaMe é um leitor de PDF e EPUB de código aberto que funciona primeiro no seu aparelho. Esta política
+                explica quais dados o LeiaMe trata e o que acontece quando você decide conectar um servidor próprio ou o
+                Google Drive.
             </p>
 
-            <h2>Local use</h2>
+            <h2>Uso local</h2>
             <p>
-                By default, documents, reading progress, highlights, comments, preferences, and generated caches are
-                stored locally in your browser using browser storage such as IndexedDB and local storage. Local
-                text-to-speech runs on your device. LeiaMe does not include advertising or analytics telemetry.
+                Por padrão, documentos, progresso de leitura, destaques, comentários, preferências e caches ficam
+                guardados no próprio navegador (IndexedDB e armazenamento local). A leitura em voz alta roda no seu
+                aparelho. O LeiaMe não tem publicidade nem coleta de estatísticas de uso.
             </p>
 
-            <h2>Google Drive synchronization</h2>
+            <h2>Sincronização com o Google Drive</h2>
             <p>
-                If you choose <strong>Continue with Google</strong>, LeiaMe requests the limited
-                <code>drive.file</code> permission. LeiaMe uses this permission to create a visible
-                <code>LeiaMe</code> folder in your Google Drive and to create, read, update, download, or delete
-                only the documents and synchronization metadata made available to LeiaMe under that permission.
-                Metadata can include reading position, highlights, comments, voice choice, and translation settings.
+                Se você escolher <strong>Continuar com o Google</strong>, o LeiaMe pede a permissão limitada
+                <code>drive.file</code>. Ela é usada para criar uma pasta visível chamada <code>LeiaMe</code> no seu
+                Google Drive e para criar, ler, atualizar, baixar ou apagar apenas os documentos e dados de
+                sincronização que o próprio LeiaMe gerencia. Esses dados podem incluir posição de leitura, destaques,
+                comentários, voz escolhida e configurações de tradução.
             </p>
             <p>
-                Google access tokens are kept temporarily in browser memory and browser session storage so that a page
-                reload does not immediately require authorization again. They are not placed in URLs or sent to a
-                LeiaMe developer-operated server. Session credentials expire and are removed when you disconnect.
-                LeiaMe does not sell Google user data or use it for advertising, credit decisions, or user
-                profiling. Google user data is used only to provide the Drive synchronization feature requested by you.
+                Os tokens de acesso do Google ficam temporariamente na memória e na sessão do navegador, para que
+                recarregar a página não exija nova autorização. Eles não são colocados em endereços nem enviados a
+                servidores do LeiaMe, e expiram ou são removidos quando você desconecta. O LeiaMe não vende dados de
+                usuários do Google nem os usa para publicidade, crédito ou criação de perfis; eles servem apenas para a
+                sincronização que você pediu.
             </p>
             <p>
-                LeiaMe's use and transfer to any other app of information received from Google APIs adheres to
-                the
-                <a href="https://developers.google.com/terms/api-services-user-data-policy"
-                    >Google API Services User Data Policy</a
-                >, including the Limited Use requirements.
+                O uso e a transferência de informações recebidas das APIs do Google seguem a
+                <a href="https://developers.google.com/terms/api-services-user-data-policy">Política de Dados do Usuário dos Serviços de API do Google</a>,
+                incluindo os requisitos de Uso Limitado.
             </p>
 
-            <h2>Self-hosted server</h2>
+            <h2>Servidor próprio</h2>
             <p>
-                If you configure and sign in to a self-hosted LeiaMe server, documents and synchronization data
-                are sent to that server. The server operator controls that deployment and is responsible for its
-                security, retention, and privacy practices. Choosing self-host synchronization disables Drive
-                synchronization for the active session.
+                Se você configurar e entrar em um servidor próprio do LeiaMe, documentos e dados de sincronização são
+                enviados para esse servidor. Quem opera o servidor é responsável pela segurança, retenção e privacidade
+                dele. Usar o servidor próprio desativa a sincronização com o Drive na sessão ativa.
             </p>
 
-            <h2>Reading summary emails</h2>
+            <h2>E-mails de resumo de leitura</h2>
             <p>
-                A self-hosted LeiaMe server can use the account email address also used for password recovery to
-                send weekly, monthly, and yearly reading summaries. These summaries are generated from synchronized
-                reward data and can include active reading time, reading-day count, earned growth points, trees
-                completed during the summary period, and the reflections saved when those trees were planted. The
-                server stores the email preference, browser-reported timezone, and a delivery record used to prevent
-                duplicate messages. You can turn all reading summary emails off in LeiaMe Settings.
+                Um servidor próprio do LeiaMe pode usar o e-mail da conta (o mesmo da recuperação de senha) para enviar
+                resumos semanais, mensais e anuais de leitura. Esses resumos podem incluir tempo de leitura ativa, dias
+                de leitura, pontos ganhos, árvores concluídas no período e os resumos escritos quando elas foram
+                plantadas. O servidor guarda a preferência de e-mail, o fuso horário informado pelo navegador e um
+                registro de envio para evitar mensagens repetidas. Você pode desligar esses e-mails nas Configurações.
             </p>
 
-            <h2>Translation</h2>
+            <h2>Tradução</h2>
             <p>
-                Translation is optional. When you request a translation, the selected text can be sent to a translation
-                service or to your configured self-hosted server to produce the result. Do not submit text you do not
-                want processed by the selected translation provider.
+                A tradução é opcional. Quando você pede uma tradução, o texto selecionado pode ser enviado a um serviço
+                de tradução ou ao seu servidor próprio. Não envie textos que você não queira que esse serviço processe.
             </p>
 
-            <h2>Sharing and retention</h2>
+            <h2>Compartilhamento e retenção</h2>
             <p>
-                The LeiaMe project does not sell or rent personal data. Data may be processed by Google when you
-                explicitly use Google authorization, Drive, or translation features, subject to Google's terms and
-                privacy policy. Files stored in Drive remain in your account until you delete them. Disconnecting
-                LeiaMe does not automatically delete the <code>LeiaMe</code> folder or its contents.
+                O LeiaMe não vende nem aluga dados pessoais. O Google pode processar dados quando você usa
+                explicitamente o login, o Drive ou a tradução, conforme os termos e a política de privacidade do Google.
+                Arquivos no Drive continuam na sua conta até você apagá-los. Desconectar o LeiaMe não apaga a pasta
+                <code>LeiaMe</code> nem seu conteúdo.
             </p>
 
-            <h2>Your controls</h2>
+            <h2>Seus controles</h2>
             <ul>
-                <li>You can use LeiaMe without connecting Google Drive or a self-hosted server.</li>
-                <li>You can remove locally stored documents and highlights from LeiaMe.</li>
-                <li>You can opt out of reading summary emails from LeiaMe Settings.</li>
-                <li>You can delete LeiaMe files directly from your Google Drive.</li>
+                <li>Você pode usar o LeiaMe sem conectar o Google Drive nem um servidor próprio.</li>
+                <li>Você pode remover documentos e destaques guardados no aparelho.</li>
+                <li>Você pode desativar os e-mails de resumo nas Configurações.</li>
+                <li>Você pode apagar os arquivos do LeiaMe diretamente no seu Google Drive.</li>
                 <li>
-                    You can revoke LeiaMe's Google access from your
-                    <a href="https://myaccount.google.com/connections">Google Account connections</a>.
+                    Você pode revogar o acesso do LeiaMe nas
+                    <a href="https://myaccount.google.com/connections">conexões da sua Conta do Google</a>.
                 </li>
             </ul>
 
-            <h2>Changes</h2>
+            <h2>Alterações</h2>
             <p>
-                This policy may be updated when LeiaMe's behavior changes. The effective date above identifies
-                the current version.
+                Esta política pode ser atualizada quando o funcionamento do LeiaMe mudar. A data no topo indica a versão
+                vigente.
             </p>
 
-            <h2>Contact</h2>
+            <h2>Contato</h2>
             <p>
-                Questions about privacy can be sent to
-                <a href="mailto:charlesneimog@outlook.com">charlesneimog@outlook.com</a> or raised in the
-                <a href="https://github.com/paescoelho/LeiaMe/issues">project issue tracker</a>.
+                Responsável: <strong>Rodrigo Paes Coelho Santana</strong><br />
+                E-mail: <a href="mailto:paescoelho@gmail.com">paescoelho@gmail.com</a><br />
+                Você também pode abrir uma solicitação no
+                <a href="https://github.com/paescoelho/LeiaMe/issues">GitHub do projeto</a>.
             </p>
 
             <footer>
-                <a href="./">Return to LeiaMe</a>
-                <a href="./terms.html">Terms of Service</a>
+                <a href="./">Voltar ao LeiaMe</a>
+                <a href="./terms.html">Termos de Uso</a>
             </footer>
         </main>
     </body>

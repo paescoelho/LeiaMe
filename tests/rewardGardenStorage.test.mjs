@@ -392,10 +392,10 @@ test("garden popup summarizes the current interval and local reading totals", ()
     assert.equal(
         gardenReadingTimeMessage(state, now, 1),
         [
-            "You are reading in tree-growing intervals of 5 minutes.",
-            "This week you read 6 minutes.",
-            "This month you read 10 minutes.",
-            "This year you read 13 minutes.",
+            "Cada árvore cresce a cada 5 minutos de leitura.",
+            "Nesta semana você leu 6 minutos.",
+            "Neste mês você leu 10 minutos.",
+            "Neste ano você leu 13 minutos.",
         ].join("\n"),
     );
 });

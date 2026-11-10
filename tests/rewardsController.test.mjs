@@ -202,7 +202,7 @@ test("removing a mature tree creates a sync-safe tombstone and clears pending pr
     assert.deepEqual(controller.pendingTreeNotifications, []);
     assert.equal(controller.notifiedTreeIds.has("tree-1"), true);
     assert.equal(emitted[0][0], "rewards:garden:updated");
-    assert.deepEqual(notices, ["Tree removed from your garden."]);
+    assert.deepEqual(notices, ["Árvore removida do jardim."]);
 });
 
 test("automatic completion queues the reflection until the next sentence boundary", async () => {
@@ -367,11 +367,11 @@ test("earned-tree prompt pauses reading and playback until the required paragrap
 
     assert.deepEqual(announcements, [{
         key: "tree-earned:tree-1",
-        message: "You earned one Reading Tree — Reading Sapling.",
+        message: "Você ganhou uma árvore de leitura — Muda de leitura.",
     }]);
     assert.deepEqual(notePrompts, [{
         session: { id: "session-1" },
-        summary: "Reading Sapling was added to your garden. Reading is paused until you save its paragraph.",
+        summary: "Muda de leitura foi plantada no seu jardim. A leitura fica pausada até você salvar o parágrafo dela.",
     }]);
     assert.deepEqual(lifecycle, ["playback-blocked:required-reflection", "reading-paused"]);
     assert.equal(nextSession.pauseReason, "reflection");

@@ -34,7 +34,7 @@ When the publishing status is **Testing**, Google blocks every account that is n
 1. Open the same project in **Google Auth Platform → Audience**.
 2. Confirm the user type is **External**.
 3. Under **Test users**, select **Add users**.
-4. Enter the exact address used by the Google Account, for example `charlesneimog@outlook.com`.
+4. Enter the exact address used by the Google Account, for example `paescoelho@gmail.com`.
 5. Save, wait briefly for the setting to propagate, and try **Continue with Google** again.
 
 A Google Account may use a non-Gmail address, so add the address shown on Google's error page exactly as displayed.

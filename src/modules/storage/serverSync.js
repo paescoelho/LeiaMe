@@ -105,7 +105,7 @@ export class ServerSync {
         { method = "GET", body = null, withAuth = true, skipAvailabilityGate = false } = {},
     ) {
         const serverUrl = this.getServerUrl();
-        if (!serverUrl) throw new Error("No server URL configured");
+        if (!serverUrl) throw new Error("Nenhum servidor configurado");
 
         this._setReloadSuppressionWindow();
 
@@ -204,7 +204,7 @@ export class ServerSync {
     }
 
     async restoreTrashFile(fileId) {
-        if (!fileId) throw new Error("A trashed file id is required");
+        if (!fileId) throw new Error("É preciso informar o arquivo da lixeira");
         return await this.apiFetch(`/api/trash/${this._encodeFileIdForUrl(fileId)}/restore`, {
             method: "POST",
             withAuth: true,
@@ -212,7 +212,7 @@ export class ServerSync {
     }
 
     async deleteTrashFile(fileId) {
-        if (!fileId) throw new Error("A trashed file id is required");
+        if (!fileId) throw new Error("É preciso informar o arquivo da lixeira");
         return await this.apiFetch(`/api/trash/${this._encodeFileIdForUrl(fileId)}`, {
             method: "DELETE",
             withAuth: true,
@@ -237,7 +237,7 @@ export class ServerSync {
         return { ...headers, Authorization: `Bearer ${token}` };
     }
 
-    _createServerUnavailableError(message = "Server is unavailable") {
+    _createServerUnavailableError(message = "O servidor está indisponível") {
         const error = new Error(message);
         error.name = "ServerUnavailableError";
         error.code = "SERVER_UNAVAILABLE";
@@ -310,7 +310,7 @@ export class ServerSync {
         } catch (error) {
             if (error?.name === "AbortError") throw error;
             this._markServerAvailability(false);
-            const unavailableError = this._createServerUnavailableError(error?.message || "Server is unavailable");
+            const unavailableError = this._createServerUnavailableError(error?.message || "O servidor está indisponível");
             this._logServerError("", unavailableError);
             throw unavailableError;
         }
@@ -479,7 +479,7 @@ export class ServerSync {
             removed += count;
 
             if (showMessages && count > 0) {
-                this.app.ui?.showInfo?.(`Moved to Trash: ${actualName}`);
+                this.app.ui?.showInfo?.(`Movido para a lixeira: ${actualName}`);
             }
         }
 
@@ -776,7 +776,7 @@ export class ServerSync {
     async pingServer(showMessages = true) {
         const serverUrl = this.getServerUrl();
         if (!serverUrl) {
-            const msg = "No server URL configured";
+            const msg = "Nenhum servidor configurado";
             console.error("[ServerSync] Ping failed:", msg);
             if (showMessages) {
                 this.app.ui?.showInfo?.("❌ Ping failed: No server URL configured");
@@ -808,7 +808,7 @@ export class ServerSync {
                 return true;
             } else {
                 this._markServerAvailability(false);
-                const msg = `Server returned ${response.status} ${response.statusText}`;
+                const msg = `O servidor retornou ${response.status} ${response.statusText}`;
                 this._logServerError("", this._createServerUnavailableError(msg));
                 if (showMessages) {
                     this.app.ui?.showInfo?.(`❌ Ping failed: ${msg}`);
@@ -819,7 +819,7 @@ export class ServerSync {
             this._markServerAvailability(false);
             let errorMsg = error.message;
             if (error.name === "AbortError") {
-                errorMsg = "Connection timeout (server not responding)";
+                errorMsg = "Tempo esgotado (o servidor não responde)";
             }
             this._logServerError("[ServerSync] Ping failed:", error, { level: "error" });
             if (showMessages) {
@@ -912,7 +912,7 @@ export class ServerSync {
 
             const data = await response.json().catch(() => ({}));
             if (!response.ok) {
-                const msg = data?.error || `Translate failed: ${response.status} ${response.statusText}`;
+                const msg = data?.error || `Falha na tradução: ${response.status} ${response.statusText}`;
                 console.warn("[Translation] Server fallback rejected the request", {
                     status: response.status,
                     statusText: response.statusText,
@@ -927,7 +927,7 @@ export class ServerSync {
             return data;
         } catch (e) {
             console.warn("[Translation] Server fallback request failed", e);
-            if (!silent) this.app.ui?.showInfo?.("⚠️ Translate request failed");
+            if (!silent) this.app.ui?.showInfo?.("⚠️ Falha ao traduzir");
             return null;
         }
     }
@@ -996,26 +996,26 @@ export class ServerSync {
             if (response.ok) {
                 const result = await response.json();
                 // console.log("[ServerSync] File uploaded successfully:", result);
-                this.app.ui?.showInfo?.("File synced to server");
+                this.app.ui?.showInfo?.("Arquivo sincronizado com o servidor");
                 return true;
             } else {
                 if (response.status === 410) {
                     const actualName = this._extractActualFilename(fileId);
                     const docType = format === "epub" ? "epub" : "pdf";
                     await this._purgeLocalByActualFilename(actualName, docType);
-                    this.app.ui?.showInfo?.(`Server has deleted: ${actualName}`);
+                    this.app.ui?.showInfo?.(`Apagado no servidor: ${actualName}`);
                     return false;
                 }
 
                 const errorText = await response.text();
                 console.error("[ServerSync] Upload failed:", errorText);
-                this.app.ui?.showInfo?.("Failed to sync file to server");
+                this.app.ui?.showInfo?.("Falha ao sincronizar o arquivo com o servidor");
                 return false;
             }
         } catch (error) {
             this._logServerError("[ServerSync] Upload error:", error, { level: "error" });
             if (!this._isServerUnavailableError(error)) {
-                this.app.ui?.showInfo?.("Error syncing file to server");
+                this.app.ui?.showInfo?.("Erro ao sincronizar o arquivo com o servidor");
             }
             return false;
         }
@@ -1634,11 +1634,11 @@ export class ServerSync {
     }
 
     async manualSync() {
-        this.app.ui?.showInfo?.("Syncing to server...");
+        this.app.ui?.showInfo?.("Sincronizando com o servidor...");
         await this.syncAll();
         await this.pullRewards();
         if (this.lastSyncTime > 0) {
-            this.app.ui?.showInfo?.("Sync complete");
+            this.app.ui?.showInfo?.("Sincronização concluída");
         }
     }
 
@@ -1724,7 +1724,7 @@ export class ServerSync {
             }
 
             // console.log(`[ServerSync] Downloading ${missingFiles.length} missing files...`);
-            this.app.ui?.showInfo?.(`Downloading ${missingFiles.length} files from server...`);
+            this.app.ui?.showInfo?.(`Baixando ${missingFiles.length} arquivos do servidor...`);
 
             // Download each missing file
             let downloaded = 0;
@@ -1733,7 +1733,7 @@ export class ServerSync {
                     const ok = await this.downloadFile(fileInfo);
                     if (ok) {
                         downloaded++;
-                        this.app.ui?.showInfo?.(`Downloaded ${downloaded}/${missingFiles.length} files`);
+                        this.app.ui?.showInfo?.(`Baixados ${downloaded}/${missingFiles.length} arquivos`);
                     }
                 } catch (error) {
                     this._logServerError(`[ServerSync] Failed to download ${fileInfo.filename}:`, error, {
@@ -1744,7 +1744,7 @@ export class ServerSync {
 
             if (downloaded > 0 || purgedCount > 0) {
                 if (downloaded > 0) {
-                    this.app.ui?.showInfo?.(`Downloaded ${downloaded} files from server`);
+                    this.app.ui?.showInfo?.(`${downloaded} arquivos baixados do servidor`);
                 }
                 // console.log(`[ServerSync] Download complete: ${downloaded}/${missingFiles.length} files`);
 
@@ -1791,7 +1791,7 @@ export class ServerSync {
         } catch (error) {
             this._logServerError("[ServerSync] Sync from server failed:", error, { level: "error" });
             if (!this._isServerUnavailableError(error)) {
-                this.app.ui?.showInfo?.("Failed to sync from server");
+                this.app.ui?.showInfo?.("Falha ao sincronizar a partir do servidor");
             }
         }
     }
@@ -1832,7 +1832,7 @@ export class ServerSync {
             }
 
             const details = await response.text().catch(() => "");
-            throw new Error(`Download failed (${response.status}): ${details || response.statusText}`);
+            throw new Error(`Falha ao baixar (${response.status}): ${details || response.statusText}`);
         }
 
         const blob = await response.blob();

@@ -8,21 +8,21 @@ export class SessionProgressWidget {
             "hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-30 w-auto max-w-sm " +
             "rounded-lg border border-slate-200 dark:border-slate-700 bg-background-light/90 " +
             "dark:bg-background-dark/90 p-2 shadow-md";
-        this.element.setAttribute("aria-label", "Reading session");
+        this.element.setAttribute("aria-label", "Sessão de leitura");
         this.element.innerHTML = `
             <div class="flex items-center gap-2">
-                <button type="button" data-open-garden aria-label="Open reading garden"
+                <button type="button" data-open-garden aria-label="Abrir o jardim de leitura"
                     class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-primary/10 text-primary hover:bg-primary/10 transition-colors">
                     <img data-plant-image class="h-10 w-10" alt="">
                 </button>
                 <div class="min-w-0 flex-1">
-                    <strong data-plant class="block truncate text-xs text-slate-800 dark:text-slate-100">Reading tree</strong>
-                    <span data-state class="block text-xs capitalize text-slate-500 dark:text-slate-400">Reading automatically</span>
+                    <strong data-plant class="block truncate text-xs text-slate-800 dark:text-slate-100">Árvore de leitura</strong>
+                    <span data-state class="block text-xs capitalize text-slate-500 dark:text-slate-400">Lendo automaticamente</span>
                 </div>
                 <div class="flex items-center gap-1">
                     <button type="button" data-pause
-                        class="rounded-md border border-slate-200 dark:border-slate-700 bg-transparent px-2 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors">Pause</button>
-                    <button type="button" data-question title="Save a reading question" aria-label="Save a reading question"
+                        class="rounded-md border border-slate-200 dark:border-slate-700 bg-transparent px-2 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors">Pausar</button>
+                    <button type="button" data-question title="Salvar uma pergunta de leitura" aria-label="Salvar uma pergunta de leitura"
                         class="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 dark:border-slate-700 bg-transparent text-slate-600 dark:text-slate-300 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors">
                         <span class="material-symbols-outlined text-lg" aria-hidden="true">help</span>
                     </button>
@@ -52,9 +52,9 @@ export class SessionProgressWidget {
         image.alt = definition.image ? `${definition.name} preview` : "";
         this.element.querySelector("[data-plant]").textContent = definition.name;
         this.element.querySelector("[data-state]").textContent =
-            session.state === "active" ? "Reading automatically" : session.state.replace("-", " ");
+            session.state === "active" ? "Lendo automaticamente" : session.state.replace("-", " ");
         const pause = this.element.querySelector("[data-pause]");
-        pause.textContent = ["paused", "idle-timeout"].includes(session.state) ? "Resume" : "Pause";
+        pause.textContent = ["paused", "idle-timeout"].includes(session.state) ? "Continuar" : "Pausar";
     }
 
     setGardenHandler(handler) {

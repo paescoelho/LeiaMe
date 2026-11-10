@@ -1,4 +1,4 @@
-const APP_VERSION = "0.49.2+1";
+const APP_VERSION = "1.2";
 const IDB_VERSION = 1;
 const cacheName = `LeiaMe-v${APP_VERSION}`;
 const runtimeCache = `LeiaMe-runtime-v${APP_VERSION}`;
@@ -40,6 +40,7 @@ const staticFiles = [
     "/assets/icons/icon-1024.png",
     "/assets/icons/logo.png",
     "/assets/icons/logo.svg",
+    "/assets/icons/logo-leiame.svg",
     "/assets/icons/mask-512.png",
     "/assets/icons/mask.svg",
     "/assets/images/default-user.png",
@@ -138,6 +139,7 @@ const staticFiles = [
     "/src/modules/ui/reflectionDialog.js",
     "/src/modules/ui/readingTextClipboard.js",
     "/src/modules/ui/rewardsPanel.js",
+    "/src/modules/ui/forestIcon.js",
     "/src/modules/ui/sessionProgressWidget.js",
     "/src/modules/ui/sessionSetupDialog.js",
     "/src/modules/ui/trashDialog.js",

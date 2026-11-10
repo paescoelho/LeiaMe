@@ -187,10 +187,10 @@ def _safe_static_path(url_path: str) -> str | None:
     # Strip query/fragment if passed accidentally
     path = url_path.split("?", 1)[0].split("#", 1)[0]
 
-    # Allow hosting under /PocketReader/ (GitHub Pages) as well as at root.
-    if path.startswith("/PocketReader/"):
-        path = path[len("/PocketReader") :]
-    elif path == "/PocketReader":
+    # Allow hosting under /LeiaMe/ (GitHub Pages) as well as at root.
+    if path.startswith("/LeiaMe/"):
+        path = path[len("/LeiaMe") :]
+    elif path == "/LeiaMe":
         path = "/"
 
     if path in {"", "/"}:
@@ -393,7 +393,7 @@ class APIHandler(BaseHTTPRequestHandler):
         o.strip()
         for o in os.environ.get(
         "ALLOWED_ORIGINS",
-        "http://127.0.0.1:8080,https://charlesneimog.github.io,http://localhost:8080"
+        "http://127.0.0.1:8080,https://paescoelho.github.io,http://localhost:8080"
         ).split(",")
         if o.strip()
     ]
@@ -867,7 +867,7 @@ class APIHandler(BaseHTTPRequestHandler):
             _set_no_cache_headers(self)
 
             # Allow service worker to control the whole origin even if installed from /PocketReader/
-            if url_path.startswith("/PocketReader/") and full_path.endswith("sw.js"):
+            if url_path.startswith("/LeiaMe/") and full_path.endswith("sw.js"):
                 self.send_header("Service-Worker-Allowed", "/")
 
             self.end_headers()
@@ -918,11 +918,11 @@ class APIHandler(BaseHTTPRequestHandler):
 
             # Best-effort welcome email (uses SMTP settings; ignored if not configured)
             try:
-                app_name = os.environ.get("APP_NAME", "PocketReader")
+                app_name = os.environ.get("APP_NAME", "LeiaMe")
                 _send_email_smtp(
                     email.strip().lower(),
-                    f"Welcome to {app_name}",
-                    f"Your {app_name} account was created successfully.\n",
+                    f"Bem-vindo ao {app_name}",
+                    f"Sua conta no {app_name} foi criada com sucesso.\n\n—\nLeiaMe · Rodrigo Paes Coelho Santana · paescoelho@gmail.com\n",
                 )
             except Exception as e:
                 logger.warning("Signup email not sent: email=%s err=%s", email.strip().lower(), e)
@@ -985,12 +985,12 @@ class APIHandler(BaseHTTPRequestHandler):
             logger.info("Password reset token created: email=%s", email)
 
             try:
-                app_name = os.environ.get("APP_NAME", "PocketReader")
-                subject = f"{app_name} password reset"
+                app_name = os.environ.get("APP_NAME", "LeiaMe")
+                subject = f"{app_name}: recuperação de senha"
                 body = (
-                    f"You requested a password reset for {app_name}.\n\n"
-                    f"Reset code: {reset_token}\n\n"
-                    f"This code expires in 1 hour. If you did not request this, you can ignore this email.\n"
+                    f"Você pediu para redefinir sua senha do {app_name}.\n\n"
+                    f"Código de recuperação: {reset_token}\n\n"
+                    f"O código vale por 1 hora. Se não foi você, pode ignorar este e-mail.\n\n—\nLeiaMe · Rodrigo Paes Coelho Santana · paescoelho@gmail.com\n"
                 )
                 _send_email_smtp(email, subject, body)
             except Exception as e:
@@ -1435,7 +1435,7 @@ def main():
             reminder_service = ReadingReminderService(
                 repository=app,
                 send_email=_send_email_smtp,
-                app_name=os.environ.get("APP_NAME", "PocketReader"),
+                app_name=os.environ.get("APP_NAME", "LeiaMe"),
                 public_app_url=PUBLIC_APP_URL,
                 poll_interval_seconds=int(os.environ.get("READING_REMINDER_POLL_SECONDS", "60")),
             )
@@ -1450,7 +1450,7 @@ def main():
             digest_service = ReadingDigestService(
                 repository=app,
                 send_email=_send_email_smtp,
-                app_name=os.environ.get("APP_NAME", "PocketReader"),
+                app_name=os.environ.get("APP_NAME", "LeiaMe"),
                 public_app_url=PUBLIC_APP_URL,
                 poll_interval_seconds=int(os.environ.get("READING_DIGEST_POLL_SECONDS", "900")),
                 weekly_hour=int(os.environ.get("READING_DIGEST_WEEKLY_HOUR", "18")),

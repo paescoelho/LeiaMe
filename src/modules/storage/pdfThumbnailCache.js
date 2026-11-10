@@ -83,8 +83,8 @@ export class PDFThumbnailCache {
         // Use inline positioning to avoid relying on Tailwind utilities being present in output.css.
         badge.style.top = "6px";
         badge.style.left = "6px";
-        badge.title = "Synced remotely";
-        badge.setAttribute("aria-label", "Synced remotely");
+        badge.title = "Sincronizado na nuvem";
+        badge.setAttribute("aria-label", "Sincronizado na nuvem");
         badge.textContent = "cloud";
 
         cardElement.appendChild(badge);
@@ -278,7 +278,7 @@ export class PDFThumbnailCache {
 
         // Title placeholder
         const title = document.createElement("p");
-        title.textContent = "Loading...";
+        title.textContent = "Carregando...";
         title.className = "text-xs font-medium truncate text-center max-w-full px-1 text-slate-400";
         card.appendChild(title);
 
@@ -357,7 +357,7 @@ export class PDFThumbnailCache {
         thumbDiv.style.aspectRatio = `${this.width} / ${this.height}`;
         thumbDiv.innerHTML = "";
         thumbDiv.appendChild(canvas);
-        thumbDiv.setAttribute("data-alt", `Page 1 of ${pdfName}`);
+        thumbDiv.setAttribute("data-alt", `Página 1 de ${pdfName}`);
 
         // Update title
         const title = cardElement.querySelector("p:nth-of-type(1)");
@@ -380,9 +380,9 @@ export class PDFThumbnailCache {
             progressLabel.className = "text-[9px] text-primary dark:text-primary text-center";
             cardElement.appendChild(progressLabel);
         }
-        progressLabel.textContent = `Progress: ${progressPercent}%`;
+        progressLabel.textContent = `Progresso: ${progressPercent}%`;
         progressLabel.title = saved?.currentPage
-            ? `Page ${Math.min(saved.currentPage, totalPages)} of ${totalPages}`
+            ? `Página ${Math.min(saved.currentPage, totalPages)} de ${totalPages}`
             : `${totalPages} pages`;
 
         // Add close button (visible on hover)
@@ -460,7 +460,7 @@ export class PDFThumbnailCache {
                 progressLabel.className = "text-[9px] text-primary dark:text-primary text-center";
                 cardElement.appendChild(progressLabel);
             }
-            progressLabel.textContent = `Progress: ${progressPercent}%`;
+            progressLabel.textContent = `Progresso: ${progressPercent}%`;
         }
 
         this.addCloseButton(cardElement, epubKey, epubName, null, "epub");
@@ -478,7 +478,7 @@ export class PDFThumbnailCache {
             "absolute top-1 right-1 flex items-center justify-center w-6 h-6 rounded-lg bg-slate-200/80 dark:bg-slate-900/80 hover:bg-slate-300 dark:hover:bg-slate-700 transition-opacity opacity-0 group-hover:opacity-100";
 
         closeBtn.innerHTML = `<span class="material-symbols-outlined text-text-secondary dark:text-slate-400 !text-sm">close</span>`;
-        closeBtn.setAttribute("aria-label", `Move ${pdfName} to Trash`);
+        closeBtn.setAttribute("aria-label", `Mover ${pdfName} para a lixeira`);
 
         closeBtn.addEventListener("click", async (e) => {
             e.stopPropagation();
@@ -500,8 +500,8 @@ export class PDFThumbnailCache {
         let pendingServerDelete = false;
 
         const prompt = googleDriveSelected
-            ? `Move "${pdfName}" to Trash on this device and delete its Google Drive copy?`
-            : `Move "${pdfName}" to Trash?`;
+            ? `Mover "${pdfName}" para a lixeira deste aparelho e apagar a cópia do Google Drive?`
+            : `Mover "${pdfName}" para a lixeira?`;
         if (!confirm(prompt)) return;
 
         if (cardElement?.dataset) cardElement.dataset.deleting = "true";
@@ -511,12 +511,12 @@ export class PDFThumbnailCache {
         // unexpectedly undoing the user's action.
         if (googleDriveSelected) {
             if (!syncManager?.isEnabled?.()) {
-                this.app.ui?.showInfo?.("Reconnect Google Drive before deleting this file");
+                this.app.ui?.showInfo?.("Reconecte o Google Drive antes de apagar este arquivo");
                 if (cardElement?.dataset) delete cardElement.dataset.deleting;
                 return;
             }
 
-            this.app.ui?.showInfo?.(`Deleting from Google Drive: ${pdfName}`);
+            this.app.ui?.showInfo?.(`Apagando do Google Drive: ${pdfName}`);
             let deletedRemotely = false;
             try {
                 deletedRemotely = await syncManager.deleteFileOnServer(pdfKey);
@@ -524,7 +524,7 @@ export class PDFThumbnailCache {
                 console.warn("[PDFThumbnailCache] Google Drive deletion failed", error);
             }
             if (!deletedRemotely) {
-                this.app.ui?.showInfo?.(`Google Drive deletion failed: ${pdfName}`);
+                this.app.ui?.showInfo?.(`Falha ao apagar do Google Drive: ${pdfName}`);
                 if (cardElement?.dataset) delete cardElement.dataset.deleting;
                 return;
             }
@@ -550,19 +550,19 @@ export class PDFThumbnailCache {
             });
         } catch (error) {
             console.warn("[PDFThumbnailCache] Failed to move local file to Trash", error);
-            this.app.ui?.showInfo?.(`Could not move to Trash: ${pdfName}`);
+            this.app.ui?.showInfo?.(`Não foi possível mover para a lixeira: ${pdfName}`);
             if (cardElement?.dataset) delete cardElement.dataset.deleting;
             return;
         }
 
         this.app.ui?.showInfo?.(
             googleDriveSelected
-                ? `Moved to device Trash and deleted from Google Drive: ${pdfName}`
+                ? `Movido para a lixeira e apagado do Google Drive: ${pdfName}`
                 : pendingServerDelete
-                  ? `Moved to device Trash; server move queued: ${pdfName}`
+                  ? `Movido para a lixeira; o servidor será atualizado em seguida: ${pdfName}`
                   : selfHostedServerConfigured
-                    ? `Moved to Trash: ${pdfName}`
-                  : `Moved to Trash on this device: ${pdfName}`,
+                    ? `Movido para a lixeira: ${pdfName}`
+                  : `Movido para a lixeira deste aparelho: ${pdfName}`,
         );
 
         // Animate removal
@@ -673,7 +673,7 @@ export class PDFThumbnailCache {
 
             try {
                 await this.app.controlsManager?.requestSmartphoneReaderLock?.();
-                this.app.ui?.beginBookLoading?.("Loading book and AI models…");
+                this.app.ui?.beginBookLoading?.("Carregando o livro e os modelos de IA…");
 
                 let loadResult = null;
                 if (docType === "epub") {
@@ -710,7 +710,7 @@ export class PDFThumbnailCache {
                 this.app.cancelBookOpenPlaybackTimer?.("book opening failed");
                 const docLabel = docType === "epub" ? "EPUB" : "PDF";
                 console.error(`[PDFThumbnailCache] Failed to load ${docLabel} ${pdfName}:`, error);
-                this.app.ui?.showInfo?.(`Failed to load ${docLabel}: ${error.message}`);
+                this.app.ui?.showInfo?.(`Falha ao abrir ${docLabel}: ${error.message}`);
             } finally {
                 this.app.ui?.finishBookLoading?.();
             }
@@ -751,14 +751,14 @@ export class PDFThumbnailCache {
 
         const title = cardElement.querySelector("p:nth-of-type(1)");
         if (title) {
-            title.textContent = "Failed to load";
+            title.textContent = "Falha ao abrir";
             title.className = "text-xs font-medium truncate text-center max-w-full px-1 text-red-500 dark:text-red-400";
         }
 
         // Add retry button
         const retryBtn = document.createElement("button");
         retryBtn.className = "text-xs text-primary hover:underline mt-1";
-        retryBtn.textContent = "Retry";
+        retryBtn.textContent = "Tentar de novo";
         retryBtn.addEventListener("click", async (e) => {
             e.stopPropagation();
             try {

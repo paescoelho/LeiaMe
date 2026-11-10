@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 160 520 500" width="520" height="500" role="img" aria-label="LeiaMe">
+  <title>LeiaMe</title>
+  <style>
+    :root { --ink:#2a2520; --teal:#2f6f66; --teal-d:#24574f; --brass:#c8964a; --terra:#a8573a; --sage:#6aa99d; --paper:#fbf8f2; --line:#cfc5b4; }
+    @media (prefers-color-scheme: dark) { :root { --ink:#ebe4d6; --teal:#3b8378; --teal-d:#2f6f66; --paper:#f4efe6; } }
+    .ink { stroke: var(--ink); } .txt { fill: var(--ink); } .accent { fill: var(--teal); }
+    .in { opacity:0; transform-box:fill-box; animation: in .7s cubic-bezier(.2,.8,.2,1.15) forwards; }
+    @keyframes in { from { opacity:0; transform:translateY(50px); } to { opacity:1; transform:none; } }
+    .fade { opacity:0; animation: fade .6s ease forwards; } @keyframes fade { to { opacity:1; } }
+    .draw { animation: draw .9s cubic-bezier(.6,0,.3,1) forwards; } @keyframes draw { to { stroke-dashoffset:0; } }
+    .cupwrap { opacity:0; transform-box:fill-box; transform-origin:50% 50%; animation: pop .45s cubic-bezier(.3,1.6,.5,1) forwards; }
+    @keyframes pop { from { opacity:0; transform:scale(.4); } to { opacity:1; transform:none; } }
+    .beat { transform-box:fill-box; transform-origin:50% 50%; animation: beat .6s ease-out infinite; }
+    @keyframes beat { 0% { transform:scale(1.06); } 40%,100% { transform:scale(1); } }
+    .wave { fill:none; stroke:var(--brass); stroke-width:8; stroke-linecap:round; opacity:0; transform-box:view-box; animation: wave 1.2s ease-out infinite; }
+    @keyframes wave { 0% { opacity:0; transform:scale(.85); } 25% { opacity:.95; } 100% { opacity:0; transform:scale(1.18); } }
+    .name { opacity:0; transform-box:fill-box; animation: name .8s cubic-bezier(.2,.8,.2,1) forwards; }
+    @keyframes name { from { opacity:0; transform:translateY(24px); letter-spacing:14px; } to { opacity:1; transform:none; letter-spacing:1px; } }
+    @media (prefers-reduced-motion: reduce) { * { animation:none !important; opacity:1 !important; stroke-dashoffset:0 !important; } }
+
+    .in { animation-duration: 1s; animation-timing-function: cubic-bezier(.22,.9,.3,1); }
+    .beat { animation: beat 2.4s ease-in-out infinite; }
+    @keyframes beat { 0%,100% { transform:scale(1); } 50% { transform:scale(1.025); } }
+    .wave { animation: wave 3.2s ease-out infinite; }
+    .draw { animation-duration: 1.3s; }
+    .name { animation-duration: 1.2s; }
+    @keyframes b0 { 0.0% { transform:translateY(64.2px); } 16.7% { transform:translateY(80.7px); } 33.3% { transform:translateY(33.2px); } 50.0% { transform:translateY(88.1px); } 66.7% { transform:translateY(44.1px); } 83.3% { transform:translateY(60.3px); } 100.0% { transform:translateY(64.2px); } }
+    @keyframes p0 { 0.0% { transform:translateY(64.2px); } 16.7% { transform:translateY(73.7px); } 33.3% { transform:translateY(33.2px); } 50.0% { transform:translateY(42.7px); } 66.7% { transform:translateY(44.1px); } 83.3% { transform:translateY(53.6px); } 100.0% { transform:translateY(64.2px); } }
+    .b0 { animation: b0 6.29s cubic-bezier(.45,.05,.55,.95) 1.60s infinite; } .p0 { animation: p0 6.29s cubic-bezier(.45,.05,.55,.95) 1.60s infinite; }
+    @keyframes b1 { 0.0% { transform:translateY(56.2px); } 16.7% { transform:translateY(109.7px); } 33.3% { transform:translateY(64.6px); } 50.0% { transform:translateY(106.0px); } 66.7% { transform:translateY(103.7px); } 83.3% { transform:translateY(65.6px); } 100.0% { transform:translateY(56.2px); } }
+    @keyframes p1 { 0.0% { transform:translateY(56.2px); } 16.7% { transform:translateY(67.6px); } 33.3% { transform:translateY(64.6px); } 50.0% { transform:translateY(76.0px); } 66.7% { transform:translateY(87.4px); } 83.3% { transform:translateY(65.6px); } 100.0% { transform:translateY(56.2px); } }
+    .b1 { animation: b1 7.52s cubic-bezier(.45,.05,.55,.95) 1.72s infinite; } .p1 { animation: p1 7.52s cubic-bezier(.45,.05,.55,.95) 1.72s infinite; }
+    @keyframes b2 { 0.0% { transform:translateY(109.5px); } 16.7% { transform:translateY(97.1px); } 33.3% { transform:translateY(46.6px); } 50.0% { transform:translateY(6.5px); } 66.7% { transform:translateY(52.9px); } 83.3% { transform:translateY(75.4px); } 100.0% { transform:translateY(109.5px); } }
+    @keyframes p2 { 0.0% { transform:translateY(109.5px); } 16.7% { transform:translateY(97.1px); } 33.3% { transform:translateY(46.6px); } 50.0% { transform:translateY(6.5px); } 66.7% { transform:translateY(19.0px); } 83.3% { transform:translateY(31.5px); } 100.0% { transform:translateY(109.5px); } }
+    .b2 { animation: b2 7.76s cubic-bezier(.45,.05,.55,.95) 1.84s infinite; } .p2 { animation: p2 7.76s cubic-bezier(.45,.05,.55,.95) 1.84s infinite; }
+    @keyframes b3 { 0.0% { transform:translateY(103.0px); } 16.7% { transform:translateY(15.3px); } 33.3% { transform:translateY(76.7px); } 50.0% { transform:translateY(92.4px); } 66.7% { transform:translateY(95.3px); } 83.3% { transform:translateY(74.7px); } 100.0% { transform:translateY(103.0px); } }
+    @keyframes p3 { 0.0% { transform:translateY(103.0px); } 16.7% { transform:translateY(15.3px); } 33.3% { transform:translateY(26.1px); } 50.0% { transform:translateY(36.9px); } 66.7% { transform:translateY(47.7px); } 83.3% { transform:translateY(58.5px); } 100.0% { transform:translateY(103.0px); } }
+    .b3 { animation: b3 7.51s cubic-bezier(.45,.05,.55,.95) 1.96s infinite; } .p3 { animation: p3 7.51s cubic-bezier(.45,.05,.55,.95) 1.96s infinite; }
+    @keyframes b4 { 0.0% { transform:translateY(72.1px); } 16.7% { transform:translateY(36.8px); } 33.3% { transform:translateY(31.8px); } 50.0% { transform:translateY(55.2px); } 66.7% { transform:translateY(39.8px); } 83.3% { transform:translateY(82.5px); } 100.0% { transform:translateY(72.1px); } }
+    @keyframes p4 { 0.0% { transform:translateY(72.1px); } 16.7% { transform:translateY(36.8px); } 33.3% { transform:translateY(31.8px); } 50.0% { transform:translateY(40.6px); } 66.7% { transform:translateY(39.8px); } 83.3% { transform:translateY(48.6px); } 100.0% { transform:translateY(72.1px); } }
+    .b4 { animation: b4 6.3s cubic-bezier(.45,.05,.55,.95) 2.08s infinite; } .p4 { animation: p4 6.3s cubic-bezier(.45,.05,.55,.95) 2.08s infinite; }
+  </style>
+  <defs><clipPath id="shelf0"><rect x="150" y="150" width="300" height="352"/></clipPath></defs>
+  <g class="in" style="animation-delay:0.05s">
+    <g clip-path="url(#shelf0)"><g class="b0">
+      <rect x="194" y="310" width="36" height="230" rx="6" fill="var(--brass)"/>
+      <rect x="194" y="310" width="36" height="230" rx="6" fill="none" class="ink" stroke-width="5"/>
+      <path d="M203 328 H221 M203 338 H216 M203 470 H221" class="ink" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+    </g></g>
+    <rect class="p0" x="196" y="294" width="32" height="7" rx="3.5" fill="var(--brass)" opacity=".9"/>
+  </g>
+  <g class="in" style="animation-delay:0.13s">
+    <g clip-path="url(#shelf0)"><g class="b1">
+      <rect x="238" y="272" width="36" height="268" rx="6" fill="var(--terra)"/>
+      <rect x="238" y="272" width="36" height="268" rx="6" fill="none" class="ink" stroke-width="5"/>
+      <path d="M247 290 H265 M247 300 H260 M247 470 H265" class="ink" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+    </g></g>
+    <rect class="p1" x="240" y="256" width="32" height="7" rx="3.5" fill="var(--brass)" opacity=".9"/>
+  </g>
+  <g class="in" style="animation-delay:0.21000000000000002s">
+    <g clip-path="url(#shelf0)"><g class="b2">
+      <rect x="282" y="250" width="36" height="290" rx="6" fill="var(--teal)"/>
+      <rect x="282" y="250" width="36" height="290" rx="6" fill="none" class="ink" stroke-width="5"/>
+      <path d="M291 268 H309 M291 278 H304 M291 470 H309" class="ink" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+    </g></g>
+    <rect class="p2" x="284" y="234" width="32" height="7" rx="3.5" fill="var(--brass)" opacity=".9"/>
+  </g>
+  <g class="in" style="animation-delay:0.29s">
+    <g clip-path="url(#shelf0)"><g class="b3">
+      <rect x="326" y="284" width="36" height="256" rx="6" fill="var(--sage)"/>
+      <rect x="326" y="284" width="36" height="256" rx="6" fill="none" class="ink" stroke-width="5"/>
+      <path d="M335 302 H353 M335 312 H348 M335 470 H353" class="ink" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+    </g></g>
+    <rect class="p3" x="328" y="268" width="32" height="7" rx="3.5" fill="var(--brass)" opacity=".9"/>
+  </g>
+  <g class="in" style="animation-delay:0.37s">
+    <g clip-path="url(#shelf0)"><g class="b4">
+      <rect x="370" y="324" width="36" height="216" rx="6" fill="var(--brass)"/>
+      <rect x="370" y="324" width="36" height="216" rx="6" fill="none" class="ink" stroke-width="5"/>
+      <path d="M379 342 H397 M379 352 H392 M379 470 H397" class="ink" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+    </g></g>
+    <rect class="p4" x="372" y="308" width="32" height="7" rx="3.5" fill="var(--brass)" opacity=".9"/>
+  </g>
+  <path class="draw ink" style="stroke-dasharray:300;stroke-dashoffset:300;animation-delay:.45s" d="M178 506 H422" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <path class="draw ink" style="stroke-dasharray:900;stroke-dashoffset:900;animation-delay:0.7s" d="M150 372 C 150 150, 450 150, 450 372" fill="none" stroke-width="13" stroke-linecap="round"/>
+  <g class="cupwrap" style="animation-delay:1.5s"><g class="beat" style="animation-delay:2.0s">
+    <rect x="125.0" y="346" width="50" height="124" rx="24.0" fill="var(--teal)"/>
+    <rect x="159.0" y="358" width="20" height="100" rx="9" fill="var(--teal-d)"/>
+    <rect x="125.0" y="346" width="50" height="124" rx="24.0" fill="none" class="ink" stroke-width="5"/>
+  </g></g>
+  <g class="cupwrap" style="animation-delay:1.6s"><g class="beat" style="animation-delay:2.0s">
+    <rect x="425.0" y="346" width="50" height="124" rx="24.0" fill="var(--teal)"/>
+    <rect x="421.0" y="358" width="20" height="100" rx="9" fill="var(--teal-d)"/>
+    <rect x="425.0" y="346" width="50" height="124" rx="24.0" fill="none" class="ink" stroke-width="5"/>
+  </g></g>
+  <path class="wave" style="transform-origin:125.0px 408.0px;animation-delay:2.0s" d="M109.0 374.0 Q 90.6 408.0 109.0 442.0"/>
+  <path class="wave" style="transform-origin:125.0px 408.0px;animation-delay:2.2s" d="M87.0 354.0 Q 48.8 408.0 87.0 462.0"/>
+  <path class="wave" style="transform-origin:475.0px 408.0px;animation-delay:2.0s" d="M491.0 374.0 Q 509.4 408.0 491.0 442.0"/>
+  <path class="wave" style="transform-origin:475.0px 408.0px;animation-delay:2.2s" d="M513.0 354.0 Q 551.2 408.0 513.0 462.0"/>
+  <text class="name txt" style="animation-delay:2.0s" x="300" y="636" text-anchor="middle" font-family="'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif" font-size="100" font-weight="600" letter-spacing="1">Leia<tspan class="accent">Me</tspan></text>
+</svg>

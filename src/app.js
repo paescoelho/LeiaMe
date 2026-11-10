@@ -98,9 +98,9 @@ export class PDFTTSApp {
         this.showSavedPDFs();
 
         // app version
-        const appVersion = `${this.config.VERSION_MAJOR}.${this.config.VERSION_MINOR}.${this.config.VERSION_PATCH}+${this.config.VERSION_BUILD}`;
-        document.getElementById("appversion-p").textContent = `v${appVersion}`;
-        document.getElementById("appversion").textContent = `v${appVersion}`;
+        const appVersion = `V${this.config.VERSION_MAJOR}.${this.config.VERSION_MINOR}`;
+        document.getElementById("appversion-p").textContent = appVersion;
+        document.getElementById("appversion").textContent = appVersion;
     }
 
     _createRendererProxy() {
@@ -185,7 +185,7 @@ export class PDFTTSApp {
     async translateCurrentSentence() {
         const { state } = this;
         if (!state?.sentences?.length) {
-            this.ui?.showInfo?.("Load a document first");
+            this.ui?.showInfo?.("Abra um documento primeiro");
             return;
         }
 
@@ -303,7 +303,7 @@ export class PDFTTSApp {
     ) {
         const value = this._isSmartphoneRuntime ? false : !!enabled;
         if (enabled && this._isSmartphoneRuntime) {
-            if (notify) this.ui?.showInfo?.("TTS WebGPU is disabled on smartphones; using parallel WASM workers");
+            if (notify) this.ui?.showInfo?.("A voz por WebGPU fica desligada no celular; usando processamento WASM");
             return;
         }
         const changed = value !== !!this.state.ttsWebGpuEnabled;
@@ -324,7 +324,7 @@ export class PDFTTSApp {
         }
 
         if (notify) {
-            this.ui?.showInfo?.(value ? "TTS WebGPU enabled" : "TTS WebGPU disabled; using WASM");
+            this.ui?.showInfo?.(value ? "Voz por WebGPU ativada" : "Voz por WebGPU desativada; usando WASM");
         }
     }
 
@@ -527,8 +527,8 @@ export class PDFTTSApp {
         const bookTitle = String(file.name || "").trim();
         const label = type === "epub" ? "EPUB" : "PDF";
         const subtitle = bookTitle
-            ? `Set up how "${bookTitle}" should be read`
-            : `Set up how this ${label} should be read`;
+            ? `Configure como "${bookTitle}" será lido`
+            : `Configure como este ${label} será lido`;
         const savedPrefs = this._getSavedTranslationSettingsForDocument(docKey, type);
         const configured = !!savedPrefs;
         const initialOriginalLanguage = savedPrefs?.originalLanguage || this._getDefaultOriginalLanguage();
@@ -536,7 +536,7 @@ export class PDFTTSApp {
         const translationAvailable = await this._canReachTranslationService(initialTarget);
         const promptSubtitle = translationAvailable
             ? subtitle
-            : `Offline mode for "${bookTitle || label}": choose the original reading language`;
+            : `Modo offline para "${bookTitle || label}": escolha o idioma original de leitura`;
 
         const response = await this.ui?.showTranslationSetupPrompt?.({
             subtitle: promptSubtitle,
@@ -595,20 +595,20 @@ export class PDFTTSApp {
         if (mode === "read") {
             this.setReadTranslationEnabled(true);
             this.setAutoTranslateEnabled(false);
-            this.ui?.showInfo?.(`Translation: read mode (${target})`);
+            this.ui?.showInfo?.(`Tradução: modo leitura (${target})`);
             return;
         }
 
         if (mode === "show") {
             this.setReadTranslationEnabled(false);
             this.setAutoTranslateEnabled(true);
-            this.ui?.showInfo?.(`Translation: show mode (${target})`);
+            this.ui?.showInfo?.(`Tradução: modo legenda (${target})`);
             return;
         }
 
         this.setReadTranslationEnabled(false);
         this.setAutoTranslateEnabled(false);
-        this.ui?.showInfo?.("Translation: OFF");
+        this.ui?.showInfo?.("Tradução: DESLIGADA");
     }
 
     async _startPlaybackAfterDocumentLoad() {
@@ -617,7 +617,7 @@ export class PDFTTSApp {
             return;
         }
         try {
-            this.ui?.updatePlaybackPreparation?.("Loading the selected voice…");
+            this.ui?.updatePlaybackPreparation?.("Carregando a voz escolhida…");
             await this.ensureReadTranslationVoiceReady?.();
             await this.audioManager?.playCurrentSentence?.();
         } finally {
@@ -1167,8 +1167,8 @@ export class PDFTTSApp {
             if (setup.shouldPlay) await this._startPlaybackAfterDocumentLoad();
         } catch (error) {
             if (setup.shouldPlay) {
-                const detail = String(error?.message || "Unknown error");
-                this.ui?.finishPlaybackPreparation?.(`Unable to start reading: ${detail}`);
+                const detail = String(error?.message || "Erro desconhecido");
+                this.ui?.finishPlaybackPreparation?.(`Não foi possível iniciar a leitura: ${detail}`);
             }
             throw error;
         }

@@ -531,7 +531,7 @@ export class GardenRenderer {
     }
 
     _label(area) {
-        if (!area?.plant) return `Empty garden cell, column ${area.cell.x + 1}, row ${area.cell.y + 1}`;
+        if (!area?.plant) return `Espaço vazio no jardim, coluna ${area.cell.x + 1}, linha ${area.cell.y + 1}`;
         const definition = getPlantDefinition(area.plant.speciesId);
         const stage = getPlantStage(
             area.plant.speciesId,

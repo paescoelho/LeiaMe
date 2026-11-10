@@ -22,9 +22,9 @@ export class PDFHeaderFooterDetector {
         this._pendingDetectionsByPage = new Map();
         this._detectionQueue = Promise.resolve();
         this._requestIdCounter = 0;
-        this.app.ui.showInfo("Loading Layout AI model...");
+        this.app.ui.showInfo("Carregando o modelo de IA de layout...");
         this.worker = new Worker("./src/modules/pdf/ts.js", { type: "module" });
-        this.app.ui.showInfo("AI Layout model loaded...");
+        this.app.ui.showInfo("Modelo de IA de layout carregado...");
 
         const threads = getInferenceConcurrencyProfile(this.app.config).layoutThreads;
         const requestedBackend = normalizeInferenceBackend(
@@ -67,7 +67,7 @@ export class PDFHeaderFooterDetector {
                         console.warn("Worker operation was aborted (likely canceled or terminated early)");
                     } else {
                         console.error("Layout worker error", error);
-                        this.app.ui.showFatalError("Layout worker exit with fatal error, please report!");
+                        this.app.ui.showFatalError("O analisador de layout parou com erro grave. Por favor, informe!");
                     }
                     pending.reject(error);
                 } else if (typeof this._rejectWorkerReady === "function") {
@@ -710,8 +710,8 @@ export class PDFHeaderFooterDetector {
             region.style.top = `${(box.y1 / viewportDisplay.height) * 100}%`;
             region.style.width = `${(box.width / viewportDisplay.width) * 100}%`;
             region.style.height = `${(box.height / viewportDisplay.height) * 100}%`;
-            region.title = "Add as text";
-            region.setAttribute("aria-label", "Add as text");
+            region.title = "Incluir como texto";
+            region.setAttribute("aria-label", "Incluir como texto");
             region.addEventListener("click", (event) => {
                 event.preventDefault();
                 event.stopPropagation();
@@ -724,8 +724,8 @@ export class PDFHeaderFooterDetector {
                 const addBtn = document.createElement("button");
                 addBtn.type = "button";
                 addBtn.className = `not-sure-layout-add not-sure-layout-add-${side}`;
-                addBtn.title = "Add as text";
-                addBtn.setAttribute("aria-label", "Add as text");
+                addBtn.title = "Incluir como texto";
+                addBtn.setAttribute("aria-label", "Incluir como texto");
                 addBtn.innerHTML = `<span class="material-symbols-outlined">add</span>`;
                 addBtn.addEventListener("click", (event) => {
                     event.preventDefault();
@@ -758,7 +758,7 @@ export class PDFHeaderFooterDetector {
 
         await this.ensureReadabilityForPage(pageNumber, { force: true });
         this._refreshPageLayoutUi(pageNumber);
-        this.app.ui?.showInfo?.(`Layout label: ${label}`);
+        this.app.ui?.showInfo?.(`Tipo de bloco: ${label}`);
         return true;
     }
 

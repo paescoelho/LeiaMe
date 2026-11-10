@@ -111,7 +111,7 @@ test("Ctrl+C copies the custom selection before the current phrase", async () =>
     });
 
     assert.equal(prevented, true);
-    assert.deepEqual(copied, { text: "mouse selection", options: { successMessage: "Selection copied" } });
+    assert.deepEqual(copied, { text: "mouse selection", options: { successMessage: "Seleção copiada" } });
 });
 
 test("splits words from two columns that share the same baseline", () => {

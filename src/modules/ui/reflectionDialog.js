@@ -1,4 +1,5 @@
 import { copyReadingText, readingTextFromPhrases } from "./readingTextClipboard.js";
+import { forestIconSvg } from "./forestIcon.js";
 
 export class ReflectionDialog {
     constructor({ minimumCharacters, onSave, onSaved }) {
@@ -15,35 +16,35 @@ export class ReflectionDialog {
         this.dialog.innerHTML = `
             <form class="reflection-dialog__form grid gap-3">
                 <header class="flex items-start gap-3">
-                    <span class="material-symbols-outlined mt-1 text-primary" aria-hidden="true">park</span>
+                    <span class="mt-1">${forestIconSvg({ size: 26 })}</span>
                     <div class="min-w-0 flex-1">
-                        <h2 id="reading-note-title" class="text-sm font-bold text-slate-900 dark:text-slate-100">Tree planted</h2>
+                        <h2 id="reading-note-title" class="text-sm font-bold text-slate-900 dark:text-slate-100">Árvore plantada</h2>
                         <p data-summary class="mt-1 text-xs text-slate-500 dark:text-slate-400"></p>
                     </div>
                 </header>
                 <section data-highlights class="reflection-dialog__highlights grid gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-gray-900 p-3">
-                    <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Your highlights from this reading session</h3>
+                    <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300">Seus destaques nesta sessão de leitura</h3>
                     <div data-highlight-list class="reflection-dialog__highlight-list grid gap-2 text-xs text-slate-600 dark:text-slate-300"></div>
                 </section>
                 <div>
                     <button type="button" data-copy
                         class="inline-flex items-center justify-center gap-1 rounded-md border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-white/10">
                         <span class="material-symbols-outlined text-base" aria-hidden="true">content_copy</span>
-                        <span data-copy-label>Copy reading text</span>
+                        <span data-copy-label>Copiar o texto lido</span>
                     </button>
                     <p data-copy-status class="hidden mt-2 text-xs" aria-live="polite"></p>
                 </div>
                 <label class="grid gap-2 text-xs font-medium text-slate-700 dark:text-slate-300">
-                    Write what you were reading
-                    <textarea rows="4" data-text required placeholder="What did you read during these five minutes?"
+                    Escreva sobre o que você estava lendo
+                    <textarea rows="4" data-text required placeholder="O que você leu nestes cinco minutos?"
                         class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-primary"></textarea>
                 </label>
                 <p class="text-xs text-slate-500 dark:text-slate-400">
-                    This paragraph is required. Write at least ${this.minimumCharacters} non-space characters to continue reading.
+                    Este parágrafo é obrigatório. Escreva pelo menos ${this.minimumCharacters} caracteres (sem contar espaços) para continuar lendo.
                 </p>
                 <footer class="flex justify-end gap-2">
                     <button type="submit" data-save disabled
-                        class="rounded-md bg-primary px-3 py-2 text-xs font-semibold text-white">Save and continue</button>
+                        class="rounded-md bg-primary px-3 py-2 text-xs font-semibold text-white">Salvar e continuar</button>
                 </footer>
             </form>`;
         document.body.appendChild(this.dialog);
@@ -97,11 +98,11 @@ export class ReflectionDialog {
         const button = this.dialog.querySelector("[data-copy]");
         button.disabled = !text;
         button.title = text
-            ? "Copy all text read while growing this tree"
-            : "Text was not recorded for this tree.";
+            ? "Copiar todo o texto lido enquanto esta árvore crescia"
+            : "O texto não foi registrado para esta árvore.";
         this.dialog.querySelector("[data-copy-label]").textContent = text
-            ? "Copy reading text"
-            : "No recorded text";
+            ? "Copiar o texto lido"
+            : "Nenhum texto registrado";
         const status = this.dialog.querySelector("[data-copy-status]");
         status.textContent = "";
         status.classList.add("hidden");
@@ -118,8 +119,8 @@ export class ReflectionDialog {
             button.disabled = false;
             const status = this.dialog.querySelector("[data-copy-status]");
             status.textContent = copied
-                ? "Reading text copied."
-                : "Could not copy reading text. Please try again.";
+                ? "Texto lido copiado."
+                : "Não foi possível copiar o texto. Tente de novo.";
             status.classList.remove("hidden");
         }
         return copied;
@@ -140,7 +141,7 @@ export class ReflectionDialog {
         if (!items.length) {
             const empty = document.createElement("p");
             empty.className = "italic text-slate-500 dark:text-slate-400";
-            empty.textContent = "You did not add any highlights during this session.";
+            empty.textContent = "Você não fez nenhum destaque nesta sessão.";
             list.appendChild(empty);
             return;
         }

@@ -9,11 +9,11 @@ export class ExportManager {
         const { state, config } = this.app;
         const treeNotes = this._getTreeNotesForCurrentPdf();
         if (!state.currentPdfDescriptor || (state.savedHighlights.size === 0 && treeNotes.length === 0)) {
-            alert("No highlights or Reading Tree notes to export, or no PDF is loaded.");
+            alert("Não há destaques nem anotações para exportar, ou nenhum PDF está aberto.");
             return;
         }
         try {
-            this.app.ui.showInfo("Preparing PDF export...");
+            this.app.ui.showInfo("Preparando a exportação do PDF...");
             const highlightedPages = new Set();
             for (const highlight of state.savedHighlights.values()) {
                 const pageIndex = Number(highlight?.pageIndex);
@@ -27,13 +27,13 @@ export class ExportManager {
                 if (state.currentPdfDescriptor.fileObject) {
                     pdfBytes = await state.currentPdfDescriptor.fileObject.arrayBuffer();
                 } else {
-                    throw new Error("Original file object not available for export");
+                    throw new Error("O arquivo original não está disponível para exportar");
                 }
             } else if (state.currentPdfDescriptor.type === "url") {
                 const response = await fetch(state.currentPdfDescriptor.url);
                 pdfBytes = await response.arrayBuffer();
             } else {
-                throw new Error("Cannot export: unsupported PDF source");
+                throw new Error("Não é possível exportar: origem do PDF não suportada");
             }
 
             const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
@@ -209,7 +209,7 @@ export class ExportManager {
                     ? `Reading Tree — ${String(note.speciesId)
                         .replace(/-/g, " ")
                         .replace(/\b\w/g, (character) => character.toUpperCase())}`
-                    : "Reading Tree note";
+                    : "Anotação da árvore de leitura";
                 const uniqueId = `tree-note-${note.id || `${pageNum}-${createdAt.getTime()}`}`;
                 const noteDict = pdfDoc.context.obj({
                     Type: PDFName.of("Annot"),
@@ -223,7 +223,7 @@ export class ExportManager {
                     // and emoji in user-authored reading notes.
                     T: PDFHexString.fromText(treeLabel),
                     Contents: PDFHexString.fromText(String(note.text).slice(0, 4096)),
-                    Subj: PDFString.of("Reading Tree note"),
+                    Subj: PDFString.of("Anotação da árvore de leitura"),
                     CreationDate: PDFString.fromDate(createdAt),
                     M: PDFString.fromDate(new Date(note.updatedAt || note.createdAt || Date.now())),
                 });
@@ -243,11 +243,11 @@ export class ExportManager {
             a.download = filename;
             a.click();
             URL.revokeObjectURL(url);
-            this.app.ui.showInfo(`Exported: ${filename}`);
+            this.app.ui.showInfo(`Exportado: ${filename}`);
         } catch (error) {
             console.error("Export failed:", error);
-            this.app.ui.showInfo("Export failed: " + error.message);
-            alert("Failed to export PDF: " + error.message);
+            this.app.ui.showInfo("Falha ao exportar: " + error.message);
+            alert("Falha ao exportar o PDF: " + error.message);
         }
     }
 

@@ -659,7 +659,7 @@ export class PDFRenderer {
     async ensureFullPageRendered(pageNumber) {
         const { state } = this.app;
         const pdfDocument = state.pdf;
-        if (!pdfDocument) throw new Error("No PDF is loaded");
+        if (!pdfDocument) throw new Error("Nenhum PDF aberto");
         if (this._renderedPdf !== pdfDocument) {
             this.clearRenderedPageCache();
             this._renderedPdf = pdfDocument;
@@ -1353,7 +1353,7 @@ export class PDFRenderer {
                     Array.isArray(highlightData?.words) && highlightData.words.length
                         ? highlightData.words.join(" ")
                         : sentence?.text || "";
-                div.title = `Highlighted: ${savedText.substring(0, 50)}...`;
+                div.title = `Destacado: ${savedText.substring(0, 50)}...`;
                 wrapper.appendChild(div);
 
                 if (!firstMarkerRect) firstMarkerRect = rect;
@@ -1521,22 +1521,22 @@ export class PDFRenderer {
         const copyBtn = document.createElement("button");
         copyBtn.type = "button";
         copyBtn.className = "pdf-active-phrase-btn";
-        copyBtn.title = "Copy current phrase";
-        copyBtn.setAttribute("aria-label", "Copy current phrase");
+        copyBtn.title = "Copiar a frase atual";
+        copyBtn.setAttribute("aria-label", "Copiar a frase atual");
         copyBtn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
         copyBtn.addEventListener("mousedown", stopBubble);
         copyBtn.addEventListener("click", async (e) => {
             stopBubble(e);
             await this.app.interactionHandler?.copyCurrentPhraseToClipboard?.({
-                successMessage: "Current phrase copied",
+                successMessage: "Frase copiada",
             });
         });
 
         const highlightColors = [
-            { label: "Yellow", value: "#ffda76" },
-            { label: "Red", value: "#F44336" },
-            { label: "Green", value: "#81C784" },
-            { label: "Blue", value: "#4FC3F7" },
+            { label: "Amarelo", value: "#ffda76" },
+            { label: "Vermelho", value: "#F44336" },
+            { label: "Verde", value: "#81C784" },
+            { label: "Azul", value: "#4FC3F7" },
         ];
 
         const highlightButtons = highlightColors.map(({ label, value }) => {
@@ -1545,8 +1545,8 @@ export class PDFRenderer {
             btn.className = "pdf-active-phrase-btn";
             const isActive = String(highlighted || "").toLowerCase() === value.toLowerCase();
             btn.setAttribute("aria-pressed", isActive ? "true" : "false");
-            btn.title = `Highlight ${label.toLowerCase()}`;
-            btn.setAttribute("aria-label", `Highlight current phrase ${label.toLowerCase()}`);
+            btn.title = `Destacar em ${label.toLowerCase()}`;
+            btn.setAttribute("aria-label", `Destacar a frase atual em ${label.toLowerCase()}`);
             if (isActive) {
                 btn.classList.add("is-active");
                 btn.style.borderColor = value;
@@ -1571,8 +1571,8 @@ export class PDFRenderer {
         commentBtn.type = "button";
         commentBtn.className = "pdf-active-phrase-btn";
         commentBtn.setAttribute("aria-pressed", "false");
-        commentBtn.title = "Add comment";
-        commentBtn.setAttribute("aria-label", "Add comment");
+        commentBtn.title = "Adicionar comentário";
+        commentBtn.setAttribute("aria-label", "Adicionar comentário");
         commentBtn.innerHTML = '<span class="material-symbols-outlined">comment</span>';
         commentBtn.addEventListener("mousedown", stopBubble);
         commentBtn.addEventListener("click", async (e) => {
@@ -1812,7 +1812,7 @@ export class PDFRenderer {
 
         if (state.generationEnabled && !sentence.isTextToRead) {
             this.app.ui.showInfo(
-                `Sentence ${sentence.index + 1} is outside readable layout regions. Select another sentence to play.`,
+                `A frase ${sentence.index + 1} está fora das áreas de leitura. Escolha outra frase.`,
             );
         } else if (!skipTTS) {
             // Always start the selected sentence before scheduling look-ahead.

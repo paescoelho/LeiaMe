@@ -4,7 +4,7 @@ const CLOSE_TIMEOUT_MS = 3000;
 const HEARTBEAT_INTERVAL_MS = 30000;
 
 function abortError() {
-    const error = new Error("Speech request cancelled");
+    const error = new Error("Pedido de voz cancelado");
     error.name = "AbortError";
     return error;
 }
@@ -63,9 +63,9 @@ export class ServerTtsClient {
 
     _connection() {
         const baseUrl = this.app.serverSync?.getServerUrl?.()?.replace(/\/$/, "");
-        if (!baseUrl) throw serverError("No speech server configured");
+        if (!baseUrl) throw serverError("Nenhum servidor de voz configurado");
         const token = this.app.serverSync?.server?._getAuthToken?.() || this.app.serverSync?._getAuthToken?.();
-        if (!token) throw serverError("Sign in to use server speech", "TTS_SERVER_AUTH_REQUIRED", 401);
+        if (!token) throw serverError("Entre na sua conta para usar a voz do servidor", "TTS_SERVER_AUTH_REQUIRED", 401);
         return { baseUrl, token };
     }
 
@@ -107,21 +107,21 @@ export class ServerTtsClient {
             });
             if (!response.ok) {
                 const data = await response.json().catch(() => ({}));
-                throw serverError(data.error || `Speech server returned ${response.status}`, data.code || "TTS_SERVER_ERROR", response.status);
+                throw serverError(data.error || `O servidor de voz retornou ${response.status}`, data.code || "TTS_SERVER_ERROR", response.status);
             }
             if (!binary) return response.status === 204 ? {} : await response.json();
             const mimeType = (response.headers.get("Content-Type") || "").split(";")[0].trim().toLowerCase();
             if (mimeType !== "audio/mpeg") {
-                throw serverError("Speech server returned an unsupported audio format", "TTS_SERVER_INVALID_AUDIO");
+                throw serverError("O servidor de voz retornou um formato de áudio não suportado", "TTS_SERVER_INVALID_AUDIO");
             }
             const encodedBuffer = await response.arrayBuffer();
-            if (!encodedBuffer.byteLength) throw serverError("Speech server returned empty audio", "TTS_SERVER_INVALID_AUDIO");
+            if (!encodedBuffer.byteLength) throw serverError("O servidor de voz retornou áudio vazio", "TTS_SERVER_INVALID_AUDIO");
             return { encodedBuffer, mimeType };
         } catch (error) {
-            if (timedOut) throw serverError("Speech server timed out", "TTS_SERVER_TIMEOUT");
+            if (timedOut) throw serverError("O servidor de voz demorou demais", "TTS_SERVER_TIMEOUT");
             if (controller.signal.aborted || signal?.aborted || error.name === "AbortError") throw abortError();
             if (error.code) throw error;
-            throw serverError(error.message || "Unable to reach speech server");
+            throw serverError(error.message || "Não foi possível acessar o servidor de voz");
         } finally {
             clearTimeout(timeout);
             signal?.removeEventListener("abort", onAbort);
@@ -149,17 +149,17 @@ export class ServerTtsClient {
         const connection = this._connection();
         if (this._session?.ready && this._session.baseUrl === connection.baseUrl && this._session.token === connection.token) {
             if (expectedRevision && expectedRevision !== (this.capabilities?.modelRevision || this.capabilities?.revision)) {
-                throw serverError("Server voice models do not match this app", "TTS_MODEL_MISMATCH");
+                throw serverError("As vozes do servidor não são compatíveis com este app", "TTS_MODEL_MISMATCH");
             }
             return this._configure({ voiceId, lengthScale: scale }, generation);
         }
         const capabilities = await this._request("/api/tts/capabilities", { connection });
         this._assertActive(generation);
         this.capabilities = capabilities;
-        if (!capabilities.enabled) throw serverError("Server speech is unavailable", "TTS_SERVER_DISABLED");
+        if (!capabilities.enabled) throw serverError("A voz do servidor está indisponível", "TTS_SERVER_DISABLED");
         const revision = capabilities.modelRevision || capabilities.revision;
         if (expectedRevision && revision !== expectedRevision) {
-            throw serverError("Server voice models do not match this app", "TTS_MODEL_MISMATCH");
+            throw serverError("As vozes do servidor não são compatíveis com este app", "TTS_MODEL_MISMATCH");
         }
         this._modelRevision = expectedRevision || revision || null;
         this.availableVoices = Array.isArray(capabilities.voices)
@@ -167,7 +167,7 @@ export class ServerTtsClient {
             : capabilities.voices || {};
         this._supportedVoices = new Set(Object.keys(this.availableVoices));
         if (!this._supportedVoices.has(voiceId)) {
-            throw serverError("The selected voice is unavailable on the server", "TTS_VOICE_UNAVAILABLE");
+            throw serverError("A voz escolhida não está disponível no servidor", "TTS_VOICE_UNAVAILABLE");
         }
         if (this._session) await this._deleteSession(this._session);
         this._assertActive(generation);
@@ -182,7 +182,7 @@ export class ServerTtsClient {
                 timeoutMs: this._activationTimeoutMs,
             });
             this._assertActive(generation);
-            if (data.id !== session.id) throw serverError("Speech server returned an invalid session", "TTS_SESSION_MISMATCH");
+            if (data.id !== session.id) throw serverError("O servidor de voz retornou uma sessão inválida", "TTS_SESSION_MISMATCH");
             session.ready = true;
             this.voiceId = voiceId;
             this.lengthScale = scale;
@@ -204,7 +204,7 @@ export class ServerTtsClient {
         const session = this._session;
         if (!session?.ready) return this._initialize({ voiceId, lengthScale: scale }, generation);
         if (!this._supportedVoices.has(voiceId)) {
-            throw serverError("The selected voice is unavailable on the server", "TTS_VOICE_UNAVAILABLE");
+            throw serverError("A voz escolhida não está disponível no servidor", "TTS_VOICE_UNAVAILABLE");
         }
         if (this.voiceId === voiceId && this.lengthScale === scale) return { id: session.id, voice: voiceId };
         let data;
@@ -231,7 +231,7 @@ export class ServerTtsClient {
         await waitForConfiguration(configuration, signal);
         this._assertActive(generation, signal);
         const session = this._session;
-        if (!session?.ready) throw serverError("Speech session expired", "TTS_SESSION_EXPIRED", 404);
+        if (!session?.ready) throw serverError("A sessão de voz expirou", "TTS_SESSION_EXPIRED", 404);
         const voice = this.voiceId;
         const scale = validLengthScale(lengthScale);
         let result;

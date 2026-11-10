@@ -82,7 +82,7 @@ export class InteractionHandler {
         return this._getSelectionTextForCopy();
     }
 
-    async copyCurrentPhraseToClipboard({ successMessage = "Current phrase copied" } = {}) {
+    async copyCurrentPhraseToClipboard({ successMessage = "Frase copiada" } = {}) {
         const text = this.getCurrentPhraseTextForCopy({ fallbackToSelection: true });
         if (!text) return false;
         await this._copyTextToClipboard(text, { successMessage });
@@ -106,7 +106,7 @@ export class InteractionHandler {
 
         e.preventDefault();
         await this._copyTextToClipboard(text, {
-            successMessage: selectedText ? "Selection copied" : "Current phrase copied",
+            successMessage: selectedText ? "Seleção copiada" : "Frase copiada",
         });
     }
 
@@ -397,7 +397,7 @@ export class InteractionHandler {
         });
     }
 
-    async _copyTextToClipboard(text, { successMessage = "Copied selection" } = {}) {
+    async _copyTextToClipboard(text, { successMessage = "Seleção copiada" } = {}) {
         if (!text) return;
         try {
             if (navigator.clipboard?.writeText) {
@@ -458,7 +458,7 @@ export class InteractionHandler {
         const copyBtn = document.createElement("button");
         copyBtn.type = "button";
         copyBtn.className = "pdf-selection-menu-btn";
-        copyBtn.textContent = "Copy";
+        copyBtn.textContent = "Copiar";
         copyBtn.addEventListener("click", async (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -469,7 +469,7 @@ export class InteractionHandler {
         const highlightBtn = document.createElement("button");
         highlightBtn.type = "button";
         highlightBtn.className = "pdf-selection-menu-btn";
-        highlightBtn.textContent = "Highlight";
+        highlightBtn.textContent = "Destacar";
         highlightBtn.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -491,14 +491,14 @@ export class InteractionHandler {
             this.app.highlightsStorage?.saveHighlightsForPdf?.();
             this.app.pdfRenderer?.updateHighlightFullDoc?.();
             this.app.controlsManager?.reflectSelectedHighlightColor?.();
-            this.app.ui?.showInfo?.("Highlight Saved");
+            this.app.ui?.showInfo?.("Destaque salvo");
             this._hideSelectionMenu();
         });
 
         const commentBtn = document.createElement("button");
         commentBtn.type = "button";
         commentBtn.className = "pdf-selection-menu-btn";
-        commentBtn.textContent = "Comment";
+        commentBtn.textContent = "Comentar";
         commentBtn.addEventListener("click", async (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -550,7 +550,7 @@ export class InteractionHandler {
         const existing = typeof firstIdx === "number" ? state.savedHighlights.get(firstIdx) : null;
         const existingComment = typeof existing?.comment === "string" ? existing.comment : "";
         const res = await this.app.ui?.showCommentPopup?.({
-            title: "Comment",
+            title: "Comentar",
             initialText: existingComment,
             allowRemove: existingComment.trim().length > 0,
         });
@@ -587,7 +587,7 @@ export class InteractionHandler {
 
         this.app.highlightsStorage?.saveHighlightsForPdf?.();
         this.app.pdfRenderer?.updateHighlightFullDoc?.();
-        this.app.ui?.showInfo?.(comment ? "Comment Saved" : "Comment Removed");
+        this.app.ui?.showInfo?.(comment ? "Comentário salvo" : "Comentário removido");
         return true;
     }
 

@@ -36,7 +36,7 @@ export function consolidateGardenPlots(state, config = {}, now = Date.now()) {
     const expanded = side !== Number(preferred?.rows) || side !== Number(preferred?.columns);
     const garden = {
         id: preferred?.id || "garden-1",
-        name: "Reading Garden",
+        name: "Jardim de leitura",
         rows: side,
         columns: side,
         createdAt: Number(preferred?.createdAt) || now,
@@ -110,7 +110,7 @@ export function createInitialRewardState(config = {}, now = Date.now()) {
         currentSession: null,
         gardenPlots: [{
             id: "garden-1",
-            name: "Reading Garden",
+            name: "Jardim de leitura",
             rows: side,
             columns: side,
             createdAt: now,

@@ -681,26 +681,26 @@ export class EPUBRenderer {
         };
 
         const copyBtn = makeButton({
-            title: "Copy current phrase",
-            label: "Copy current phrase",
+            title: "Copiar a frase atual",
+            label: "Copiar a frase atual",
             icon: "content_copy",
         });
         copyBtn.addEventListener("click", async (event) => {
             stopBubble(event);
-            await this.app.interactionHandler?.copyCurrentPhraseToClipboard?.({ successMessage: "Current phrase copied" });
+            await this.app.interactionHandler?.copyCurrentPhraseToClipboard?.({ successMessage: "Frase copiada" });
         });
         panel.appendChild(copyBtn);
 
         const activeColor = this.app?.state?.savedHighlights?.get?.(sentence.index)?.color || "";
         for (const { label, value } of [
-            { label: "Yellow", value: "#ffda76" },
-            { label: "Red", value: "#F44336" },
-            { label: "Green", value: "#81C784" },
-            { label: "Blue", value: "#4FC3F7" },
+            { label: "Amarelo", value: "#ffda76" },
+            { label: "Vermelho", value: "#F44336" },
+            { label: "Verde", value: "#81C784" },
+            { label: "Azul", value: "#4FC3F7" },
         ]) {
             const highlightBtn = makeButton({
-                title: `Highlight ${label.toLowerCase()}`,
-                label: `Highlight current phrase ${label.toLowerCase()}`,
+                title: `Destacar em ${label.toLowerCase()}`,
+                label: `Destacar a frase atual em ${label.toLowerCase()}`,
                 icon: "format_ink_highlighter",
                 color: value,
             });
@@ -715,8 +715,8 @@ export class EPUBRenderer {
         }
 
         const commentBtn = makeButton({
-            title: "Add comment",
-            label: "Add comment",
+            title: "Adicionar comentário",
+            label: "Adicionar comentário",
             icon: "comment",
         });
         commentBtn.setAttribute("aria-pressed", "false");

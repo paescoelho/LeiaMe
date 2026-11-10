@@ -141,8 +141,8 @@ export class UIService {
     }
 
     async showTranslationSetupPrompt({
-        title = "Reading Setup",
-        subtitle = "Choose how this document should be read",
+        title = "Configurar leitura",
+        subtitle = "Escolha como este documento será lido",
         initialOriginalLanguage = "en",
         initialTarget = "pt",
         initialMode = "off",
@@ -193,7 +193,7 @@ export class UIService {
 
             const closeBtn = document.createElement("button");
             closeBtn.type = "button";
-            closeBtn.setAttribute("aria-label", "Close reading setup");
+            closeBtn.setAttribute("aria-label", "Fechar configuração de leitura");
             closeBtn.className =
                 "p-1 rounded-full text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary";
             const closeIcon = document.createElement("span");
@@ -210,23 +210,23 @@ export class UIService {
             header.appendChild(closeBtn);
 
             const languageOptions = [
-                { value: "pt", label: "🇧🇷 Portuguese" },
-                { value: "en", label: "🇺🇸 English" },
-                { value: "es", label: "🇪🇸 Spanish" },
-                { value: "fr", label: "🇫🇷 French" },
-                { value: "de", label: "🇩🇪 German" },
-                { value: "zh-CN", label: "🇨🇳 Chinese (Simplified)" },
+                { value: "pt", label: "🇧🇷 Português" },
+                { value: "en", label: "🇺🇸 Inglês" },
+                { value: "es", label: "🇪🇸 Espanhol" },
+                { value: "fr", label: "🇫🇷 Francês" },
+                { value: "de", label: "🇩🇪 Alemão" },
+                { value: "zh-CN", label: "🇨🇳 Chinês (simplificado)" },
             ];
 
             const normalizeLanguage = (value, fallback) => String(value || fallback).trim() || fallback;
-            const normalizedOriginal = normalizeLanguage(initialOriginalLanguage, "en");
+            const normalizedOriginal = normalizeLanguage(initialOriginalLanguage, "pt");
             const normalizedTarget = normalizeLanguage(initialTarget, "pt");
             let selectedMode = canTranslate && ["read", "show", "off"].includes(initialMode)
                 ? initialMode
                 : "off";
 
             const languageName = (value) =>
-                languageOptions.find((entry) => entry.value === value)?.label || value || "Not selected";
+                languageOptions.find((entry) => entry.value === value)?.label || value || "Não selecionado";
 
             const buildLanguageSelect = (value, ariaLabel) => {
                 const select = document.createElement("select");
@@ -257,8 +257,8 @@ export class UIService {
             languageSection.className = "space-y-3";
             languageSection.innerHTML = `
                 <div>
-                    <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Language</h3>
-                    <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Tell us the document language and the final language you want to hear.</p>
+                    <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Idioma</h3>
+                    <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Informe o idioma do documento e o idioma em que você quer ouvir.</p>
                 </div>
             `;
 
@@ -269,16 +269,16 @@ export class UIService {
             originalWrap.className = "block space-y-1.5";
             const originalLabel = document.createElement("span");
             originalLabel.className = "block text-xs font-medium text-slate-700 dark:text-slate-200";
-            originalLabel.textContent = "Original PDF language";
-            const originalSelect = buildLanguageSelect(normalizedOriginal, "Original PDF language");
+            originalLabel.textContent = "Idioma original do documento";
+            const originalSelect = buildLanguageSelect(normalizedOriginal, "Idioma original do documento");
             originalWrap.append(originalLabel, originalSelect);
 
             const targetWrap = document.createElement("label");
             targetWrap.className = "block space-y-1.5 transition-opacity";
             const targetLabel = document.createElement("span");
             targetLabel.className = "block text-xs font-medium text-slate-700 dark:text-slate-200";
-            targetLabel.textContent = "Translate to";
-            const targetSelect = buildLanguageSelect(normalizedTarget, "Translate to");
+            targetLabel.textContent = "Traduzir para";
+            const targetSelect = buildLanguageSelect(normalizedTarget, "Traduzir para");
             targetWrap.append(targetLabel, targetSelect);
             languageGrid.append(originalWrap, targetWrap);
 
@@ -294,8 +294,8 @@ export class UIService {
 
             const speedLabel = document.createElement("div");
             speedLabel.innerHTML = `
-                <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Reading Speed</h3>
-                <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Adjust how quickly the document is read aloud.</p>
+                <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Velocidade de leitura</h3>
+                <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Ajuste a velocidade da leitura em voz alta.</p>
             `;
 
             const speedRow = document.createElement("div");
@@ -303,7 +303,7 @@ export class UIService {
 
             const speedDecreaseBtn = document.createElement("button");
             speedDecreaseBtn.type = "button";
-            speedDecreaseBtn.setAttribute("aria-label", "Decrease reading speed");
+            speedDecreaseBtn.setAttribute("aria-label", "Diminuir velocidade de leitura");
             speedDecreaseBtn.className =
                 "w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 " +
                 "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5";
@@ -326,7 +326,7 @@ export class UIService {
 
             const speedIncreaseBtn = document.createElement("button");
             speedIncreaseBtn.type = "button";
-            speedIncreaseBtn.setAttribute("aria-label", "Increase reading speed");
+            speedIncreaseBtn.setAttribute("aria-label", "Aumentar velocidade de leitura");
             speedIncreaseBtn.className =
                 "w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 " +
                 "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5";
@@ -378,14 +378,14 @@ export class UIService {
                 "rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 " +
                 "px-3 py-2 text-sm text-amber-900 dark:text-amber-100";
             offlineNotice.textContent =
-                "Offline Mode: translation is unavailable. Choose the original document language and read the original text.";
+                "Modo offline: a tradução não está disponível. Escolha o idioma original e leia o texto original.";
 
             const modeSection = document.createElement("section");
             modeSection.className = "space-y-3";
             modeSection.innerHTML = `
                 <div>
-                    <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Reading Mode</h3>
-                    <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Choose whether the document should be translated.</p>
+                    <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Modo de leitura</h3>
+                    <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Escolha se o documento será traduzido.</p>
                 </div>
             `;
             const optionsWrap = document.createElement("div");
@@ -425,19 +425,19 @@ export class UIService {
             optionsWrap.append(
                 buildModeCard({
                     mode: "off",
-                    label: "Read original",
-                    helper: "No translation. Read the PDF in its original language.",
+                    label: "Ler o original",
+                    helper: "Sem tradução. Lê o documento no idioma original.",
                 }),
                 buildModeCard({
                     mode: "read",
-                    label: "Read translation",
-                    helper: canTranslate ? "Translate the text and read it in the selected language." : "Unavailable offline.",
+                    label: "Ler a tradução",
+                    helper: canTranslate ? "Traduz o texto e lê no idioma escolhido." : "Indisponível offline.",
                     disabled: !canTranslate,
                 }),
                 buildModeCard({
                     mode: "show",
-                    label: "Show translation",
-                    helper: canTranslate ? "Read the original and display translated phrases." : "Unavailable offline.",
+                    label: "Mostrar tradução",
+                    helper: canTranslate ? "Lê o original e mostra as frases traduzidas." : "Indisponível offline.",
                     disabled: !canTranslate,
                 }),
             );
@@ -456,7 +456,7 @@ export class UIService {
                 targetSelect.disabled = !usesTranslation || !canTranslate;
                 targetWrap.classList.toggle("opacity-45", !usesTranslation || !canTranslate);
                 const finalValue = selectedMode === "read" ? targetSelect.value : originalSelect.value;
-                const prefix = selectedMode === "show" ? "Spoken language" : "Final reading language";
+                const prefix = selectedMode === "show" ? "Idioma falado" : "Idioma da leitura";
                 finalLanguage.textContent = `${prefix}: ${languageName(finalValue)}`;
             };
             originalSelect.addEventListener("change", updateModePresentation);
@@ -475,7 +475,7 @@ export class UIService {
             startBtn.className =
                 "w-full sm:w-auto rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white " +
                 "shadow-sm hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2";
-            startBtn.textContent = "Start Reading";
+            startBtn.textContent = "Começar a ler";
             startBtn.addEventListener("click", (event) => {
                 event.preventDefault();
                 closeWith({
@@ -494,25 +494,25 @@ export class UIService {
             summary.className =
                 "rounded-xl border border-primary/25 bg-primary/5 dark:bg-primary/10 px-4 py-4 space-y-3";
             const modeLabels = {
-                off: "Read original — no translation",
-                read: "Translate and read aloud",
-                show: "Read original and show translation",
+                off: "Ler o original — sem tradução",
+                read: "Traduzir e ler em voz alta",
+                show: "Ler o original e mostrar a tradução",
             };
             const languageSummary = selectedMode === "off"
                 ? languageName(normalizedOriginal)
                 : `${languageName(normalizedOriginal)} → ${languageName(normalizedTarget)}`;
             summary.innerHTML = `
                 <div>
-                    <div class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">Language</div>
+                    <div class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">Idioma</div>
                     <div data-summary-language class="mt-1 text-base font-semibold text-slate-900 dark:text-slate-100"></div>
                 </div>
                 <div class="grid grid-cols-2 gap-3 border-t border-primary/15 pt-3">
                     <div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400">Reading mode</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Modo de leitura</div>
                         <div data-summary-mode class="mt-0.5 text-sm font-medium text-slate-800 dark:text-slate-100"></div>
                     </div>
                     <div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400">Speed</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Velocidade</div>
                         <div data-summary-speed class="mt-0.5 text-sm font-medium text-slate-800 dark:text-slate-100"></div>
                     </div>
                 </div>
@@ -522,7 +522,7 @@ export class UIService {
             summary.querySelector("[data-summary-speed]").textContent = `${normalizedSpeed.toFixed(1)}x`;
             const confirmHint = document.createElement("p");
             confirmHint.className = "text-sm text-slate-600 dark:text-slate-300";
-            confirmHint.textContent = "This document already has a reading setup. Continue with it or make changes.";
+            confirmHint.textContent = "Este documento já tem uma configuração de leitura. Continue com ela ou faça mudanças.";
             confirmBody.append(confirmHint, summary);
 
             const confirmFooter = document.createElement("div");
@@ -532,13 +532,13 @@ export class UIService {
             reconfigureBtn.className =
                 "rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-2.5 text-sm font-medium " +
                 "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5";
-            reconfigureBtn.textContent = "Reconfigure";
+            reconfigureBtn.textContent = "Reconfigurar";
             const keepBtn = document.createElement("button");
             keepBtn.type = "button";
             keepBtn.className =
                 "rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm " +
                 "hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2";
-            keepBtn.textContent = "Keep Current & Read";
+            keepBtn.textContent = "Manter e ler";
             keepBtn.addEventListener("click", () => {
                 closeWith({
                     action: "keep",
@@ -553,7 +553,7 @@ export class UIService {
                 confirmFooter.classList.add("hidden");
                 setupBody.classList.remove("hidden");
                 setupFooter.classList.remove("hidden");
-                subtitleEl.textContent = "Update how this document should be read";
+                subtitleEl.textContent = "Altere como este documento será lido";
                 originalSelect.focus();
             });
             confirmFooter.append(reconfigureBtn, keepBtn);
@@ -602,7 +602,7 @@ export class UIService {
         const { app } = this;
         const { state } = app;
         if (!state?.sentences?.length) {
-            this.showInfo?.("Load a document first");
+            this.showInfo?.("Abra um documento primeiro");
             return;
         }
 
@@ -655,7 +655,7 @@ export class UIService {
 
         const title = document.createElement("div");
         title.className = "text-sm font-semibold text-slate-800 dark:text-slate-100 truncate";
-        title.textContent = `Highlight · Sentence ${idx + 1}`;
+        title.textContent = `Destaque · Frase ${idx + 1}`;
 
         left.appendChild(hiIcon);
         left.appendChild(title);
@@ -739,8 +739,8 @@ export class UIService {
 
         const syncUI = () => {
             const on = hasHighlight();
-            toggleBtn.textContent = on ? "Remove highlight" : "Add highlight";
-            status.textContent = on ? "Highlighted" : "Not highlighted";
+            toggleBtn.textContent = on ? "Remover destaque" : "Destacar";
+            status.textContent = on ? "Destacado" : "Sem destaque";
 
             const c = currentComment().trim();
             commentArea.value = c;
@@ -779,7 +779,7 @@ export class UIService {
             "w-full min-h-[64px] rounded-md border border-slate-200 dark:border-slate-700 " +
             "bg-white/80 dark:bg-black/20 text-slate-900 dark:text-slate-100 " +
             "px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary";
-        commentArea.placeholder = "Comment (optional)…";
+        commentArea.placeholder = "Comentário (opcional)…";
 
         const commentActions = document.createElement("div");
         commentActions.className = "flex items-center justify-between gap-2";
@@ -789,12 +789,12 @@ export class UIService {
         removeCommentBtn.className =
             "rounded-md px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 " +
             "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5";
-        removeCommentBtn.textContent = "Remove comment";
+        removeCommentBtn.textContent = "Remover comentário";
 
         const saveCommentBtn = document.createElement("button");
         saveCommentBtn.type = "button";
         saveCommentBtn.className = "rounded-md px-3 py-2 text-sm bg-primary text-white hover:opacity-95";
-        saveCommentBtn.textContent = "Save comment";
+        saveCommentBtn.textContent = "Salvar comentário";
 
         const upsertComment = (nextComment) => {
             const sentenceText = state.sentences[idx]?.text || "";
@@ -895,9 +895,9 @@ export class UIService {
     }
 
     async showCommentPopup({
-        title = "Comment",
+        title = "Comentário",
         initialText = "",
-        placeholder = "Write a comment...",
+        placeholder = "Escreva um comentário...",
         allowRemove = false,
     } = {}) {
         this._hideCommentPopup();
@@ -969,7 +969,7 @@ export class UIService {
             cancelBtn.className =
                 "rounded-md px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 " +
                 "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5";
-            cancelBtn.textContent = "Cancel";
+            cancelBtn.textContent = "Cancelar";
             cancelBtn.addEventListener("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -979,7 +979,7 @@ export class UIService {
             const saveBtn = document.createElement("button");
             saveBtn.type = "button";
             saveBtn.className = "rounded-md px-3 py-2 text-sm bg-primary text-white hover:opacity-95";
-            saveBtn.textContent = "Save";
+            saveBtn.textContent = "Salvar";
             saveBtn.addEventListener("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -992,7 +992,7 @@ export class UIService {
                 removeBtn.className =
                     "rounded-md px-3 py-2 text-sm border border-red-200 dark:border-red-800 " +
                     "text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20";
-                removeBtn.textContent = "Remove";
+                removeBtn.textContent = "Remover";
                 removeBtn.addEventListener("click", (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -1092,7 +1092,7 @@ export class UIService {
 
         // const tLabel = document.createElement("div");
         // tLabel.className = "text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-400";
-        // tLabel.textContent = "Translation";
+        // tLabel.textContent = "Tradução";
         //body.appendChild(tLabel);
 
         const tText = document.createElement("div");
@@ -1169,7 +1169,7 @@ export class UIService {
         }
     }
 
-    beginBookLoading(message = "Loading book and AI models…") {
+    beginBookLoading(message = "Carregando o livro e os modelos de IA…") {
         this.bookLoadingActive = true;
         if (this.bookLoadingStatus) this.bookLoadingStatus.textContent = message;
         if (this.bookLoadingOverlay) {
@@ -1207,7 +1207,7 @@ export class UIService {
         }
     }
 
-    beginPlaybackPreparation(message = "Preparing to read…") {
+    beginPlaybackPreparation(message = "Preparando a leitura…") {
         this.playbackPreparationActive = true;
         this.updatePlayButton(this.app.state.playerState.LOADING);
         this.showMessage(message, 0);

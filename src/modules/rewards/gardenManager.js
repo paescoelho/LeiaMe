@@ -131,7 +131,7 @@ export class GardenManager {
         const side = Math.max(1, Math.floor(Number(rows) || 1), Math.floor(Number(columns) || 1));
         const plot = {
             id: "garden-1",
-            name: String(name || "Reading Garden"),
+            name: String(name || "Jardim de leitura"),
             rows: side,
             columns: side,
             createdAt: timestamp,

@@ -168,24 +168,24 @@ class ReadingDigestServiceTests(unittest.TestCase):
         self.assertEqual(summary["periodPlants"][0]["reflectionText"], "This is my planting comment <script>")
         self.assertEqual(summary["periodPlants"][0]["documentTitle"], "My Book")
         subject, body = build_digest_email("PocketReader", window, summary)
-        self.assertIn("monthly", subject)
-        self.assertIn("15 minutes", body)
+        self.assertIn("mensal", subject)
+        self.assertIn("15 minutos", body)
         html = build_digest_html(
             "PocketReader",
             window,
             summary,
             "https://reader.example.com",
         )
-        self.assertIn("Your new trees", html)
+        self.assertIn("Suas novas árvores", html)
         self.assertIn("This is my planting comment", html)
         self.assertNotIn("My Book.PDF", html)
         self.assertNotIn("<script>", html)
-        self.assertIn("Return to your library", html)
+        self.assertIn("Voltar à sua biblioteca", html)
         self.assertIn("assets/rewards/trees/minute-sprout.svg", html)
         self.assertNotIn("assets/rewards/trees/reading-sapling.svg", html)
         self.assertIn("assets/icons/icon-192.png", html)
-        self.assertIn("#654ef0", html)
-        self.assertIn("#101922", html)
+        self.assertIn("#2f6f66", html)
+        self.assertIn("#1a1816", html)
         self.assertNotIn("🌳", html)
 
     def test_opt_out_and_delivery_claim_prevent_duplicate_email(self):

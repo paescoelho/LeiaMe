@@ -36,7 +36,7 @@ export class HighlightManager {
             state.savedHighlights.delete(activeIndex);
             this.app.highlightsStorage?.saveHighlightsForPdf?.({ allowEmpty: true });
             this._refreshHighlightsForCurrentDocument();
-            if (showMessage) this.app.ui?.showInfo?.("Highlight removed");
+            if (showMessage) this.app.ui?.showInfo?.("Destaque removido");
             return false;
         }
 
@@ -57,7 +57,7 @@ export class HighlightManager {
 
         this.app.highlightsStorage?.saveHighlightsForPdf?.();
         this._refreshHighlightsForCurrentDocument();
-        if (showMessage) this.app.ui?.showInfo?.("Highlight saved");
+        if (showMessage) this.app.ui?.showInfo?.("Destaque salvo");
         return true;
     }
 
@@ -74,7 +74,7 @@ export class HighlightManager {
         const existingComment = typeof existing?.comment === "string" ? existing.comment : "";
 
         const res = await this.app.ui?.showCommentPopup?.({
-            title: "Comment",
+            title: "Comentar",
             initialText: existingComment,
             allowRemove: existingComment.trim().length > 0,
         });
@@ -91,7 +91,7 @@ export class HighlightManager {
                 } else {
                     this.app.pdfRenderer?.updateHighlightFullDoc?.();
                 }
-                this.app.ui?.showInfo?.("Comment removed");
+                this.app.ui?.showInfo?.("Comentário removido");
             }
             return;
         }
@@ -116,7 +116,7 @@ export class HighlightManager {
         } else {
             this.app.pdfRenderer?.updateHighlightFullDoc?.();
         }
-        this.app.ui?.showInfo?.("Comment saved");
+        this.app.ui?.showInfo?.("Comentário salvo");
     }
 
     saveCurrentSentenceHighlight(color = null) {
@@ -180,7 +180,7 @@ export class HighlightManager {
     clearHighlight(sentenceIndex) {
         const { state } = this.app;
         if (!state.pdf) {
-            this.app.ui.showInfo("Load a document before highlight something.");
+            this.app.ui.showInfo("Abra um documento antes de destacar algo.");
             return;
         }
         state.savedHighlights.delete(sentenceIndex);
@@ -190,6 +190,6 @@ export class HighlightManager {
         } else {
             this.app.pdfRenderer.updateHighlightFullDoc();
         }
-        this.app.ui.showInfo("Highlight Saved");
+        this.app.ui.showInfo("Destaque salvo");
     }
 }

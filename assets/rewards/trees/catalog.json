@@ -1,230 +1,330 @@
 {
-    "schemaVersion": 1,
-    "trees": [
-        {
-            "id": "minute-sprout",
-            "name": "Minute Sprout",
-            "rarity": "starter",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/minute-sprout.svg",
-            "groundAnchor": 0.905,
-            "palette": ["#bbf7d0", "#22c55e", "#3f6f52"]
-        },
-        {
-            "id": "reading-sapling",
-            "name": "Reading Sapling",
-            "rarity": "common",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/reading-sapling.svg",
-            "groundAnchor": 0.926,
-            "palette": ["#a7d7c5", "#654ef0", "#4c7a67"]
-        },
-        {
-            "id": "aurora-pine",
-            "name": "Aurora Pine",
-            "rarity": "common",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/aurora-pine.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#67e8f9", "#8b5cf6", "#34d399"]
-        },
-        {
-            "id": "violet-blossom",
-            "name": "Violet Blossom Tree",
-            "rarity": "uncommon",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/violet-blossom.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#c4b5fd", "#7c3aed", "#4f7664"]
-        },
-        {
-            "id": "coral-canopy",
-            "name": "Coral Canopy",
-            "rarity": "uncommon",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/coral-canopy.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#ffe4e6", "#fb7185", "#f97316"]
-        },
-        {
-            "id": "crystal-willow",
-            "name": "Crystal Willow",
-            "rarity": "uncommon",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/crystal-willow.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#dbeafe", "#93c5fd", "#6366f1"]
-        },
-        {
-            "id": "sunset-maple",
-            "name": "Sunset Maple",
-            "rarity": "rare",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/sunset-maple.svg",
-            "groundAnchor": 0.927,
-            "palette": ["#fb923c", "#f43f5e", "#6b4f3b"]
-        },
-        {
-            "id": "ember-bonsai",
-            "name": "Ember Bonsai",
-            "rarity": "rare",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/ember-bonsai.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#fef08a", "#fb923c", "#dc2626"]
-        },
-        {
-            "id": "firefly-fig",
-            "name": "Firefly Fig",
-            "rarity": "rare",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/firefly-fig.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#fde047", "#6ee7b7", "#15803d"]
-        },
-        {
-            "id": "geometric-cypress",
-            "name": "Geometric Cypress",
-            "rarity": "rare",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/geometric-cypress.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#d1fae5", "#10b981", "#065f46"]
-        },
-        {
-            "id": "rainbow-baobab",
-            "name": "Rainbow Baobab",
-            "rarity": "epic",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/rainbow-baobab.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#fde047", "#f472b6", "#60a5fa"]
-        },
-        {
-            "id": "moonlit-oak",
-            "name": "Moonlit Oak",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/moonlit-oak.svg",
-            "groundAnchor": 0.932,
-            "palette": ["#93c5fd", "#654ef0", "#344c5c"]
-        },
-        {
-            "id": "starlight-birch",
-            "name": "Starlight Birch",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/starlight-birch.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#f8fafc", "#bfdbfe", "#2563eb"]
-        },
-        {
-            "id": "tea-cloud-tree",
-            "name": "Tea Cloud Tree",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/tea-cloud-tree.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#f7fee7", "#d9f99d", "#65a30d"]
-        },
-        {
-            "id": "wind-song-tree",
-            "name": "Wind Song Tree",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/wind-song-tree.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#ecfeff", "#99f6e4", "#818cf8"]
-        },
-        {
-            "id": "jequitiba-ancient",
-            "name": "Ancient Jequitibá",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/jequitiba-ancient.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#b9e4a8", "#8ed081", "#2f7d4a"]
-        },
-        {
-            "id": "ipe-amarelo-golden-rain",
-            "name": "Golden Ipê",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/ipe-amarelo-golden-rain.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#fff5b8", "#facc15", "#e59b0b"]
-        },
-        {
-            "id": "ipe-roxo-twilight",
-            "name": "Twilight Ipê-roxo",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/ipe-roxo-twilight.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#f3e8ff", "#a855f7", "#6d28d9"]
-        },
-        {
-            "id": "araucaria-parana",
-            "name": "Araucária-do-Paraná",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/araucaria-parana.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#91c99e", "#55a36f", "#1f5f45"]
-        },
-        {
-            "id": "pau-brasil-red-heart",
-            "name": "Pau-brasil Red Heart",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/pau-brasil-red-heart.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#f6d365", "#b83a2d", "#4d9b63"]
-        },
-        {
-            "id": "jabuticaba-night-orchard",
-            "name": "Jabuticaba Night Orchard",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/jabuticaba-night-orchard.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#d7b8ff", "#7c3aed", "#3b1768"]
-        },
-        {
-            "id": "embauba-silver-fan",
-            "name": "Silver Embaúba",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/embauba-silver-fan.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#d7e6d5", "#91b59c", "#5b9270"]
-        },
-        {
-            "id": "mangue-vermelho-tide",
-            "name": "Mangue-vermelho Tide Tree",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/mangue-vermelho-tide.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#d7f4f6", "#79c7d3", "#236b45"]
-        },
-        {
-            "id": "castanheira-amazonia",
-            "name": "Amazon Castanheira",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/castanheira-amazonia.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#a7d992", "#8dcc72", "#2f7746"]
-        },
-        {
-            "id": "buriti-sun-palm",
-            "name": "Buriti Sun Palm",
-            "rarity": "legendary",
-            "requiredCompletions": 1,
-            "image": "./assets/rewards/trees/buriti-sun-palm.svg",
-            "groundAnchor": 0.92,
-            "palette": ["#e7782f", "#78c96f", "#327e88"]
-        }
-    ]
+  "schemaVersion": 1,
+  "trees": [
+    {
+      "id": "minute-sprout",
+      "name": "Broto de um minuto",
+      "rarity": "starter",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/minute-sprout.svg",
+      "groundAnchor": 0.905,
+      "palette": [
+        "#bbf7d0",
+        "#22c55e",
+        "#3f6f52"
+      ]
+    },
+    {
+      "id": "reading-sapling",
+      "name": "Muda de leitura",
+      "rarity": "common",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/reading-sapling.svg",
+      "groundAnchor": 0.926,
+      "palette": [
+        "#a7d7c5",
+        "#654ef0",
+        "#4c7a67"
+      ]
+    },
+    {
+      "id": "aurora-pine",
+      "name": "Pinheiro-aurora",
+      "rarity": "common",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/aurora-pine.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#67e8f9",
+        "#8b5cf6",
+        "#34d399"
+      ]
+    },
+    {
+      "id": "violet-blossom",
+      "name": "Árvore de flor violeta",
+      "rarity": "uncommon",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/violet-blossom.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#c4b5fd",
+        "#7c3aed",
+        "#4f7664"
+      ]
+    },
+    {
+      "id": "coral-canopy",
+      "name": "Copa de coral",
+      "rarity": "uncommon",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/coral-canopy.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#ffe4e6",
+        "#fb7185",
+        "#f97316"
+      ]
+    },
+    {
+      "id": "crystal-willow",
+      "name": "Salgueiro de cristal",
+      "rarity": "uncommon",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/crystal-willow.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#dbeafe",
+        "#93c5fd",
+        "#6366f1"
+      ]
+    },
+    {
+      "id": "sunset-maple",
+      "name": "Bordo do pôr do sol",
+      "rarity": "rare",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/sunset-maple.svg",
+      "groundAnchor": 0.927,
+      "palette": [
+        "#fb923c",
+        "#f43f5e",
+        "#6b4f3b"
+      ]
+    },
+    {
+      "id": "ember-bonsai",
+      "name": "Bonsai em brasa",
+      "rarity": "rare",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/ember-bonsai.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#fef08a",
+        "#fb923c",
+        "#dc2626"
+      ]
+    },
+    {
+      "id": "firefly-fig",
+      "name": "Figueira dos vaga-lumes",
+      "rarity": "rare",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/firefly-fig.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#fde047",
+        "#6ee7b7",
+        "#15803d"
+      ]
+    },
+    {
+      "id": "geometric-cypress",
+      "name": "Cipreste geométrico",
+      "rarity": "rare",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/geometric-cypress.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#d1fae5",
+        "#10b981",
+        "#065f46"
+      ]
+    },
+    {
+      "id": "rainbow-baobab",
+      "name": "Baobá arco-íris",
+      "rarity": "epic",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/rainbow-baobab.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#fde047",
+        "#f472b6",
+        "#60a5fa"
+      ]
+    },
+    {
+      "id": "moonlit-oak",
+      "name": "Carvalho ao luar",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/moonlit-oak.svg",
+      "groundAnchor": 0.932,
+      "palette": [
+        "#93c5fd",
+        "#654ef0",
+        "#344c5c"
+      ]
+    },
+    {
+      "id": "starlight-birch",
+      "name": "Bétula estelar",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/starlight-birch.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#f8fafc",
+        "#bfdbfe",
+        "#2563eb"
+      ]
+    },
+    {
+      "id": "tea-cloud-tree",
+      "name": "Árvore nuvem-de-chá",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/tea-cloud-tree.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#f7fee7",
+        "#d9f99d",
+        "#65a30d"
+      ]
+    },
+    {
+      "id": "wind-song-tree",
+      "name": "Árvore canção-do-vento",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/wind-song-tree.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#ecfeff",
+        "#99f6e4",
+        "#818cf8"
+      ]
+    },
+    {
+      "id": "jequitiba-ancient",
+      "name": "Jequitibá ancestral",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/jequitiba-ancient.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#b9e4a8",
+        "#8ed081",
+        "#2f7d4a"
+      ]
+    },
+    {
+      "id": "ipe-amarelo-golden-rain",
+      "name": "Ipê-amarelo dourado",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/ipe-amarelo-golden-rain.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#fff5b8",
+        "#facc15",
+        "#e59b0b"
+      ]
+    },
+    {
+      "id": "ipe-roxo-twilight",
+      "name": "Ipê-roxo do crepúsculo",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/ipe-roxo-twilight.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#f3e8ff",
+        "#a855f7",
+        "#6d28d9"
+      ]
+    },
+    {
+      "id": "araucaria-parana",
+      "name": "Araucária-do-Paraná",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/araucaria-parana.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#91c99e",
+        "#55a36f",
+        "#1f5f45"
+      ]
+    },
+    {
+      "id": "pau-brasil-red-heart",
+      "name": "Pau-brasil coração vermelho",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/pau-brasil-red-heart.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#f6d365",
+        "#b83a2d",
+        "#4d9b63"
+      ]
+    },
+    {
+      "id": "jabuticaba-night-orchard",
+      "name": "Jabuticabeira noturna",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/jabuticaba-night-orchard.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#d7b8ff",
+        "#7c3aed",
+        "#3b1768"
+      ]
+    },
+    {
+      "id": "embauba-silver-fan",
+      "name": "Embaúba prateada",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/embauba-silver-fan.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#d7e6d5",
+        "#91b59c",
+        "#5b9270"
+      ]
+    },
+    {
+      "id": "mangue-vermelho-tide",
+      "name": "Mangue-vermelho da maré",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/mangue-vermelho-tide.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#d7f4f6",
+        "#79c7d3",
+        "#236b45"
+      ]
+    },
+    {
+      "id": "castanheira-amazonia",
+      "name": "Castanheira-da-amazônia",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/castanheira-amazonia.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#a7d992",
+        "#8dcc72",
+        "#2f7746"
+      ]
+    },
+    {
+      "id": "buriti-sun-palm",
+      "name": "Buriti do sol",
+      "rarity": "legendary",
+      "requiredCompletions": 1,
+      "image": "./assets/rewards/trees/buriti-sun-palm.svg",
+      "groundAnchor": 0.92,
+      "palette": [
+        "#e7782f",
+        "#78c96f",
+        "#327e88"
+      ]
+    }
+  ]
 }

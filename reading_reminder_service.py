@@ -29,12 +29,13 @@ class ReadingReminderService(ReadingDigestService):
                     continue
                 if not self.repository.claim_email_digest_delivery(email, "reminder", day):
                     continue
-                body = "A few minutes with a book can be a welcome break. Ready to read today?\n"
+                body = "Alguns minutos com um livro podem ser uma ótima pausa. Que tal ler hoje?\n"
                 if self.public_app_url:
-                    body += f"\nOpen your library: {self.public_app_url}\n"
-                body += "\nChange the time or turn reminders off in Settings → Reading reminders."
+                    body += f"\nAbra sua biblioteca: {self.public_app_url}\n"
+                body += "\nMude o horário ou desative os lembretes em Configurações → Lembretes de leitura."
+                body += "\n\n—\nLeiaMe · Rodrigo Paes Coelho Santana · paescoelho@gmail.com"
                 try:
-                    self.send_email(email, f"{self.app_name}: time to read", body)
+                    self.send_email(email, f"{self.app_name}: hora de ler", body)
                 except Exception:
                     self.repository.release_email_digest_delivery(email, "reminder", day)
                     raise

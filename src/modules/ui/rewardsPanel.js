@@ -1,4 +1,5 @@
 import { getPlantDefinition } from "../rewards/plantDefinitions.js";
+import { forestIconSvg } from "./forestIcon.js";
 
 export function getReadingProgressPercent(session) {
     const activeReadingMs = Math.max(0, Number(session?.activeReadingMs) || 0);
@@ -19,8 +20,8 @@ export class RewardsPanel {
         this.element = document.createElement("div");
         this.element.className = "hidden fixed top-2 right-1 z-30 items-center gap-2";
         this.element.innerHTML = `
-            <button type="button" data-garden aria-label="Open reading garden"
-                class="flex items-center justify-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-background-light/90 dark:bg-background-dark/90 p-2 text-sm font-semibold text-slate-700 dark:text-slate-200 backdrop-blur-md hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors">
+            <button type="button" data-garden aria-label="Abrir o jardim de leitura"
+                class="leiame-forest-button flex items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-background-light/90 dark:bg-background-dark/90 px-2.5 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 backdrop-blur-md hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors">
                 <span data-reading-progress class="reward-reading-progress hidden" aria-hidden="true">
                     <svg viewBox="0 0 40 40" focusable="false">
                         <rect class="reward-reading-progress__track" x="2" y="2" width="36" height="36" rx="8" pathLength="100"></rect>
@@ -32,10 +33,10 @@ export class RewardsPanel {
                     <span data-counting-dot class="reward-counting-dot reward-counting-dot--inactive" aria-hidden="true"></span>
                 </span>
                 <span data-home-garden class="flex items-center gap-1" aria-hidden="true">
-                    <span class="material-symbols-outlined text-xl">forest</span>
-                    <span data-tree-count class="text-xs">0</span>
+                    ${forestIconSvg({ size: 22 })}
+                    <span data-tree-count class="leiame-forest-count text-xs">0</span>
                 </span>
-                <span data-progress class="reward-visually-hidden">Garden</span>
+                <span data-progress class="reward-visually-hidden">Jardim</span>
             </button>
             <div class="reward-visually-hidden" data-accessible></div>
             <div class="reward-visually-hidden" aria-live="polite" aria-atomic="true"></div>`;
@@ -64,7 +65,7 @@ export class RewardsPanel {
         if (image.getAttribute("src") !== (currentDefinition?.image || "")) {
             image.src = currentDefinition?.image || "";
         }
-        image.alt = currentDefinition ? `${currentDefinition.name} being grown` : "";
+        image.alt = currentDefinition ? `${currentDefinition.name} crescendo` : "";
         const readingProgress = this.element.querySelector("[data-reading-progress]");
         readingProgress.classList.toggle("hidden", !documentOpen);
         const progressPercent = getReadingProgressPercent(session);
@@ -73,33 +74,33 @@ export class RewardsPanel {
         const countingDot = this.element.querySelector("[data-counting-dot]");
         countingDot.classList.toggle("reward-counting-dot--active", activelyCounting);
         countingDot.classList.toggle("reward-counting-dot--inactive", !activelyCounting);
-        countingDot.title = activelyCounting ? "Reading time is counting" : "Reading time is not counting";
+        countingDot.title = activelyCounting ? "O tempo de leitura está contando" : "O tempo de leitura não está contando";
         const elapsed = formatReadingProgressTime(session?.activeReadingMs);
         const goal = formatReadingProgressTime(session?.goalMs);
         gardenButton.setAttribute(
             "aria-label",
             documentOpen
-                ? `Open reading garden. Tree time ${elapsed} of ${goal}. Reading time is ${activelyCounting ? "counting" : "not counting"}.`
-                : "Open reading garden.",
+                ? `Abrir o jardim de leitura. Tempo da árvore ${elapsed} de ${goal}. O tempo de leitura ${activelyCounting ? "está contando" : "não está contando"}.`
+                : "Abrir o jardim de leitura.",
         );
         gardenButton.title = documentOpen
-            ? `Tree time: ${elapsed} / ${goal}`
-            : "Open reading garden";
+            ? `Tempo da árvore: ${elapsed} / ${goal}`
+            : "Abrir o jardim de leitura";
         this.element.querySelector("[data-progress]").textContent =
             currentDefinition
                 ? currentDefinition.name
                 : `${summary.maturePlantCount} ${summary.maturePlantCount === 1 ? "tree" : "trees"}`;
         this.element.querySelector("[data-accessible]").textContent = [
-            `Current plant: ${summary.currentPlant?.speciesId || "none"}.`,
-            `Current growth: ${currentPlantStage?.percent || 0} percent.`,
-            `Active session time: ${session?.activeReadingMs || 0} milliseconds.`,
-            `Session target: ${session?.goalMs || 0} milliseconds.`,
-            `Earned points: ${summary.totalPoints}.`,
-            `Mature plant count: ${summary.maturePlantCount}.`,
-            `Weekly reading days: ${summary.weeklyReadingDays}.`,
-            `Next unlock: ${summary.nextUnlock?.name || "all unlocked"}.`,
-            `Garden occupancy: ${summary.gardenOccupancy.occupied} of ${summary.gardenOccupancy.capacity}.`,
-            `Automatic tree level: ${summary.treeTier?.definition?.name || "Reading Sapling"}.`,
+            `Planta atual: ${summary.currentPlant?.speciesId || "nenhuma"}.`,
+            `Crescimento atual: ${currentPlantStage?.percent || 0} por cento.`,
+            `Tempo ativo da sessão: ${session?.activeReadingMs || 0} milissegundos.`,
+            `Meta da sessão: ${session?.goalMs || 0} milissegundos.`,
+            `Pontos ganhos: ${summary.totalPoints}.`,
+            `Árvores adultas: ${summary.maturePlantCount}.`,
+            `Dias de leitura na semana: ${summary.weeklyReadingDays}.`,
+            `Próximo desbloqueio: ${summary.nextUnlock?.name || "tudo desbloqueado"}.`,
+            `Ocupação do jardim: ${summary.gardenOccupancy.occupied} de ${summary.gardenOccupancy.capacity}.`,
+            `Nível da árvore: ${summary.treeTier?.definition?.name || "Muda de leitura"}.`,
         ].join(" ");
     }
 

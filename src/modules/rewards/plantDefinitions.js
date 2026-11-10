@@ -28,11 +28,11 @@ import { CONFIG } from "../../config.js";
  */
 
 const STAGES = Object.freeze([
-    Object.freeze({ id: "seed", threshold: 0, label: "Seed" }),
-    Object.freeze({ id: "sprout", threshold: 0.2, label: "Sprout" }),
-    Object.freeze({ id: "young", threshold: 0.45, label: "Young plant" }),
-    Object.freeze({ id: "flowering", threshold: 0.75, label: "Flowering plant" }),
-    Object.freeze({ id: "mature", threshold: 1, label: "Mature plant" }),
+    Object.freeze({ id: "seed", threshold: 0, label: "Semente" }),
+    Object.freeze({ id: "sprout", threshold: 0.2, label: "Broto" }),
+    Object.freeze({ id: "young", threshold: 0.45, label: "Planta jovem" }),
+    Object.freeze({ id: "flowering", threshold: 0.75, label: "Planta florida" }),
+    Object.freeze({ id: "mature", threshold: 1, label: "Planta adulta" }),
 ]);
 
 const plant = (definition) => Object.freeze({ ...definition, stages: STAGES });
@@ -48,12 +48,12 @@ export const AUTOMATIC_TREE_DEFINITIONS = Object.freeze(
 );
 
 const LEGACY_PLANT_DEFINITIONS = [
-    plant({ id: "daisy-patch", name: "Daisy Patch", rarity: "common", requiredPoints: 15, unlockPoints: 0, palette: ["#fffaf0", "#f6b93b", "#4d9b62"] }),
-    plant({ id: "lavender", name: "Lavender", rarity: "common", requiredPoints: 18, unlockPoints: 20, palette: ["#9b87db", "#6554a4", "#4f8d64"] }),
-    plant({ id: "fern", name: "Silver Fern", rarity: "uncommon", requiredPoints: 20, unlockPoints: 45, palette: ["#9ed49a", "#3f8158", "#285b45"] }),
-    plant({ id: "sunflower", name: "Sunwheel", rarity: "uncommon", requiredPoints: 24, unlockPoints: 75, palette: ["#f8c74f", "#7d532a", "#4c9660"] }),
-    plant({ id: "hydrangea", name: "Cloud Hydrangea", rarity: "rare", requiredPoints: 28, unlockPoints: 120, palette: ["#77a9dd", "#a683cc", "#477957"] }),
-    plant({ id: "flowering-tree", name: "Blossom Lantern Tree", rarity: "rare", requiredPoints: 34, unlockPoints: 180, palette: ["#f3a7ba", "#815b45", "#39704c"] }),
+    plant({ id: "daisy-patch", name: "Canteiro de margaridas", rarity: "common", requiredPoints: 15, unlockPoints: 0, palette: ["#fffaf0", "#f6b93b", "#4d9b62"] }),
+    plant({ id: "lavender", name: "Lavanda", rarity: "common", requiredPoints: 18, unlockPoints: 20, palette: ["#9b87db", "#6554a4", "#4f8d64"] }),
+    plant({ id: "fern", name: "Samambaia prateada", rarity: "uncommon", requiredPoints: 20, unlockPoints: 45, palette: ["#9ed49a", "#3f8158", "#285b45"] }),
+    plant({ id: "sunflower", name: "Girassol", rarity: "uncommon", requiredPoints: 24, unlockPoints: 75, palette: ["#f8c74f", "#7d532a", "#4c9660"] }),
+    plant({ id: "hydrangea", name: "Hortênsia-nuvem", rarity: "rare", requiredPoints: 28, unlockPoints: 120, palette: ["#77a9dd", "#a683cc", "#477957"] }),
+    plant({ id: "flowering-tree", name: "Árvore-lanterna florida", rarity: "rare", requiredPoints: 34, unlockPoints: 180, palette: ["#f3a7ba", "#815b45", "#39704c"] }),
 ];
 
 export const PLANT_DEFINITIONS = Object.freeze([

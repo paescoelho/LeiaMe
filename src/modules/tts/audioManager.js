@@ -65,7 +65,7 @@ export class AudioManager {
         if (!this._isContextActive(context)) return;
 
         if (!state.sentences.length) {
-            this.app.ui.showInfo("No readable sentences available in EPUB.");
+            this.app.ui.showInfo("Nenhuma frase legível no EPUB.");
             return;
         }
 
@@ -76,14 +76,14 @@ export class AudioManager {
 
         let sentence = state.currentSentence || state.sentences[state.currentSentenceIndex];
         if (!sentence) {
-            this.app.ui.showInfo("No readable sentences available.");
+            this.app.ui.showInfo("Nenhuma frase legível disponível.");
             return;
         }
 
         const ensuredSentence = await this._ensureSentenceHasSpeech(sentence);
         if (!this._isContextActive(context)) return;
         if (!ensuredSentence) {
-            this.app.ui.showInfo("No readable sentences available.");
+            this.app.ui.showInfo("Nenhuma frase legível disponível.");
             return;
         }
 
@@ -170,7 +170,7 @@ export class AudioManager {
             this.clearWordBoundaryTimers(sentence);
             this._pauseMediaBridge();
             if (this._isContextActive(context)) {
-                this.app.ui.showInfo("Playback error; resetting context.");
+                this.app.ui.showInfo("Erro na reprodução; reiniciando o áudio.");
             }
             try {
                 if (state.audioCtx) await state.audioCtx.close();
@@ -194,30 +194,30 @@ export class AudioManager {
         } catch (err) {
             console.error("Layout preparation failed:", err);
             if (this._isContextActive(context)) {
-                this.app.ui.showInfo("❌ Layout analysis failed. Cannot start playback.");
+                this.app.ui.showInfo("❌ A análise de layout falhou. Não é possível iniciar a leitura.");
             }
             return;
         }
         if (!this._isContextActive(context)) return;
 
         state.stopRequested = false;
-        this.app.ui.updatePlaybackPreparation("Phrases are ready. Preparing speech…");
+        this.app.ui.updatePlaybackPreparation("Frases prontas. Preparando a voz…");
 
         let sentence = state.currentSentence;
         if (!sentence) {
-            this.app.ui.showInfo("No readable sentences available.");
+            this.app.ui.showInfo("Nenhuma frase legível disponível.");
             return;
         }
 
         if (!sentence.isTextToRead) {
-            this.app.ui.showInfo("Selected sentence is outside readable layout regions.");
+            this.app.ui.showInfo("A frase escolhida está fora das áreas de leitura.");
             return;
         }
 
         const ensuredSentence = await this._ensureSentenceHasSpeech(sentence);
         if (!this._isContextActive(context)) return;
         if (!ensuredSentence) {
-            this.app.ui.showInfo("No readable sentences available.");
+            this.app.ui.showInfo("Nenhuma frase legível disponível.");
             return;
         }
 
@@ -306,7 +306,7 @@ export class AudioManager {
             this.clearWordBoundaryTimers(sentence);
             this._pauseMediaBridge();
             if (this._isContextActive(context)) {
-                this.app.ui.showInfo("Playback error; resetting context.");
+                this.app.ui.showInfo("Erro na reprodução; reiniciando o áudio.");
             }
             try {
                 if (state.audioCtx) await state.audioCtx.close();
@@ -329,7 +329,7 @@ export class AudioManager {
         if (!this._isContextActive(context)) return;
 
         if (!state.pdf && !state.epub) {
-            ui.showInfo("Load a document before playing.");
+            ui.showInfo("Abra um documento antes de tocar.");
             return;
         }
 
@@ -342,7 +342,7 @@ export class AudioManager {
         } catch (err) {
             console.error("Playback error:", err);
             if (this._isContextActive(context)) {
-                ui.showInfo("Playback error; resetting context.");
+                ui.showInfo("Erro na reprodução; reiniciando o áudio.");
             }
             try {
                 if (state.audioCtx) await state.audioCtx.close();
@@ -352,20 +352,20 @@ export class AudioManager {
     }
 
     _finishPlaybackPreparationForStart(context) {
-        this.app.ui.finishPlaybackPreparation(context?.continuesReading ? "" : "Reading started.");
+        this.app.ui.finishPlaybackPreparation(context?.continuesReading ? "" : "Leitura iniciada.");
     }
 
     _beginPlaybackPreparationForStart(context) {
         if (context?.continuesReading) return;
         const documentType = this.app.state.currentDocumentType;
         this.app.ui.beginPlaybackPreparation(
-            documentType === "pdf" ? "Checking page layout…" : "Preparing the text for reading…",
+            documentType === "pdf" ? "Verificando o layout da página…" : "Preparando o texto para leitura…",
         );
     }
 
     _updatePlaybackPreparationForStart(context) {
         if (!context?.continuesReading) {
-            this.app.ui.updatePlaybackPreparation("Starting reading…");
+            this.app.ui.updatePlaybackPreparation("Iniciando a leitura…");
         }
     }
 
@@ -411,7 +411,7 @@ export class AudioManager {
             if (status.required > 0 && status.ready >= status.required) return true;
 
             this.app.ui.updatePlaybackPreparation(
-                `Preparing speech buffer… ${status.ready}/${status.required || target} phrases ready`,
+                `Preparando a voz… ${status.ready}/${status.required || target} frases prontas`,
             );
             try {
                 await waitFor(() => {
@@ -605,9 +605,9 @@ export class AudioManager {
 
         this._waitingForAudioNoticeKey = key;
         const friendlyPosition = Number.isFinite(sentenceIndex) && sentenceIndex >= 0 ? sentenceIndex + 1 : null;
-        const prefix = state.autoAdvanceActive ? "Generating speech for the next phrase" : "Generating speech";
+        const prefix = state.autoAdvanceActive ? "Gerando a voz da próxima frase" : "Gerando a voz";
         const suffix = friendlyPosition ? ` (${friendlyPosition}/${state.sentences.length})` : "";
-        const message = `${prefix}${suffix}… Long passages can take a moment.`;
+        const message = `${prefix}${suffix}… Trechos longos podem demorar um pouco.`;
         if (this.app.ui.playbackPreparationActive) {
             this.app.ui.updatePlaybackPreparation(message);
         } else {
@@ -627,7 +627,7 @@ export class AudioManager {
         context.playbackRetryCount = (context.playbackRetryCount || 0) + 1;
         const browserRejectedPlayback = error?.name === "NotAllowedError" || error?.name === "NotSupportedError";
         if (browserRejectedPlayback && this._isContextActive(context)) {
-            this.app.ui.showInfo("iPadOS blocked audio startup. Tap Play once more.");
+            this.app.ui.showInfo("O iPadOS bloqueou o áudio. Toque em Tocar mais uma vez.");
         }
         return (
             !browserRejectedPlayback &&
@@ -962,7 +962,7 @@ export class AudioManager {
 
     async _activateMediaBridge(sentence, context) {
         let audio = this._mediaBridgeAudio;
-        if (!audio || !sentence?.audioBuffer) throw new Error("HTML audio player is unavailable");
+        if (!audio || !sentence?.audioBuffer) throw new Error("O player de áudio não está disponível");
 
         const prepared = this._preparedMediaBridge;
         const usePrepared = prepared?.sentenceIndex === this.app.state.currentSentenceIndex;
@@ -976,7 +976,7 @@ export class AudioManager {
             this._overlappingMediaElements ||= new Set();
             if (outgoingAudio) this._overlappingMediaElements.add(previousAudio);
             audio = usePrepared ? prepared.audio : this._createMediaBridgeElement();
-            if (!audio) throw new Error("Unable to create gapless HTML audio player");
+            if (!audio) throw new Error("Não foi possível criar o player de áudio");
             this._mediaBridgeAudio = audio;
             if (usePrepared) {
                 this._preparedMediaBridge = null;
@@ -985,7 +985,7 @@ export class AudioManager {
         }
 
         const blob = sentence.audioBlob || sentence.wavBlob || this._audioBufferToWavBlob(sentence.audioBuffer);
-        if (!blob) throw new Error("Unable to prepare HTML audio playback");
+        if (!blob) throw new Error("Não foi possível preparar o áudio");
 
         this._setMediaSessionMetadata(sentence);
         this._setMediaSessionPlaybackState("playing");
@@ -1116,7 +1116,7 @@ export class AudioManager {
         if (typeof navigator === "undefined" || !("mediaSession" in navigator)) return;
         const { state } = this.app;
         const sentenceNumber = Number.isFinite(state?.currentSentenceIndex) ? state.currentSentenceIndex + 1 : null;
-        const title = sentenceNumber ? `Sentence ${sentenceNumber}` : "Current sentence";
+        const title = sentenceNumber ? `Frase ${sentenceNumber}` : "Frase atual";
         const artworkSrc =
             typeof state?.bookCoverDataUrl === "string" && state.bookCoverDataUrl.startsWith("data:")
                 ? state.bookCoverDataUrl
@@ -1126,7 +1126,7 @@ export class AudioManager {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: "LeiaMe",
                 artist: "LeiaMe",
-                album: "Document Reader",
+                album: "Leitor de documentos",
                 artwork: [
                     {
                         src: artworkSrc,

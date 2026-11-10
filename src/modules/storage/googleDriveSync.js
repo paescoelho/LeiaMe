@@ -90,13 +90,13 @@ export class GoogleDriveSync {
             script.defer = true;
             script.dataset.pocketreaderGoogleIdentity = "true";
             script.onload = resolve;
-            script.onerror = () => reject(new Error("Unable to load Google Identity Services"));
+            script.onerror = () => reject(new Error("Não foi possível carregar o login do Google"));
             document.head.appendChild(script);
         });
     }
 
     async connect() {
-        if (!this.getClientId()) throw new Error("Google Drive is not configured by the app owner");
+        if (!this.getClientId()) throw new Error("O Google Drive não foi configurado neste app");
         await this._loadIdentityLibrary();
         return await new Promise((resolve, reject) => {
             this.tokenClient = google.accounts.oauth2.initTokenClient({
@@ -104,7 +104,7 @@ export class GoogleDriveSync {
                 scope: DRIVE_SCOPE,
                 callback: async (response) => {
                     if (response?.error || !response?.access_token) {
-                        reject(new Error(response?.error_description || response?.error || "Google authorization failed"));
+                        reject(new Error(response?.error_description || response?.error || "A autorização do Google falhou"));
                         return;
                     }
                     this.accessToken = response.access_token;
@@ -121,7 +121,7 @@ export class GoogleDriveSync {
                         resolve(true);
                     } catch (error) { reject(error); }
                 },
-                error_callback: (error) => reject(new Error(error?.message || error?.type || "Google authorization closed")),
+                error_callback: (error) => reject(new Error(error?.message || error?.type || "A autorização do Google foi fechada")),
             });
             const prompt = localStorage.getItem("config.googleDriveAuthorized") === "1" ? "" : "consent";
             this.tokenClient.requestAccessToken({ prompt });
@@ -142,17 +142,17 @@ export class GoogleDriveSync {
     }
 
     async _request(url, options = {}) {
-        if (!this.isConnected()) throw new Error("Google Drive authorization expired. Connect again.");
+        if (!this.isConnected()) throw new Error("A autorização do Google Drive expirou. Conecte de novo.");
         const headers = new Headers(options.headers || {});
         headers.set("Authorization", `Bearer ${this.accessToken}`);
         const response = await fetch(url, { ...options, headers });
         if (response.status === 401) {
             this.disconnect({ forget: false });
-            throw new Error("Google Drive authorization expired. Connect again.");
+            throw new Error("A autorização do Google Drive expirou. Conecte de novo.");
         }
         if (!response.ok) {
             const data = await response.json().catch(() => ({}));
-            const error = new Error(data?.error?.message || `Google Drive request failed (${response.status})`);
+            const error = new Error(data?.error?.message || `Falha na solicitação ao Google Drive (${response.status})`);
             error.status = response.status;
             throw error;
         }
@@ -239,7 +239,7 @@ export class GoogleDriveSync {
             body: JSON.stringify(metadata),
         });
         const uploadUrl = session.headers.get("Location");
-        if (!uploadUrl) throw new Error("Google Drive did not return a resumable upload URL");
+        if (!uploadUrl) throw new Error("O Google Drive não retornou o endereço de envio");
         const uploaded = await this._request(uploadUrl, {
             method: "PUT",
             headers: { "Content-Type": content.type || "application/octet-stream" },
@@ -278,12 +278,12 @@ export class GoogleDriveSync {
     }
 
     async importConvertedFolder(fileList) {
-        if (!this.isEnabled()) throw new Error("Connect Google Drive before importing");
+        if (!this.isEnabled()) throw new Error("Conecte o Google Drive antes de importar");
 
         const selectedFiles = [...(fileList || [])];
         const metadataFiles = selectedFiles.filter((file) => /\.pocketreader\.json$/i.test(file.name));
         if (!metadataFiles.length) {
-            throw new Error("No .pocketreader.json files found. Select one exported owner folder.");
+            throw new Error("Nenhum arquivo .pocketreader.json encontrado. Selecione uma pasta exportada.");
         }
 
         const documentsByPath = new Map();
@@ -332,7 +332,7 @@ export class GoogleDriveSync {
             if (!documentFile) throw new Error(`Document not found beside ${metadataFile.name}: ${actualFilename}`);
 
             this.app.ui?.showInfo?.(
-                `Google Drive import ${index + 1}/${metadataFiles.length} — ${actualFilename}`,
+                `Importando do Google Drive ${index + 1}/${metadataFiles.length} — ${actualFilename}`,
             );
 
             const existing = this.records.get(fileId);
@@ -394,8 +394,8 @@ export class GoogleDriveSync {
         }
 
         await this.syncFromServer({ showProgress: false });
-        const adoptedMessage = adoptedCount ? `; ${adoptedCount} existing Drive file${adoptedCount === 1 ? "" : "s"} adopted` : "";
-        this.app.ui?.showInfo?.(`Google Drive import complete: ${importedCount} file${importedCount === 1 ? "" : "s"}${adoptedMessage}`);
+        const adoptedMessage = adoptedCount ? `; ${adoptedCount} ${adoptedCount === 1 ? "arquivo já existente no Drive vinculado" : "arquivos já existentes no Drive vinculados"}` : "";
+        this.app.ui?.showInfo?.(`Importação do Google Drive concluída: ${importedCount} arquivo${importedCount === 1 ? "" : "s"}${adoptedMessage}`);
         return { importedCount, adoptedCount };
     }
 
@@ -426,13 +426,13 @@ export class GoogleDriveSync {
         const stored = format === "epub" ? await this.app.progressManager.loadEpubFromIndexedDB(fileId) : await this.app.progressManager.loadPdfFromIndexedDB(fileId);
         const blob = stored?.blob || (format === "pdf" ? state.currentPdfDescriptor?.fileObject : null);
         if (!(blob instanceof Blob)) return false;
-        this.app.ui?.showInfo?.(`Google Drive: uploading ${this._actualFilename(fileId)}...`);
+        this.app.ui?.showInfo?.(`Google Drive: enviando ${this._actualFilename(fileId)}...`);
         const uploaded = await this._createContentFile({ name: this._actualFilename(fileId), parents: [await this._ensureFolder()], appProperties: { pocketReaderKind: "document", pocketReaderVersion: "1" } }, blob);
         record.documentDriveId = uploaded.id;
         record.deleted = false;
         record.updatedAt = new Date().toISOString();
         await this._saveRecord(record);
-        this.app.ui?.showInfo?.(`Google Drive: uploaded ${this._actualFilename(fileId)}`);
+        this.app.ui?.showInfo?.(`Google Drive: enviado ${this._actualFilename(fileId)}`);
         return true;
     }
 
@@ -545,7 +545,7 @@ export class GoogleDriveSync {
             fileId: REWARDS_RECORD_ID,
             actualFilename: "reading-rewards",
             format: "rewards",
-            title: "Reading rewards",
+            title: "Recompensas de leitura",
             rewardSnapshot: snapshot,
             createdAt: record?.createdAt || now,
             updatedAt: now,
@@ -567,13 +567,13 @@ export class GoogleDriveSync {
             const record = await this._record(fileId);
             if (!record) return true;
             const name = record.actualFilename || this._actualFilename(fileId);
-            this.app.ui?.showInfo?.(`Google Drive: deleting ${name}...`);
+            this.app.ui?.showInfo?.(`Google Drive: apagando ${name}...`);
             if (record.documentDriveId) await this._request(`${DRIVE_API}/files/${encodeURIComponent(record.documentDriveId)}`, { method: "DELETE" });
             record.documentDriveId = null;
             record.deleted = true;
             record.deletedAt = new Date().toISOString();
             await this._saveRecord(record);
-            this.app.ui?.showInfo?.(`Google Drive: deleted ${name}`);
+            this.app.ui?.showInfo?.(`Google Drive: apagado ${name}`);
             return true;
         } catch (error) {
             console.warn("[GoogleDriveSync] Delete failed", error);
@@ -583,9 +583,9 @@ export class GoogleDriveSync {
 
     async restoreFile({ fileId, filename, format = "pdf", title = "", document = null, progressEntries = {} } = {}) {
         if (!this.isEnabled()) {
-            throw new Error("Reconnect Google Drive before restoring this document");
+            throw new Error("Reconecte o Google Drive antes de restaurar este documento");
         }
-        if (!fileId) throw new Error("A document id is required for Google Drive restore");
+        if (!fileId) throw new Error("É preciso o identificador do documento para restaurar do Google Drive");
 
         const normalizedFormat = format === "epub" ? "epub" : "pdf";
         const actualFilename = String(filename || this._actualFilename(fileId)).trim() || this._actualFilename(fileId);
@@ -612,9 +612,9 @@ export class GoogleDriveSync {
         }
 
         const blob = storedDocument?.blob || storedDocument;
-        if (!(blob instanceof Blob)) throw new Error("The restored document data is not available on this device");
+        if (!(blob instanceof Blob)) throw new Error("Os dados do documento restaurado não estão neste aparelho");
 
-        this.app.ui?.showInfo?.(`Google Drive: restoring ${actualFilename}...`);
+        this.app.ui?.showInfo?.(`Google Drive: restaurando ${actualFilename}...`);
         const uploaded = await this._createContentFile({
             name: actualFilename,
             parents: [await this._ensureFolder()],
@@ -643,22 +643,22 @@ export class GoogleDriveSync {
         delete record.deletedAt;
         if (previousFileId && previousFileId !== fileId) this.records.delete(previousFileId);
         await this._saveRecord(record);
-        this.app.ui?.showInfo?.(`Google Drive: restored ${actualFilename}`);
+        this.app.ui?.showInfo?.(`Google Drive: restaurado ${actualFilename}`);
         return true;
     }
 
     async pullServerStateUpdates() { return await this.syncFromServer(); }
     async syncFromServer({ showProgress = true } = {}) {
         if (!this.isEnabled()) return false;
-        if (showProgress) this.app.ui?.showInfo?.("Google Drive: checking for updates...");
+        if (showProgress) this.app.ui?.showInfo?.("Google Drive: verificando atualizações...");
         await this._loadIndex({ force: true });
         const progressMap = this.app.progressManager.getProgressMap();
         const records = [...this.records.values()];
         let downloadedCount = 0;
         let removedCount = 0;
         if (showProgress) {
-            const label = records.length === 1 ? "file" : "files";
-            this.app.ui?.showInfo?.(`Google Drive: syncing ${records.length} ${label}...`);
+            const label = records.length === 1 ? "arquivo" : "arquivos";
+            this.app.ui?.showInfo?.(`Google Drive: sincronizando ${records.length} ${label}...`);
         }
         for (const [index, record] of records.entries()) {
             if (record.fileId === REWARDS_RECORD_ID || record.format === "rewards") {
@@ -669,13 +669,13 @@ export class GoogleDriveSync {
             const format = record.format === "epub" ? "epub" : "pdf";
             const name = record.actualFilename || this._actualFilename(fileId);
             const compoundKey = `${format}::${fileId}`;
-            if (showProgress) this.app.ui?.showInfo?.(`Google Drive: file ${index + 1}/${records.length} — ${name}`);
+            if (showProgress) this.app.ui?.showInfo?.(`Google Drive: arquivo ${index + 1}/${records.length} — ${name}`);
             if (record.deleted) {
                 const stored = format === "epub"
                     ? await this.app.progressManager.loadEpubFromIndexedDB(fileId)
                     : await this.app.progressManager.loadPdfFromIndexedDB(fileId);
                 const hadLocalCopy = !!stored || Object.hasOwn(progressMap, compoundKey);
-                if (showProgress && hadLocalCopy) this.app.ui?.showInfo?.(`Google Drive: removing local copy — ${name}`);
+                if (showProgress && hadLocalCopy) this.app.ui?.showInfo?.(`Google Drive: removendo cópia local — ${name}`);
                 if (stored) {
                     try {
                         await this.app.progressManager.moveDocumentToTrash(fileId, format, {
@@ -698,14 +698,14 @@ export class GoogleDriveSync {
             }
             const stored = format === "epub" ? await this.app.progressManager.loadEpubFromIndexedDB(fileId) : await this.app.progressManager.loadPdfFromIndexedDB(fileId);
             if (!stored && record.documentDriveId) {
-                if (showProgress) this.app.ui?.showInfo?.(`Google Drive: downloading ${name}...`);
+                if (showProgress) this.app.ui?.showInfo?.(`Google Drive: baixando ${name}...`);
                 const response = await this._download(record.documentDriveId);
                 const blob = await response.blob();
                 const file = new File([blob], record.actualFilename, { type: blob.type || (format === "epub" ? "application/epub+zip" : "application/pdf"), lastModified: Date.now() });
                 if (format === "epub") await this.app.progressManager.saveEpubToIndexedDB(file, fileId);
                 else await this.app.progressManager.savePdfToIndexedDB(file, fileId);
                 downloadedCount++;
-                if (showProgress) this.app.ui?.showInfo?.(`Google Drive: downloaded ${downloadedCount} file${downloadedCount === 1 ? "" : "s"}`);
+                if (showProgress) this.app.ui?.showInfo?.(`Google Drive: ${downloadedCount} arquivo${downloadedCount === 1 ? "" : "s"} baixado${downloadedCount === 1 ? "" : "s"}`);
             }
             const entry = progressMap[compoundKey] || {};
             if (Number.isFinite(Number(record.position))) {
@@ -732,10 +732,10 @@ export class GoogleDriveSync {
             if (downloadedCount) details.push(`${downloadedCount} downloaded`);
             if (removedCount) details.push(`${removedCount} removed locally`);
             if (!records.length) {
-                this.app.ui?.showInfo?.("Google Drive: no registered LeiaMe files found");
+                this.app.ui?.showInfo?.("Google Drive: nenhum arquivo do LeiaMe encontrado");
             } else {
-                const suffix = details.length ? ` — ${details.join(", ")}` : " — files are up to date";
-                this.app.ui?.showInfo?.(`Google Drive sync complete${suffix}`);
+                const suffix = details.length ? ` — ${details.join(", ")}` : " — arquivos em dia";
+                this.app.ui?.showInfo?.(`Sincronização com o Google Drive concluída${suffix}`);
             }
         }
         return true;
@@ -760,11 +760,11 @@ export class GoogleDriveSync {
     }
     async checkServerAvailability() { return this.isConnected(); }
     async manualSync() {
-        this.app.ui?.showInfo?.("Syncing with Google Drive...");
+        this.app.ui?.showInfo?.("Sincronizando com o Google Drive...");
         await this.syncFromServer({ showProgress: true });
         await this.syncAll();
         await this.pullRewards();
-        this.app.ui?.showInfo?.("Google Drive sync complete");
+        this.app.ui?.showInfo?.("Sincronização com o Google Drive concluída");
     }
     startAutoSync() {
         this.stopAutoSync();

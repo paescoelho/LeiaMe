@@ -494,7 +494,7 @@ export class PDFLoader {
                 const existingPDF = await app.progressManager.loadPdfFromIndexedDB(state.currentPdfKey);
                 if (!existingPDF) {
                     await app.progressManager.savePdfToIndexedDB(file, state.currentPdfKey);
-                    this.app.ui.showInfo("PDF saved on IndexedDB!");
+                    this.app.ui.showInfo("PDF salvo neste aparelho!");
                 }
             }
 
@@ -543,7 +543,7 @@ export class PDFLoader {
             const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) });
             state.pdf = await loadingTask.promise;
             state.currentDocumentType = "pdf";
-            if (!state.pdf.numPages) throw new Error("PDF has no pages.");
+            if (!state.pdf.numPages) throw new Error("O PDF não tem páginas.");
 
             const localSavedPosition = state.currentPdfKey
                 ? app.progressManager.loadSavedPosition(state.currentPdfKey, "pdf")
@@ -557,9 +557,9 @@ export class PDFLoader {
             state.currentPdfPage = requestedPage;
 
             if (app.ui.playbackPreparationActive) {
-                app.ui.updatePlaybackPreparation(`Extracting text from page ${requestedPage}…`);
+                app.ui.updatePlaybackPreparation(`Extraindo o texto da página ${requestedPage}…`);
             } else {
-                app.ui.showMessage(`Extracting text from page ${requestedPage}…`, 0);
+                app.ui.showMessage(`Extraindo o texto da página ${requestedPage}…`, 0);
             }
 
             // Model initialization is independent of PDF text extraction. Start it
@@ -715,9 +715,9 @@ export class PDFLoader {
             }
             const renderPage = state.sentences[startIndex]?.pageNumber || activeResumePage || requestedPage;
             if (app.ui.playbackPreparationActive) {
-                app.ui.updatePlaybackPreparation(`Rendering page ${renderPage}…`);
+                app.ui.updatePlaybackPreparation(`Desenhando a página ${renderPage}…`);
             } else {
-                app.ui.showMessage(`Rendering page ${renderPage}…`, 0);
+                app.ui.showMessage(`Desenhando a página ${renderPage}…`, 0);
             }
             if (startIndex >= 0) {
                 await app.pdfRenderer.renderSentence(startIndex);
@@ -725,7 +725,7 @@ export class PDFLoader {
                 await app.pdfRenderer.ensurePageCanvasMounted(renderPage);
             }
             void this.prefetchNextPage(renderPage);
-            app.ui.showInfo(`Page ${renderPage} ready`);
+            app.ui.showInfo(`Página ${renderPage} pronta`);
             app.interactionHandler.setupInteractionListeners();
             app.controlsManager.reflectSelectedHighlightColor();
 
@@ -753,7 +753,7 @@ export class PDFLoader {
         const { state } = app;
 
         if (!state.pdf) {
-            throw new Error("No PDF is loaded.");
+            throw new Error("Nenhum PDF aberto.");
         }
 
         if (state.layoutFilteringReady && !forceRebuild) {
@@ -761,7 +761,7 @@ export class PDFLoader {
         }
 
         if (state.layoutFilteringPromise) {
-            app.ui.updatePlaybackPreparation?.("Analyzing page layout…");
+            app.ui.updatePlaybackPreparation?.("Analisando o layout da página…");
             return state.layoutFilteringPromise;
         }
 
@@ -815,9 +815,9 @@ export class PDFLoader {
 
         app.ui.updatePlayButton(state.playerState.LOADING);
         if (app.ui.playbackPreparationActive) {
-            app.ui.updatePlaybackPreparation("Analyzing page layout…");
+            app.ui.updatePlaybackPreparation("Analisando o layout da página…");
         } else {
-            app.ui.showMessage("Analyzing page layout…", 0);
+            app.ui.showMessage("Analisando o layout da página…", 0);
         }
 
         const targetPages = new Set();
@@ -834,13 +834,13 @@ export class PDFLoader {
         }
 
         if (app.ui.playbackPreparationActive) {
-            app.ui.updatePlaybackPreparation("Layout detection complete. Building readable phrases…");
+            app.ui.updatePlaybackPreparation("Layout analisado. Montando as frases para leitura…");
         } else {
-            app.ui.showMessage("Layout detection complete. Building readable phrases…", 0);
+            app.ui.showMessage("Layout analisado. Montando as frases para leitura…", 0);
         }
 
         if (!state.sentences.length) {
-            app.ui.showInfo("No sentences available in document.");
+            app.ui.showInfo("Nenhuma frase disponível no documento.");
             state.currentSentenceIndex = -1;
             state.hoveredSentenceIndex = -1;
             state.layoutFilteringReady = true;
@@ -889,17 +889,17 @@ export class PDFLoader {
 
         if (resolvedIndex >= 0) {
             if (app.ui.playbackPreparationActive) {
-                app.ui.updatePlaybackPreparation("Rendering readable phrases…");
+                app.ui.updatePlaybackPreparation("Preparando as frases…");
             } else {
-                app.ui.showMessage("Rendering readable phrases…", 0);
+                app.ui.showMessage("Preparando as frases…", 0);
             }
             await app.pdfRenderer.renderSentence(resolvedIndex, { skipTTS: skipAudio });
             state.layoutFilteringReady = true;
             if (app.ui.playbackPreparationActive) {
-                app.ui.updatePlaybackPreparation("Phrases are ready. Preparing speech…");
+                app.ui.updatePlaybackPreparation("Frases prontas. Preparando a voz…");
             } else {
                 app.ui.showMessage(
-                    `Layout ready. Sentence ${state.currentSentenceIndex + 1} of ${state.sentences.length} is ready.`,
+                    `Layout pronto. Frase ${state.currentSentenceIndex + 1} de ${state.sentences.length} pronta.`,
                     3500,
                 );
             }
@@ -907,7 +907,7 @@ export class PDFLoader {
             state.currentSentenceIndex = -1;
             state.hoveredSentenceIndex = -1;
             state.layoutFilteringReady = true;
-            app.ui.showInfo("No readable sentences found after layout filtering.");
+            app.ui.showInfo("Nenhuma frase legível encontrada depois da análise de layout.");
         }
         // app.ui.updatePlayButton(state.playerState.DONE);
     }

@@ -28,8 +28,8 @@ export function createLocalTrashEntry({
     const trashId = createDocumentTrashId(key, format);
     const progress = progressEntries[`${format}::${key}`] || progressEntries[key] || null;
     const resolvedFilename =
-        String(filename || documentRecord?.name || extractActualDocumentFilename(key) || "Untitled").trim() ||
-        "Untitled";
+        String(filename || documentRecord?.name || extractActualDocumentFilename(key) || "Sem título").trim() ||
+        "Sem título";
     return {
         trashId,
         storageKey: key,
@@ -416,7 +416,7 @@ export class ProgressManager {
      * active localStorage entries are removed after the IndexedDB commit.
      */
     async moveDocumentToTrash(key, docType = "pdf", metadata = {}) {
-        if (!key) throw new Error("A document key is required");
+        if (!key) throw new Error("É preciso informar o documento");
         const format = docType === "epub" ? "epub" : "pdf";
         const trashId = createDocumentTrashId(key, format);
         const sourceStoreName = format === "epub" ? "epubs" : "pdfs";
@@ -482,7 +482,7 @@ export class ProgressManager {
                 reject(error);
             };
             tx.onabort = () => {
-                const error = missing ? new Error("The local document could not be found") : tx.error;
+                const error = missing ? new Error("O documento não foi encontrado neste aparelho") : tx.error;
                 db.close();
                 reject(error);
             };
@@ -510,7 +510,7 @@ export class ProgressManager {
     }
 
     async restoreDocumentFromTrash(trashId) {
-        if (!trashId) throw new Error("A trash id is required");
+        if (!trashId) throw new Error("É preciso informar o item da lixeira");
         const db = await this._openDb();
         const entry = await new Promise((resolve, reject) => {
             const tx = db.transaction(["pdfs", "epubs", DOCUMENT_TRASH_STORE], "readwrite");
@@ -540,7 +540,7 @@ export class ProgressManager {
                 reject(error);
             };
             tx.onabort = () => {
-                const error = missing ? new Error("The trashed document could not be found") : tx.error;
+                const error = missing ? new Error("O documento não foi encontrado na lixeira") : tx.error;
                 db.close();
                 reject(error);
             };
@@ -568,7 +568,7 @@ export class ProgressManager {
     }
 
     async updateTrashDocument(trashId, changes = {}) {
-        if (!trashId) throw new Error("A trash id is required");
+        if (!trashId) throw new Error("É preciso informar o item da lixeira");
         const db = await this._openDb();
         return new Promise((resolve, reject) => {
             const tx = db.transaction(DOCUMENT_TRASH_STORE, "readwrite");

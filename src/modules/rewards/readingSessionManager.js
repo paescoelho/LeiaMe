@@ -88,21 +88,21 @@ export class ReadingSessionManager {
     async start({ goalMinutes, speciesId, automatic = false }) {
         const document = this.getDocument?.();
         if (!document?.id || !["pdf", "epub"].includes(document.type)) {
-            throw new Error("Open a PDF or EPUB before starting a reading session.");
+            throw new Error("Abra um PDF ou EPUB antes de começar uma sessão de leitura.");
         }
         const goal = Number(goalMinutes);
-        if (!Number.isFinite(goal) || goal <= 0) throw new Error("Unsupported tree goal.");
-        if (!automatic && !this.config.sessionGoalsMinutes.includes(goal)) throw new Error("Unsupported session goal.");
+        if (!Number.isFinite(goal) || goal <= 0) throw new Error("Meta de árvore não suportada.");
+        if (!automatic && !this.config.sessionGoalsMinutes.includes(goal)) throw new Error("Meta de sessão não suportada.");
         const state = this.storage.getSnapshot();
-        if (state.currentSession) throw new Error("A reading session is already in progress.");
+        if (state.currentSession) throw new Error("Já existe uma sessão de leitura em andamento.");
         if (!automatic) {
             const totalPoints = sumLedger(state.rewardLedger);
             const selected = availablePlantDefinitions(totalPoints, state.plantUnlocks)
                 .find((definition) => definition.id === speciesId);
-            if (!selected || selected.locked) throw new Error("That plant species is still locked.");
+            if (!selected || selected.locked) throw new Error("Essa espécie ainda está bloqueada.");
         }
         const sessionId = uuid(this.randomUUID);
-        if (!this.lock.acquire(sessionId)) throw new Error("Another tab already has an active reading session.");
+        if (!this.lock.acquire(sessionId)) throw new Error("Outra aba já tem uma sessão de leitura ativa.");
         const timestamp = this.now();
         const previousTimestamp = state.lastValidReadingTimestamp;
         let session;
@@ -240,7 +240,7 @@ export class ReadingSessionManager {
         const session = this.getCurrentSession();
         if (!session || ![SESSION_STATES.PAUSED, SESSION_STATES.IDLE_TIMEOUT].includes(session.state)) return null;
         if (!this.lock.sessionId && !this.lock.acquire(session.id)) {
-            throw new Error("Another tab already has an active reading session.");
+            throw new Error("Outra aba já tem uma sessão de leitura ativa.");
         }
         await this._setState(session.id, SESSION_STATES.ACTIVE, { pauseReason: null });
         this.lifecycleState = SESSION_STATES.ACTIVE;
@@ -253,7 +253,7 @@ export class ReadingSessionManager {
     async _activateRuntimeSession(session) {
         if (!session || session.state !== SESSION_STATES.ACTIVE) return session;
         if (!this.lock.sessionId && !this.lock.acquire(session.id)) {
-            throw new Error("Another tab already has an active reading session.");
+            throw new Error("Outra aba já tem uma sessão de leitura ativa.");
         }
         this.lifecycleState = SESSION_STATES.ACTIVE;
         this.tracker.setPaused(false);
@@ -263,7 +263,7 @@ export class ReadingSessionManager {
 
     async complete() {
         const session = this.getCurrentSession();
-        if (!session || session.activeReadingMs < session.goalMs) throw new Error("The session goal has not been reached.");
+        if (!session || session.activeReadingMs < session.goalMs) throw new Error("A meta da sessão ainda não foi atingida.");
         this.tracker.checkpoint();
         this.tracker.setPaused(true);
         await this.deltaQueue;

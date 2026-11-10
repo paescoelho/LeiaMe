@@ -49,7 +49,7 @@ export class EPUBLoader {
         const state = this.app.state;
 
         try {
-            this.app.ui.showInfo("Loading EPUB...");
+            this.app.ui.showInfo("Carregando EPUB...");
             this.app.ui.updatePlayButton(state.playerState.LOADING);
 
             const pdfDocContainer = document.getElementById("pdf-doc-container");
@@ -159,7 +159,7 @@ export class EPUBLoader {
                         const stored = await this.app.progressManager.loadEpubFromIndexedDB(computedKey);
                         if (!stored) {
                             await this.app.progressManager.saveEpubToIndexedDB(input, computedKey);
-                            this.app.ui.showInfo("EPUB saved on IndexedDB!");
+                            this.app.ui.showInfo("EPUB salvo neste aparelho!");
                         }
                     } catch (dbError) {
                         console.debug("[EPUBLoader] Unable to persist EPUB in IndexedDB", dbError);
@@ -256,7 +256,7 @@ export class EPUBLoader {
                 await this.renderer.renderSentence(startIndex, { suppressScroll: true });
                 await this.renderer.updateHighlightDisplay();
             } else {
-                this.app.ui.showInfo("No readable text detected in EPUB.");
+                this.app.ui.showInfo("Nenhum texto legível encontrado no EPUB.");
             }
 
             this.renderer.setupInteractionListeners();
@@ -264,10 +264,10 @@ export class EPUBLoader {
             this.app.controlsManager.reflectSelectedHighlightColor();
 
             this.app.ui.updatePlayButton(state.playerState.DONE);
-            this.app.ui.showInfo("EPUB loaded successfully.");
+            this.app.ui.showInfo("EPUB carregado.");
         } catch (error) {
             console.error("EPUB load error", error);
-            this.app.ui.showInfo(`Error loading EPUB: ${error.message}`);
+            this.app.ui.showInfo(`Erro ao carregar o EPUB: ${error.message}`);
             this.reset();
             throw error;
         } finally {
@@ -600,7 +600,7 @@ export class EPUBLoader {
 
     _resolveSource(input) {
         if (!input) {
-            throw new Error("No EPUB source provided.");
+            throw new Error("Nenhum EPUB informado.");
         }
         if (input instanceof File) {
             this._currentObjectURL = URL.createObjectURL(input);
@@ -620,7 +620,7 @@ export class EPUBLoader {
             this._currentObjectURL = URL.createObjectURL(blob);
             return this._currentObjectURL;
         }
-        throw new Error("Unsupported EPUB source type.");
+        throw new Error("Tipo de EPUB não suportado.");
     }
 
     _releaseObjectURL() {

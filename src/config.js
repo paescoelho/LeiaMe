@@ -25,10 +25,10 @@ export function normalizeInferenceBackend(value, fallback = INFERENCE_BACKENDS.W
 //│              render.js              │
 //╰─────────────────────────────────────╯
 export const CONFIG = {
-    VERSION_MAJOR: 0,
-    VERSION_MINOR: 49,
-    VERSION_PATCH: 2,
-    VERSION_BUILD: 1,
+    VERSION_MAJOR: 1,
+    VERSION_MINOR: 2,
+    VERSION_PATCH: 0,
+    VERSION_BUILD: 0,
 
     // Rendering
     ENABLE_WORD_HIGHLIGHT: true,
@@ -93,7 +93,7 @@ export const CONFIG = {
         "zh_CN-huayan-medium",
         "en_US-lessac-high",
     ],
-    DEFAULT_PIPER_VOICE: "en_US-lessac-medium",
+    DEFAULT_PIPER_VOICE: "pt_BR-faber-medium",
 
     // Responsive
     MOBILE_BREAKPOINT: 680,

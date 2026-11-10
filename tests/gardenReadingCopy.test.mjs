@@ -87,15 +87,15 @@ test("historic trees and missing sessions have no fabricated reading text", () =
     dialog._showDetails({ plant });
     assert.equal(elements["[data-copy]"].disabled, true);
     assert.equal(elements["[data-copy]"].classList.contains("hidden"), false);
-    assert.equal(elements["[data-copy-label]"].textContent, "No recorded text");
+    assert.equal(elements["[data-copy-label]"].textContent, "Nenhum texto registrado");
 });
 
 test("selecting a tree enables copying and selecting an empty cell hides it", () => {
     const { dialog, elements, plant } = createDialog();
     dialog._showDetails({ plant });
     assert.equal(elements["[data-copy]"].disabled, false);
-    assert.equal(elements["[data-copy-label]"].textContent, "Copy reading text");
-    elements["[data-copy-status]"].textContent = "Reading text copied.";
+    assert.equal(elements["[data-copy-label]"].textContent, "Copiar o texto lido");
+    elements["[data-copy-status]"].textContent = "Texto lido copiado.";
     dialog._showDetails({ cell: { x: 1, y: 2 } });
     assert.equal(dialog.selectedPlantId, null);
     assert.equal(elements["[data-copy]"].classList.contains("hidden"), true);
@@ -108,7 +108,7 @@ test("copying sends all recorded phrases to the clipboard and reports success", 
     mockGlobal(t, "navigator", { clipboard: { writeText: async (text) => { copiedText = text; } } });
     assert.equal(await dialog._copySelectedTreeText(), true);
     assert.equal(copiedText, "The first phrase.\n\nThe next phrase.");
-    assert.equal(elements["[data-copy-status]"].textContent, "Reading text copied.");
+    assert.equal(elements["[data-copy-status]"].textContent, "Texto lido copiado.");
     assert.equal(elements["[data-copy]"].disabled, false);
 });
 
@@ -154,7 +154,7 @@ test("failed copying reports failure and permits trying again", async (t) => {
     });
     dialog.dialog.appendChild = () => {};
     assert.equal(await dialog._copySelectedTreeText(), false);
-    assert.equal(elements["[data-copy-status]"].textContent, "Could not copy reading text. Please try again.");
+    assert.equal(elements["[data-copy-status]"].textContent, "Não foi possível copiar o texto. Tente de novo.");
     assert.equal(elements["[data-copy]"].disabled, false);
 });
 
@@ -183,7 +183,7 @@ test("a newly earned tree copies its completed interval before saving the note",
     assert.equal(elements["[data-copy]"].disabled, false);
     assert.equal(await dialog._copyReadingText(), true);
     assert.equal(copiedText, "A completed interval.\n\nIts final phrase.");
-    assert.equal(elements["[data-copy-status]"].textContent, "Reading text copied.");
+    assert.equal(elements["[data-copy-status]"].textContent, "Texto lido copiado.");
     assert.equal(elements["[data-copy]"].disabled, false);
 });
 
@@ -194,5 +194,5 @@ test("pending historic notes explain when reading text was not recorded", () => 
     dialog.session = { id: "old-session" };
     dialog._updateCopyButton();
     assert.equal(elements["[data-copy]"].disabled, true);
-    assert.equal(elements["[data-copy-label]"].textContent, "No recorded text");
+    assert.equal(elements["[data-copy-label]"].textContent, "Nenhum texto registrado");
 });
