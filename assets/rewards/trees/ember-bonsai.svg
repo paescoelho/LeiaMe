@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 205" role="img" aria-labelledby="title description">
-  <title id="title">Ember Bonsai</title><desc id="description">A windswept bonsai crowned with ember-red foliage.</desc>
-  <defs><linearGradient id="ember" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fef08a"/><stop offset=".45" stop-color="#fb923c"/><stop offset="1" stop-color="#dc2626"/></linearGradient></defs>
-  <ellipse cx="95" cy="188" rx="55" ry="10" fill="#111827" opacity=".18"/>
-  <path d="M55 184h80l-10 13H65z" fill="#475569"/><path d="M66 175h58l7 12H59z" fill="#64748b"/>
-  <path d="M91 175c-13-34-6-60 13-82 11-13 14-29 11-45 18 26 6 50-9 66-12 13-14 34-4 61z" fill="#5f4638"/>
-  <path d="M103 101c-24-15-43-19-60-12m61-12c21-16 39-19 54-12m-54 40c-17 1-30 8-40 20" fill="none" stroke="#5f4638" stroke-width="9" stroke-linecap="round"/>
-  <g fill="url(#ember)"><ellipse cx="45" cy="82" rx="29" ry="18"/><ellipse cx="75" cy="66" rx="31" ry="20"/><ellipse cx="119" cy="52" rx="34" ry="23"/><ellipse cx="153" cy="63" rx="25" ry="17"/><ellipse cx="67" cy="119" rx="25" ry="17"/></g>
-</svg>

@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 230" role="img" aria-labelledby="title description">
-<title id="title">Araucária-do-Paraná</title><desc id="description">A stylized Brazilian araucaria with a tall straight trunk and umbrella-like whorled crown.</desc>
-<defs><linearGradient id="pine" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#55a36f"/><stop offset="1" stop-color="#1f5f45"/></linearGradient></defs>
-<ellipse cx="95" cy="216" rx="55" ry="10" fill="#193c2c" opacity=".17"/>
-<path d="M88 211 94 57l9 154z" fill="#79543a"/>
-<g stroke="#735039" stroke-width="7" stroke-linecap="round"><path d="M97 82 48 67m49 15 48-18M97 108 38 101m59 7 58-10M96 137 31 139m65-2 67-3"/></g>
-<g fill="url(#pine)"><path d="M37 57c20-15 42-16 59-2-22 14-42 15-59 2z"/><path d="M94 52c19-17 43-18 62-4-20 16-42 18-62 4z"/><path d="M26 91c25-16 49-15 70 1-27 15-50 15-70-1z"/><path d="M95 88c24-18 50-18 72-2-24 17-49 18-72 2z"/><path d="M19 128c28-15 55-13 77 5-29 13-55 11-77-5z"/><path d="M96 128c29-16 58-14 78 4-29 14-56 12-78-4z"/><circle cx="98" cy="39" r="23"/></g>
-<g fill="#91c99e"><circle cx="54" cy="58" r="5"/><circle cx="137" cy="52" r="5"/><circle cx="61" cy="96" r="5"/><circle cx="142" cy="93" r="5"/></g>
-</svg>

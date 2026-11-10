@@ -1,4 +1,4 @@
-const APP_VERSION = "1.2";
+const APP_VERSION = "1.2.1";
 const IDB_VERSION = 1;
 const cacheName = `LeiaMe-v${APP_VERSION}`;
 const runtimeCache = `LeiaMe-runtime-v${APP_VERSION}`;
@@ -26,8 +26,6 @@ const resolvePath = (path) => {
 const staticFiles = [
     "/",
     "/index.html",
-    "/privacy.html",
-    "/terms.html",
     "/manifest.webmanifest",
     "/threads.js",
 
@@ -45,32 +43,6 @@ const staticFiles = [
     "/assets/icons/mask.svg",
     "/assets/images/default-user.png",
     "/assets/tts-voices.json",
-    "/assets/rewards/trees/catalog.json",
-    "/assets/rewards/trees/minute-sprout.svg",
-    "/assets/rewards/trees/reading-sapling.svg",
-    "/assets/rewards/trees/aurora-pine.svg",
-    "/assets/rewards/trees/violet-blossom.svg",
-    "/assets/rewards/trees/coral-canopy.svg",
-    "/assets/rewards/trees/crystal-willow.svg",
-    "/assets/rewards/trees/sunset-maple.svg",
-    "/assets/rewards/trees/ember-bonsai.svg",
-    "/assets/rewards/trees/firefly-fig.svg",
-    "/assets/rewards/trees/geometric-cypress.svg",
-    "/assets/rewards/trees/rainbow-baobab.svg",
-    "/assets/rewards/trees/moonlit-oak.svg",
-    "/assets/rewards/trees/starlight-birch.svg",
-    "/assets/rewards/trees/tea-cloud-tree.svg",
-    "/assets/rewards/trees/wind-song-tree.svg",
-    "/assets/rewards/trees/jequitiba-ancient.svg",
-    "/assets/rewards/trees/ipe-amarelo-golden-rain.svg",
-    "/assets/rewards/trees/ipe-roxo-twilight.svg",
-    "/assets/rewards/trees/araucaria-parana.svg",
-    "/assets/rewards/trees/pau-brasil-red-heart.svg",
-    "/assets/rewards/trees/jabuticaba-night-orchard.svg",
-    "/assets/rewards/trees/embauba-silver-fan.svg",
-    "/assets/rewards/trees/mangue-vermelho-tide.svg",
-    "/assets/rewards/trees/castanheira-amazonia.svg",
-    "/assets/rewards/trees/buriti-sun-palm.svg",
     "/assets/screenshots/screenshot1.png",
     "/assets/screenshots/screenshot2.png",
 
@@ -79,7 +51,6 @@ const staticFiles = [
     "/src/css/epub.css",
     "/src/css/input.css",
     "/src/css/output.css",
-    "/src/css/rewards.css",
 
     // JS principais
     "/src/app.js",
@@ -109,19 +80,6 @@ const staticFiles = [
     "/src/modules/storage/exportManager.js",
     "/src/modules/storage/highlightsStorage.js",
     "/src/modules/storage/progressManager.js",
-    "/src/modules/rewards/activeReadingTracker.js",
-    "/src/modules/rewards/crossTabSessionLock.js",
-    "/src/modules/rewards/gardenManager.js",
-    "/src/modules/rewards/gardenRenderer.js",
-    "/src/modules/rewards/index.js",
-    "/src/modules/rewards/plantDefinitions.js",
-    "/src/modules/rewards/readingEventAdapter.js",
-    "/src/modules/rewards/readingSessionManager.js",
-    "/src/modules/rewards/rewardDefinitions.js",
-    "/src/modules/rewards/rewardEngine.js",
-    "/src/modules/rewards/rewardMigrations.js",
-    "/src/modules/rewards/rewardStorage.js",
-    "/src/modules/rewards/streakManager.js",
     "/src/modules/tts/audioManager.js",
     "/src/modules/tts/piper-client.js",
     "/src/modules/tts/piper.worker.js",
@@ -130,18 +88,14 @@ const staticFiles = [
     "/src/modules/tts/readingSpeed.js",
     "/src/modules/tts/synthesisQueue.js",
     "/src/modules/tts/ttsEngine.js",
+    "/src/modules/tts/audioExporter.js",
+    "/src/modules/tts/mp3EncoderWorker.js",
+    "/thirdparty/lame/lame.min.js",
     "/src/modules/tts/wordHighlighter.js",
     "/src/modules/ui/controlsManager.js",
     "/src/modules/ui/highlightManager.js",
     "/src/modules/ui/interactionHandler.js",
     "/src/modules/ui/uiService.js",
-    "/src/modules/ui/gardenDialog.js",
-    "/src/modules/ui/reflectionDialog.js",
-    "/src/modules/ui/readingTextClipboard.js",
-    "/src/modules/ui/rewardsPanel.js",
-    "/src/modules/ui/forestIcon.js",
-    "/src/modules/ui/sessionProgressWidget.js",
-    "/src/modules/ui/sessionSetupDialog.js",
     "/src/modules/ui/trashDialog.js",
     "/src/modules/utils/ariaManager.js",
     "/src/modules/utils/coordinates.js",
@@ -501,7 +455,6 @@ const isAppShellRequest = (urlObj) => {
     if (path === "/" || path.endsWith("/index.html")) return true;
     if (path.endsWith("/sw.js") || path.endsWith("/threads.js") || path.endsWith("/manifest.webmanifest")) return true;
     if (path.includes("/src/")) return true;
-    if (path.endsWith("/assets/rewards/trees/catalog.json")) return true;
     return false;
 };
 

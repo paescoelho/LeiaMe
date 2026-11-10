@@ -32,9 +32,9 @@ import { UIService } from "./modules/ui/uiService.js";
 import { ProgressManager } from "./modules/storage/progressManager.js";
 import { HighlightsStorage } from "./modules/storage/highlightsStorage.js";
 import { ExportManager } from "./modules/storage/exportManager.js";
+import { AudioExporter } from "./modules/tts/audioExporter.js";
 import { PDFThumbnailCache } from "./modules/storage/pdfThumbnailCache.js";
 import { SyncManager } from "./modules/storage/syncManager.js";
-import { initializeRewards } from "./modules/rewards/index.js";
 
 export class PDFTTSApp {
     constructor() {
@@ -68,6 +68,7 @@ export class PDFTTSApp {
         this.progressManager = new ProgressManager(this);
         this.highlightsStorage = new HighlightsStorage(this);
         this.exportManager = new ExportManager(this);
+        this.audioExporter = new AudioExporter(this);
         this.pdfThumbnailCache = new PDFThumbnailCache(this);
         // Keep the historic property name while routing storage through the
         // selected self-host or Google Drive backend.
@@ -1095,7 +1096,6 @@ export class PDFTTSApp {
         this.viewportManager.start();
         this._handleViewportHeightChange(this.viewportManager.getCurrentHeight());
         await this._ensureAriaRegions();
-        await initializeRewards(this);
         await this._loadInitialPDF();
     }
 

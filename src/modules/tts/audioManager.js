@@ -1000,7 +1000,7 @@ export class AudioManager {
 
             this._mediaBridgeObjectUrl = usePrepared ? prepared.objectUrl : URL.createObjectURL(blob);
             if (!usePrepared) {
-                audio._pocketReaderObjectUrl = this._mediaBridgeObjectUrl;
+                audio._leiameObjectUrl = this._mediaBridgeObjectUrl;
                 audio.src = this._mediaBridgeObjectUrl;
             }
             audio.currentTime = 0;
@@ -1062,7 +1062,7 @@ export class AudioManager {
         if (!audio) return;
 
         const objectUrl = URL.createObjectURL(blob);
-        audio._pocketReaderObjectUrl = objectUrl;
+        audio._leiameObjectUrl = objectUrl;
         audio.src = objectUrl;
         audio.preload = "auto";
         audio.load?.();
@@ -1082,7 +1082,7 @@ export class AudioManager {
     _releaseOverlappingMediaElement(audio) {
         if (!audio) return;
         this._overlappingMediaElements?.delete(audio);
-        const objectUrl = audio._pocketReaderObjectUrl;
+        const objectUrl = audio._leiameObjectUrl;
         audio.onended = null;
         audio.remove?.();
         if (objectUrl) URL.revokeObjectURL(objectUrl);

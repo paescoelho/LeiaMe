@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 205" role="img" aria-labelledby="title">
-  <title id="title">Sunset Maple</title>
-  <defs><linearGradient id="sunset" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fb7185"/><stop offset=".55" stop-color="#f97316"/><stop offset="1" stop-color="#fbbf24"/></linearGradient></defs>
-  <ellipse cx="95" cy="190" rx="58" ry="11" fill="#111827" opacity=".17"/>
-  <path d="M78 184c12-45 8-76 18-119 13 42 8 75 19 119z" fill="#684635"/>
-  <path d="M95 136 49 86m55 31 43-49M93 149l-36-21m47 13 32-20" stroke="#684635" stroke-width="10" stroke-linecap="round"/>
-  <path d="m20 91 17-18-4-25 26 4 17-20 18 20 28-8 2 25 27 13-15 20 8 25-29 3-17 22-22-17-28 7-3-26z" fill="url(#sunset)"/>
-  <path d="m66 74 13-15 12 17 15-17 11 18 17 3-13 14 4 18-20-3-13 15-13-15-19 3 5-18-13-13z" fill="#f43f5e" opacity=".72"/>
-</svg>

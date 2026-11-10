@@ -212,10 +212,6 @@ export class UIService {
             const languageOptions = [
                 { value: "pt", label: "🇧🇷 Português" },
                 { value: "en", label: "🇺🇸 Inglês" },
-                { value: "es", label: "🇪🇸 Espanhol" },
-                { value: "fr", label: "🇫🇷 Francês" },
-                { value: "de", label: "🇩🇪 Alemão" },
-                { value: "zh-CN", label: "🇨🇳 Chinês (simplificado)" },
             ];
 
             const normalizeLanguage = (value, fallback) => String(value || fallback).trim() || fallback;

@@ -84,13 +84,9 @@ export const CONFIG = {
     WORD_BOUNDARY_CHUNK_SIZE: 40,
     YIELD_AFTER_MS: 32,
     PIPER_VOICES: [
-        "en_US-lessac-medium",
         "pt_BR-faber-medium",
+        "en_US-lessac-medium",
         "en_GB-cori-medium",
-        "de_DE-thorsten-medium",
-        "es_ES-davefx-medium",
-        "fr_FR-siwis-medium",
-        "zh_CN-huayan-medium",
         "en_US-lessac-high",
     ],
     DEFAULT_PIPER_VOICE: "pt_BR-faber-medium",
@@ -102,10 +98,9 @@ export const CONFIG = {
 
     // Storage
     VIEW_MODE_STORAGE_KEY: "pdfViewMode",
-    PROGRESS_STORAGE_KEY: "charlesneimog.github.io/pdfReaderProgressMap",
-    HIGHLIGHTS_STORAGE_KEY: "charlesneimog.github.io/pdfReaderHighlightsMap",
-    REWARDS_STORAGE_KEY: "charlesneimog.github.io/readingRewards",
-    // Public OAuth web client ID owned by the PocketReader deployment.
+    PROGRESS_STORAGE_KEY: "leiame/progressMap",
+    HIGHLIGHTS_STORAGE_KEY: "leiame/highlightsMap",
+    // ID OAuth público do Google (substitua pelo seu próprio para usar o Google Drive).
     // See assets/GOOGLE_DRIVE_SETUP.md. Never place a client secret here.
     GOOGLE_DRIVE_CLIENT_ID: "529564700634-tajs7foa2f241jhil10r3phq3e96smi9.apps.googleusercontent.com",
 
@@ -123,36 +118,4 @@ export const CONFIG = {
     // Header detection
     TOLERANCE: 50, // pixels around detection boxes to tolerate small misalignments
 
-    // Reading rewards. Domain modules receive this object rather than embedding
-    // point values or timing policy in UI code.
-    REWARDS: Object.freeze({
-        enabled: true,
-        automaticTreesEnabled: true,
-        schemaVersion: 2,
-        tickIntervalMs: 1000,
-        idleTimeoutMs: 240000,
-        maxAcceptedDeltaMs: 5000,
-        checkpointIntervalMs: 15000,
-        syncDebounceMs: 30000,
-        treePlantingIntervalMinutes: 5,
-        treePlantingIncrementSeconds: 1,
-        treePlantingIncrementEveryTrees: 7,
-        treePlantingMaximumMinutes: 10,
-        timeRewardIntervalMinutes: 5,
-        timeRewardPoints: 1,
-        dailyTimeRewardCap: 12,
-        dailyEngagementRewardCap: 10,
-        sessionCompletionPoints: 4,
-        reflectionPoints: 5,
-        reflectionMinimumCharacters: 20,
-        annotationWithNotePoints: 3,
-        questionPoints: 3,
-        recoveryAfterDays: 7,
-        recoveryPoints: 5,
-        weekStartsOn: 1,
-        sessionGoalsMinutes: Object.freeze([10, 15, 20, 30, 45, 60]),
-        defaultSessionGoalMinutes: 20,
-        defaultGardenRows: 5,
-        defaultGardenColumns: 5,
-    }),
 };

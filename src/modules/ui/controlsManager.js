@@ -55,6 +55,7 @@ export class ControlsManager {
         this.saveHighlightBtn = document.getElementById("save-highlight");
         this.saveCommentBtn = document.getElementById("save-comment");
         this.exportHighlightsBtn = document.getElementById("export-highlights");
+        this.exportAudioBtn = document.getElementById("export-audio");
         this.highlightColorButtons = Array.from(document.querySelectorAll(".highlight-color-option"));
         this.infoBox = document.getElementById("info-box");
         this.ttsStatus = document.getElementById("tts-status");
@@ -253,6 +254,7 @@ export class ControlsManager {
             on(this.saveCommentBtn, "click", () => app.highlightManager.editCurrentSentenceComment());
         }
         on(this.exportHighlightsBtn, "click", () => app.exportManager.exportPdfWithHighlights());
+        on(this.exportAudioBtn, "click", () => app.audioExporter.open());
 
         // Translate toggle (auto translate every spoken sentence)
         if (this.toggleTranslateBtn) {

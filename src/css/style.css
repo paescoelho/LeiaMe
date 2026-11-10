@@ -1473,28 +1473,31 @@ html {
     width: min(190px, 52vw);
 }
 
-/* Ícone Floresta: árvore-equalizador em sintonia com o logo */
-.leiame-forest-icon { display: block; overflow: visible; }
-.leiame-forest-icon__bar--1, .leiame-forest-icon__bar--3 { fill: #6aa99d; }
-.leiame-forest-icon__bar--2 { fill: var(--color-primary); }
-.leiame-forest-icon__peaks rect { fill: #c8964a; }
-.leiame-forest-icon__trunk { fill: #8a6a3e; }
-.leiame-forest-icon__ground { stroke: currentColor; opacity: .55; }
-.leiame-forest-icon__bar, .leiame-forest-icon__peaks rect {
-    transform-box: fill-box;
-    transform-origin: 50% 100%;
-    transition: transform .6s cubic-bezier(.45,.05,.55,.95);
+/* Exportar áudio em MP3 */
+.audio-export__option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--color-slate-200);
+    cursor: pointer;
+    font-size: 0.9rem;
 }
-.leiame-forest-button:hover .leiame-forest-icon__bar--1,
-.leiame-forest-button:focus-visible .leiame-forest-icon__bar--1 { animation: leiame-forest-eq 2.6s ease-in-out infinite; }
-.leiame-forest-button:hover .leiame-forest-icon__bar--2,
-.leiame-forest-button:focus-visible .leiame-forest-icon__bar--2 { animation: leiame-forest-eq 2.2s ease-in-out .3s infinite; }
-.leiame-forest-button:hover .leiame-forest-icon__bar--3,
-.leiame-forest-button:focus-visible .leiame-forest-icon__bar--3 { animation: leiame-forest-eq 3s ease-in-out .15s infinite; }
-@keyframes leiame-forest-eq { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(.72); } }
-.leiame-forest-count { font-variant-numeric: tabular-nums; min-width: 1ch; }
-html.amoled-mode .leiame-forest-icon__bar--1,
-html.amoled-mode .leiame-forest-icon__bar--3 { fill: #4f8a80; }
-@media (prefers-reduced-motion: reduce) {
-    .leiame-forest-button .leiame-forest-icon__bar { animation: none !important; }
+.audio-export__option:has(input:checked) {
+    border-color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+.audio-export__number {
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-slate-300);
+    background: transparent;
+    padding: 0.4rem 0.6rem;
+    color: inherit;
+    font-size: 0.9rem;
+}
+@media (prefers-color-scheme: dark) {
+    .audio-export__option { border-color: var(--color-slate-700); }
+    .audio-export__number { border-color: var(--color-slate-600); }
 }

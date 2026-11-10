@@ -252,6 +252,10 @@ export class ExportManager {
     }
 
     _getTreeNotesForCurrentPdf() {
+        return [];
+    }
+
+    _unusedTreeNotes() {
         const { state } = this.app;
         const documentId = state.currentPdfKey;
         const rewards = this.app.rewards?.storage?.getSnapshot?.();

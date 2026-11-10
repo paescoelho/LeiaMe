@@ -2,7 +2,7 @@ const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
 const DRIVE_API = "https://www.googleapis.com/drive/v3";
 const DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3";
 const FOLDER_NAME = "LeiaMe";
-const SESSION_TOKEN_KEY = "pocketreader.googleDriveSession";
+const SESSION_TOKEN_KEY = "leiame.googleDriveSession";
 const REWARDS_RECORD_ID = "__reading_rewards__";
 
 export class GoogleDriveSync {
@@ -78,7 +78,7 @@ export class GoogleDriveSync {
     async _loadIdentityLibrary() {
         if (globalThis.google?.accounts?.oauth2) return;
         await new Promise((resolve, reject) => {
-            const existing = document.querySelector('script[data-pocketreader-google-identity="true"]');
+            const existing = document.querySelector('script[data-leiame-google-identity="true"]');
             if (existing) {
                 existing.addEventListener("load", resolve, { once: true });
                 existing.addEventListener("error", reject, { once: true });
@@ -88,7 +88,7 @@ export class GoogleDriveSync {
             script.src = "https://accounts.google.com/gsi/client";
             script.async = true;
             script.defer = true;
-            script.dataset.pocketreaderGoogleIdentity = "true";
+            script.dataset.leiameGoogleIdentity = "true";
             script.onload = resolve;
             script.onerror = () => reject(new Error("Não foi possível carregar o login do Google"));
             document.head.appendChild(script);
@@ -199,7 +199,7 @@ export class GoogleDriveSync {
         if (this.indexLoaded && !force) return this.records;
         this.records.clear();
         const files = await this._listFolderFiles();
-        for (const file of files.filter((item) => item.appProperties?.pocketReaderKind === "metadata")) {
+        for (const file of files.filter((item) => item.appProperties?.leiameKind === "metadata")) {
             try {
                 const response = await this._download(file.id);
                 const record = await response.json();
@@ -211,7 +211,7 @@ export class GoogleDriveSync {
     }
 
     async _multipartUpload(metadata, content, driveId = "") {
-        const boundary = `pocketreader_${crypto.randomUUID().replace(/-/g, "")}`;
+        const boundary = `leiame_${crypto.randomUUID().replace(/-/g, "")}`;
         const body = new Blob([
             `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n`, JSON.stringify(metadata),
             `\r\n--${boundary}\r\nContent-Type: ${content.type || "application/octet-stream"}\r\n\r\n`, content,
@@ -251,7 +251,7 @@ export class GoogleDriveSync {
     async _saveRecord(record) {
         const folderId = await this._ensureFolder();
         const safeName = (record.actualFilename || "document").replace(/[\\/]/g, "_");
-        const metadata = { name: `.${safeName}.pocketreader.json`, mimeType: "application/json", appProperties: { pocketReaderKind: "metadata", pocketReaderVersion: "1" } };
+        const metadata = { name: `.${safeName}.leiame.json`, mimeType: "application/json", appProperties: { leiameKind: "metadata", leiameVersion: "1" } };
         if (!record.metadataDriveId) metadata.parents = [folderId];
         const serializable = { ...record };
         delete serializable.metadataDriveId;
@@ -281,9 +281,9 @@ export class GoogleDriveSync {
         if (!this.isEnabled()) throw new Error("Conecte o Google Drive antes de importar");
 
         const selectedFiles = [...(fileList || [])];
-        const metadataFiles = selectedFiles.filter((file) => /\.pocketreader\.json$/i.test(file.name));
+        const metadataFiles = selectedFiles.filter((file) => /\.leiame\.json$/i.test(file.name));
         if (!metadataFiles.length) {
-            throw new Error("Nenhum arquivo .pocketreader.json encontrado. Selecione uma pasta exportada.");
+            throw new Error("Nenhum arquivo .leiame.json encontrado. Selecione uma pasta exportada.");
         }
 
         const documentsByPath = new Map();
@@ -299,12 +299,12 @@ export class GoogleDriveSync {
         await this._loadIndex({ force: true });
         const folderFiles = await this._listFolderFiles();
         const availableDocuments = folderFiles.filter((file) => {
-            const kind = file.appProperties?.pocketReaderKind;
+            const kind = file.appProperties?.leiameKind;
             return kind === "document" || (!kind && /\.(pdf|epub)$/i.test(file.name));
         });
         const availableMetadata = folderFiles.filter((file) => {
-            const kind = file.appProperties?.pocketReaderKind;
-            return kind === "metadata" || (!kind && /\.pocketreader\.json$/i.test(file.name));
+            const kind = file.appProperties?.leiameKind;
+            return kind === "metadata" || (!kind && /\.leiame\.json$/i.test(file.name));
         });
 
         let importedCount = 0;
@@ -346,7 +346,7 @@ export class GoogleDriveSync {
                         await this._request(`${DRIVE_API}/files/${encodeURIComponent(candidate.id)}?fields=id`, {
                             method: "PATCH",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ appProperties: { pocketReaderKind: "document", pocketReaderVersion: "1" } }),
+                            body: JSON.stringify({ appProperties: { leiameKind: "document", leiameVersion: "1" } }),
                         });
                         documentDriveId = candidate.id;
                         adoptedCount++;
@@ -358,7 +358,7 @@ export class GoogleDriveSync {
                     const uploaded = await this._createContentFile({
                         name: actualFilename,
                         parents: [await this._ensureFolder()],
-                        appProperties: { pocketReaderKind: "document", pocketReaderVersion: "1" },
+                        appProperties: { leiameKind: "document", leiameVersion: "1" },
                     }, documentFile);
                     documentDriveId = uploaded.id;
                 }
@@ -427,7 +427,7 @@ export class GoogleDriveSync {
         const blob = stored?.blob || (format === "pdf" ? state.currentPdfDescriptor?.fileObject : null);
         if (!(blob instanceof Blob)) return false;
         this.app.ui?.showInfo?.(`Google Drive: enviando ${this._actualFilename(fileId)}...`);
-        const uploaded = await this._createContentFile({ name: this._actualFilename(fileId), parents: [await this._ensureFolder()], appProperties: { pocketReaderKind: "document", pocketReaderVersion: "1" } }, blob);
+        const uploaded = await this._createContentFile({ name: this._actualFilename(fileId), parents: [await this._ensureFolder()], appProperties: { leiameKind: "document", leiameVersion: "1" } }, blob);
         record.documentDriveId = uploaded.id;
         record.deleted = false;
         record.updatedAt = new Date().toISOString();
@@ -618,7 +618,7 @@ export class GoogleDriveSync {
         const uploaded = await this._createContentFile({
             name: actualFilename,
             parents: [await this._ensureFolder()],
-            appProperties: { pocketReaderKind: "document", pocketReaderVersion: "1" },
+            appProperties: { leiameKind: "document", leiameVersion: "1" },
         }, blob);
 
         const previousFileId = record?.fileId;

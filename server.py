@@ -21,8 +21,6 @@ from urllib.parse import urlparse, parse_qs, unquote, quote
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 import unicodedata
 import app
-from reading_digest_service import ReadingDigestService
-from reading_reminder_service import ReadingReminderService
 from tts_service import TTSManager, TTSError
 
 HOST = "0.0.0.0"
@@ -176,7 +174,7 @@ def _set_no_cache_headers(handler: BaseHTTPRequestHandler) -> None:
     handler.send_header("Expires", "0")
     handler.send_header("Surrogate-Control", "no-store")
     handler.send_header("X-Accel-Expires", "0")
-    handler.send_header("X-PocketReader-Version", SERVER_APP_VERSION)
+    handler.send_header("X-LeiaMe-Version", SERVER_APP_VERSION)
 
 
 def _safe_static_path(url_path: str) -> str | None:
@@ -220,7 +218,7 @@ def _rewrite_manifest(manifest: dict, public_app_url: str) -> dict:
     Notes:
       - PWA manifests are same-origin; this rewrite mainly updates paths/scope so
         the manifest matches the served location.
-      - The original project uses /PocketReader/ for GitHub Pages; for self-host
+      - GitHub Pages uses /LeiaMe/; for self-host
         we commonly serve at /.
     """
     url = _normalize_public_app_url(public_app_url)
@@ -670,14 +668,6 @@ class APIHandler(BaseHTTPRequestHandler):
         if not user_email:
             return
 
-        if path == "/api/reading-reminder-preferences":
-            self._send_json(200, app.get_reading_reminder_preference(user_email))
-            return
-
-        if path == "/api/reading-digest-preferences":
-            self._send_json(200, app.get_email_digest_preference(user_email))
-            return
-
         if path == "/api/trash":
             files = app.get_trashed_files(owner_email=user_email)
             logger.info("List trash: owner=%s count=%d", user_email, len(files))
@@ -866,7 +856,7 @@ class APIHandler(BaseHTTPRequestHandler):
                 self._set_cross_origin_isolation_headers()
             _set_no_cache_headers(self)
 
-            # Allow service worker to control the whole origin even if installed from /PocketReader/
+            # Allow service worker to control the whole origin even if installed from /LeiaMe/
             if url_path.startswith("/LeiaMe/") and full_path.endswith("sw.js"):
                 self.send_header("Service-Worker-Allowed", "/")
 
@@ -1230,45 +1220,6 @@ class APIHandler(BaseHTTPRequestHandler):
             self._send_error(400, f"Invalid JSON: {str(e)}")
             return
 
-        if path == "/api/reading-reminder-preferences":
-            if not isinstance(data, dict) or not isinstance(data.get("enabled"), bool):
-                self._send_error(400, "Missing or invalid 'enabled' field")
-                return
-            timezone_name = data.get("timezone")
-            reminder_time = data.get("time")
-            if not isinstance(reminder_time, str) or not re.fullmatch(r"(?:[01][0-9]|2[0-3]):[0-5][0-9]", reminder_time):
-                self._send_error(400, "Time must be HH:MM in 24-hour format")
-                return
-            try:
-                if not isinstance(timezone_name, str):
-                    raise ValueError("Missing timezone")
-                ZoneInfo(timezone_name)
-            except (ZoneInfoNotFoundError, ValueError):
-                self._send_error(400, "Unknown IANA timezone")
-                return
-            app.update_reading_reminder_preference(user_email, data["enabled"], timezone_name, reminder_time)
-            self._send_json(200, app.get_reading_reminder_preference(user_email))
-            return
-
-        if path == "/api/reading-digest-preferences":
-            enabled = data.get("enabled")
-            timezone_name = str(data.get("timezone") or "UTC").strip()
-            if not isinstance(enabled, bool):
-                self._send_error(400, "Missing or invalid 'enabled' field")
-                return
-            try:
-                ZoneInfo(timezone_name)
-            except (ZoneInfoNotFoundError, ValueError):
-                self._send_error(400, "Unknown IANA timezone")
-                return
-            if not app.update_email_digest_preference(user_email, enabled, timezone_name):
-                self._send_error(400, "Unable to save reading email preference")
-                return
-            self._send_json(
-                200,
-                {"success": True, "enabled": enabled, "timezone": timezone_name},
-            )
-            return
         
         # PUT /api/files/{file_id}/position
         if path == "/api/rewards":
@@ -1427,41 +1378,7 @@ def main():
     logger.info("CORS allow any origin: %s", APIHandler.ALLOW_ANY_ORIGIN)
     logger.debug("API endpoints: GET /api/files, GET /api/files/{file_id}, GET /api/files/{file_id}/download, GET /api/files/{file_id}/highlights")
     logger.debug("API endpoints: POST /api/files, DELETE /api/files/{file_id}, PUT /api/files/{file_id}/position|voice|highlights")
-    logger.debug("API endpoints: GET|PUT /api/reading-digest-preferences")
 
-    reminder_service = None
-    if _env_truthy(os.environ.get("READING_REMINDER_ENABLED", "true")):
-        if _smtp_is_configured():
-            reminder_service = ReadingReminderService(
-                repository=app,
-                send_email=_send_email_smtp,
-                app_name=os.environ.get("APP_NAME", "LeiaMe"),
-                public_app_url=PUBLIC_APP_URL,
-                poll_interval_seconds=int(os.environ.get("READING_REMINDER_POLL_SECONDS", "60")),
-            )
-            reminder_service.start()
-            logger.info("Reading reminder scheduler started")
-        else:
-            logger.warning("Reading reminders enabled but SMTP is not configured")
-
-    digest_service = None
-    if _env_truthy(os.environ.get("READING_DIGEST_ENABLED", "true")):
-        if _smtp_is_configured():
-            digest_service = ReadingDigestService(
-                repository=app,
-                send_email=_send_email_smtp,
-                app_name=os.environ.get("APP_NAME", "LeiaMe"),
-                public_app_url=PUBLIC_APP_URL,
-                poll_interval_seconds=int(os.environ.get("READING_DIGEST_POLL_SECONDS", "900")),
-                weekly_hour=int(os.environ.get("READING_DIGEST_WEEKLY_HOUR", "18")),
-                monthly_hour=int(os.environ.get("READING_DIGEST_MONTHLY_HOUR", "9")),
-                yearly_hour=int(os.environ.get("READING_DIGEST_YEARLY_HOUR", "18")),
-            )
-            digest_service.start()
-            logger.info("Reading email digest scheduler started")
-        else:
-            logger.warning("Reading email digests enabled but SMTP is not configured")
-    
     def stop_on_signal(signum, frame):
         raise KeyboardInterrupt
 
@@ -1475,10 +1392,6 @@ def main():
         signal.signal(signal.SIGTERM, previous_sigterm)
         APIHandler.tts_manager.shutdown()
         server.server_close()
-        if digest_service:
-            digest_service.stop()
-        if reminder_service:
-            reminder_service.stop()
 
 
 if __name__ == "__main__":
