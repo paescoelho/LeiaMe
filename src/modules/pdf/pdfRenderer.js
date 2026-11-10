@@ -176,7 +176,7 @@ export class PDFRenderer {
 
     _getActiveHighlightColor() {
         const opacity = this._scaleHighlightOpacity(0.3, 0.06);
-        return `rgba(12, 163, 223, ${opacity.toFixed(3)})`;
+        return `rgba(59, 131, 120, ${opacity.toFixed(3)})`;
     }
 
     async refreshAmoledRendering() {
@@ -1470,7 +1470,7 @@ export class PDFRenderer {
             div.style.height = Math.max(1, rect.height * scaleY) + "px";
             div.style.zIndex = "30";
             if (this._isAmoledModeEnabled()) {
-                div.style.background = `rgba(0, 150, 255, ${this._scaleHighlightOpacity(0.28, 0.05).toFixed(3)})`;
+                div.style.background = `rgba(59, 131, 120, ${this._scaleHighlightOpacity(0.28, 0.05).toFixed(3)})`;
             }
             wrapper.appendChild(div);
         }

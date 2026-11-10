@@ -1124,8 +1124,8 @@ export class AudioManager {
 
         try {
             navigator.mediaSession.metadata = new MediaMetadata({
-                title: "PocketReader",
-                artist: "PocketReader",
+                title: "LeiaMe",
+                artist: "LeiaMe",
                 album: "Document Reader",
                 artwork: [
                     {

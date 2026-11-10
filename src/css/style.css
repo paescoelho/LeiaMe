@@ -1,19 +1,19 @@
 :root {
-    --bg-light: #ffffff;
-    --fg-light: #111;
-    --bg-dark: #1f1f1f;
-    --fg-dark: #f5f5f5;
-    --border-light: #d0d4d9;
-    --border-dark: #3a3f46;
-    --accent-gradient: linear-gradient(135deg, #ffb347, #ffcc33);
-    --accent-solid: #ffb347;
-    --btn-bg-light: #f5f7fa;
-    --btn-bg-dark: #2b2f34;
+    --bg-light: #fbf8f2;
+    --fg-light: #2a2520;
+    --bg-dark: #1c1a17;
+    --fg-dark: #ebe4d6;
+    --border-light: #ddd4c6;
+    --border-dark: #3d372f;
+    --accent-gradient: linear-gradient(135deg, #b8864a, #d9b36e);
+    --accent-solid: #c8964a;
+    --btn-bg-light: #f3eee6;
+    --btn-bg-dark: #2a2621;
     --shadow-color-light: rgba(0, 0, 0, 0.08);
     --shadow-color-dark: rgba(0, 0, 0, 0.6);
-    --focus-ring: 0 0 0 3px rgba(0, 140, 255, 0.45);
-    --hover-highlight-color: rgba(0, 150, 255, 0.28);
-    --hover-highlight-stroke: rgba(0, 150, 255, 0.9);
+    --focus-ring: 0 0 0 3px rgba(47, 111, 102, 0.45);
+    --hover-highlight-color: rgba(59, 131, 120, 0.28);
+    --hover-highlight-stroke: rgba(59, 131, 120, 0.9);
     --vh: 1vh;
     /*
      * Use the larger landscape safe-area inset on both sides. A one-sided
@@ -27,13 +27,13 @@
         --bg: var(--bg-light);
         --fg: var(--fg-light);
         --border: var(--border-light);
-        --panel-bg: rgba(255, 255, 255, 0.75);
-        --panel-border: rgba(0, 0, 0, 0.08);
+        --panel-bg: rgba(251, 248, 242, 0.8);
+        --panel-border: rgba(60, 45, 30, 0.1);
         --btn-bg: var(--btn-bg-light);
-        --btn-bg-hover: #eef1f5;
-        --btn-bg-active: #e2e6eb;
-        --info-color: #333;
-        --subtitle-color: #555;
+        --btn-bg-hover: #ece6dc;
+        --btn-bg-active: #e2dacd;
+        --info-color: #3a332c;
+        --subtitle-color: #6b6155;
     }
 }
 @media (prefers-color-scheme: dark) {
@@ -41,21 +41,23 @@
         --bg: var(--bg-dark);
         --fg: var(--fg-dark);
         --border: var(--border-dark);
-        --panel-bg: rgba(40, 40, 44, 0.68);
+        --panel-bg: rgba(36, 33, 29, 0.72);
         --panel-border: rgba(255, 255, 255, 0.08);
         --btn-bg: var(--btn-bg-dark);
-        --btn-bg-hover: #353b42;
-        --btn-bg-active: #40464e;
-        --info-color: #e0e0e0;
-        --subtitle-color: #a8a8a8;
+        --btn-bg-hover: #36312a;
+        --btn-bg-active: #423b33;
+        --info-color: #e6dfd2;
+        --subtitle-color: #a99f90;
+        /* Verde-petróleo um pouco mais claro para manter contraste no escuro */
+        --color-primary: #3b8378;
     }
 
     #pdf-canvas {
-        filter: invert(0.87);
+        filter: invert(0.86) sepia(0.18);
     }
 
     canvas {
-        filter: invert(0.87);
+        filter: invert(0.86) sepia(0.18);
     }
 }
 
@@ -162,7 +164,7 @@ html.amoled-mode #config-menu {
     font-family: inherit;
     font-size: 0.875rem;
     font-weight: 600;
-    color: #64748b;
+    color: #7e7466;
     transition: color 150ms, border-color 150ms;
 }
 
@@ -240,13 +242,13 @@ html.amoled-mode #config-menu {
 @media (prefers-color-scheme: dark) {
     .settings-tabs [role="tab"],
     .settings-display-controls button {
-        color: #94a3b8;
+        color: #a99f90;
     }
 
     .settings-tabs [aria-selected="true"],
     .settings-tabs button:hover,
     .settings-display-controls button[aria-pressed="true"] {
-        color: #a99aff;
+        color: #7fb8ad;
     }
 }
 
@@ -269,7 +271,7 @@ html.amoled-mode .settings-display-controls button {
     align-items: center;
     justify-content: center;
     padding: 0.75rem;
-    background: rgba(15, 23, 42, 0.58);
+    background: rgba(28, 24, 20, 0.58);
     backdrop-filter: blur(5px);
 }
 
@@ -284,10 +286,10 @@ html.amoled-mode .settings-display-controls button {
     flex-direction: column;
     overflow: hidden;
     color: #1e293b;
-    background: rgba(248, 250, 252, 0.98);
-    border: 1px solid rgba(148, 163, 184, 0.42);
+    background: rgba(251, 248, 242, 0.98);
+    border: 1px solid rgba(169, 159, 144, 0.42);
     border-radius: 0.75rem;
-    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.34);
+    box-shadow: 0 24px 60px rgba(28, 24, 20, 0.34);
 }
 
 .trash-dialog-header,
@@ -300,7 +302,7 @@ html.amoled-mode .settings-display-controls button {
 }
 
 .trash-dialog-header {
-    border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    border-bottom: 1px solid rgba(169, 159, 144, 0.35);
 }
 
 .trash-dialog-header h2 {
@@ -313,7 +315,7 @@ html.amoled-mode .settings-display-controls button {
 .trash-status,
 .trash-empty-state,
 .trash-item-metadata {
-    color: #64748b;
+    color: #7e7466;
 }
 
 .trash-dialog-header p {
@@ -328,14 +330,14 @@ html.amoled-mode .settings-display-controls button {
     flex: 0 0 auto;
     width: 2.25rem;
     height: 2.25rem;
-    color: #64748b;
+    color: #7e7466;
     border-radius: 999px;
 }
 
 .trash-icon-button:hover,
 .trash-icon-button:focus-visible {
     color: var(--color-primary);
-    background: rgba(148, 163, 184, 0.16);
+    background: rgba(169, 159, 144, 0.16);
 }
 
 .trash-status,
@@ -368,7 +370,7 @@ html.amoled-mode .settings-display-controls button {
     justify-content: space-between;
     gap: 0.75rem;
     padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+    border-bottom: 1px solid rgba(169, 159, 144, 0.25);
 }
 
 .trash-item:last-child {
@@ -406,7 +408,7 @@ html.amoled-mode .settings-display-controls button {
     font: inherit;
     font-size: 0.75rem;
     font-weight: 600;
-    border: 1px solid rgba(100, 116, 139, 0.35);
+    border: 1px solid rgba(126, 116, 102, 0.35);
     border-radius: 0.5rem;
 }
 
@@ -428,7 +430,7 @@ html.amoled-mode .settings-display-controls button {
 .trash-dialog-footer {
     justify-content: flex-end;
     padding-top: 0.75rem;
-    border-top: 1px solid rgba(148, 163, 184, 0.35);
+    border-top: 1px solid rgba(169, 159, 144, 0.35);
 }
 
 @media (max-width: 520px) {
@@ -441,8 +443,8 @@ html.amoled-mode .settings-display-controls button {
 @media (prefers-color-scheme: dark) {
     .trash-dialog {
         color: #e2e8f0;
-        background: rgba(31, 41, 55, 0.98);
-        border-color: rgba(100, 116, 139, 0.55);
+        background: rgba(36, 33, 29, 0.98);
+        border-color: rgba(126, 116, 102, 0.55);
     }
 
     .trash-dialog-header p,
@@ -450,7 +452,7 @@ html.amoled-mode .settings-display-controls button {
     .trash-empty-state,
     .trash-item-metadata,
     .trash-icon-button {
-        color: #94a3b8;
+        color: #a99f90;
     }
 
     .trash-status-error,
@@ -577,7 +579,7 @@ html.amoled-mode .translation-setup-prompt {
 
 html.amoled-mode .translation-setup-prompt,
 html.amoled-mode .translation-setup-prompt * {
-    color: #e5e7eb !important;
+    color: #e7e0d4 !important;
 }
 
 html.amoled-mode .translation-setup-prompt select,
@@ -589,7 +591,7 @@ html.amoled-mode .translation-setup-prompt button {
 
 html.amoled-mode .translation-setup-prompt option {
     background-color: #000000 !important;
-    color: #e5e7eb !important;
+    color: #e7e0d4 !important;
 }
 
 html.amoled-mode .pdf-page-wrapper {
@@ -610,14 +612,14 @@ html.amoled-mode .text-slate-700,
 html.amoled-mode .text-gray-900,
 html.amoled-mode .text-gray-800,
 html.amoled-mode .text-gray-700 {
-    color: #e5e7eb !important;
+    color: #e7e0d4 !important;
 }
 
 html.amoled-mode .text-slate-600,
 html.amoled-mode .text-slate-500,
 html.amoled-mode .text-gray-600,
 html.amoled-mode .text-gray-500 {
-    color: #cbd5e1 !important;
+    color: #d5ccbd !important;
 }
 
 html.amoled-mode .border-gray-300,
@@ -871,7 +873,7 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
 
 .pdf-word-highlight {
     position: absolute;
-    background-color: rgba(12, 163, 223, 0.3);
+    background-color: rgba(59, 131, 120, 0.3);
     pointer-events: none;
     border-radius: 2px;
     z-index: 20;
@@ -890,7 +892,7 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
     z-index: 10;
 }
 .persistent-highlight.current-playing {
-    outline: 2px solid #ff9800;
+    outline: 2px solid #c8964a;
 }
 
 .hover-highlight {
@@ -906,8 +908,8 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
     position: absolute;
     pointer-events: none;
     border-radius: 2px;
-    background: rgba(120, 200, 255, 0.28);
-    outline: 1px solid rgba(120, 200, 255, 0.65);
+    background: rgba(106, 169, 157, 0.28);
+    outline: 1px solid rgba(106, 169, 157, 0.65);
     z-index: 50;
 }
 
@@ -918,7 +920,7 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
     gap: 8px;
     padding: 8px;
     border-radius: 10px;
-    background: rgba(20, 20, 24, 0.92);
+    background: rgba(28, 25, 22, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(10px);
@@ -949,7 +951,7 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
     gap: 6px;
     padding: 4px;
     border-radius: 999px;
-    background: rgba(20, 20, 24, 0.92);
+    background: rgba(28, 25, 22, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(8px);
@@ -1004,7 +1006,7 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    background: rgba(20, 20, 24, 0.92);
+    background: rgba(28, 25, 22, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
@@ -1021,7 +1023,7 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
     height: 10px;
     border-radius: 999px;
     border: 1px solid var(--border);
-    background: color-mix(in srgb, var(--btn-bg) 88%, #cbd5e1 12%);
+    background: color-mix(in srgb, var(--btn-bg) 88%, #d5ccbd 12%);
     outline: none;
     opacity: 0.9;
     transition: opacity 0.2s ease;
@@ -1041,8 +1043,8 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
     width: 18px;
     height: 18px;
     border-radius: 999px;
-    border: 1px solid #4f3bc7;
-    background: var(--color-primary, #654ef0);
+    border: 1px solid #24574f;
+    background: var(--color-primary, #2f6f66);
     cursor: pointer;
 }
 
@@ -1050,8 +1052,8 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
     width: 18px;
     height: 18px;
     border-radius: 999px;
-    border: 1px solid #4f3bc7;
-    background: var(--color-primary, #654ef0);
+    border: 1px solid #24574f;
+    background: var(--color-primary, #2f6f66);
     cursor: pointer;
 }
 
@@ -1076,7 +1078,7 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
     max-width: min(360px, 92vw);
     padding: 10px 12px;
     border-radius: 10px;
-    background: rgba(20, 20, 24, 0.96);
+    background: rgba(28, 25, 22, 0.96);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.92);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
@@ -1100,21 +1102,21 @@ html.reader-scrollbars-hidden #viewer-wrapper::-webkit-scrollbar {
 
 .highlight-color-option.is-active {
     transform: scale(1.08);
-    box-shadow: 0 0 0 2px rgba(19, 127, 236, 0.35);
-    border-color: rgba(19, 127, 236, 0.7);
+    box-shadow: 0 0 0 2px rgba(47, 111, 102, 0.35);
+    border-color: rgba(47, 111, 102, 0.7);
 }
 
 #drop-overlay {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(0, 150, 255, 0.25), rgba(0, 150, 255, 0.1));
-    border: 3px dashed #0096ff;
+    background: radial-gradient(circle at 50% 50%, rgba(59, 131, 120, 0.25), rgba(59, 131, 120, 0.1));
+    border: 3px dashed #3b8378;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: clamp(1.5rem, 3.5vw, 2.4rem);
     font-weight: 600;
-    color: #0096ff;
+    color: #3b8378;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.25s ease;
@@ -1323,7 +1325,7 @@ html {
     border-radius: 999px;
     background: rgba(105, 105, 105, 0.9);
     color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.28);
+    box-shadow: 0 2px 8px rgba(28, 24, 20, 0.28);
     cursor: pointer;
     transform: translateY(-50%);
 }
@@ -1397,15 +1399,15 @@ html {
 }
 
 .epub-sentence-active {
-    box-shadow: 0 0 0 2px rgba(12, 163, 223, 0.45);
+    box-shadow: 0 0 0 2px rgba(59, 131, 120, 0.45);
 }
 
 .epub-sentence-hover {
-    box-shadow: 0 0 0 2px rgba(12, 163, 223, 0.25);
+    box-shadow: 0 0 0 2px rgba(59, 131, 120, 0.25);
 }
 
 .epub-sentence-hover:not([data-has-saved-highlight="true"]) {
-    background-color: rgba(12, 163, 223, 0.15);
+    background-color: rgba(59, 131, 120, 0.15);
 }
 
 #epub-doc-container foliate-view {
@@ -1436,4 +1438,23 @@ html {
     #previous-pdf-container {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+}
+
+/* ---------- LeiaMe: identidade ---------- */
+.brand-title {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+@media (prefers-color-scheme: dark) {
+    /* Texto/links em destaque legíveis sobre o fundo escuro */
+    .text-primary {
+        color: #7fb8ad;
+    }
+}
+
+/* Controles nativos (sliders, checkboxes) no tom da marca */
+:root {
+    accent-color: var(--color-primary);
 }

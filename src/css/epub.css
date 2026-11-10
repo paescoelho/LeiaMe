@@ -1,21 +1,21 @@
 @namespace epub "http://www.idpf.org/2007/ops";
 
 :root {
-    --bg-light: #ffffff;
-    --fg-light: #111;
-    --bg-dark: #1f1f1f;
-    --fg-dark: #f5f5f5;
-    --border-light: #d0d4d9;
-    --border-dark: #3a3f46;
-    --accent-gradient: linear-gradient(135deg, #ffb347, #ffcc33);
-    --accent-solid: #ffb347;
-    --btn-bg-light: #f5f7fa;
-    --btn-bg-dark: #2b2f34;
+    --bg-light: #fbf8f2;
+    --fg-light: #2a2520;
+    --bg-dark: #1c1a17;
+    --fg-dark: #ebe4d6;
+    --border-light: #ddd4c6;
+    --border-dark: #3d372f;
+    --accent-gradient: linear-gradient(135deg, #b8864a, #d9b36e);
+    --accent-solid: #c8964a;
+    --btn-bg-light: #f3eee6;
+    --btn-bg-dark: #2a2621;
     --shadow-color-light: rgba(0, 0, 0, 0.08);
     --shadow-color-dark: rgba(0, 0, 0, 0.6);
     --focus-ring: 0 0 0 3px rgba(0, 140, 255, 0.45);
-    --hover-highlight-color: rgba(0, 150, 255, 0.28);
-    --hover-highlight-stroke: rgba(0, 150, 255, 0.9);
+    --hover-highlight-color: rgba(59, 131, 120, 0.28);
+    --hover-highlight-stroke: rgba(59, 131, 120, 0.9);
     --vh: 1vh;
 }
 

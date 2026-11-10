@@ -1,12 +1,20 @@
 {
-    "id": "/PocketReader/index.html",
-    "name": "PocketReader",
-    "description": "Local AI PDF Reader",
-    "short_name": "PocketReader",
-    "categories": ["education", "productivity"],
-    "start_url": "/PocketReader/index.html",
-    "scope": "/PocketReader/",
-    "scope_extensions": [{ "type": "origin", "origin": "https://charlesneimog.github.io/PocketReader/" }],
+    "id": "./index.html",
+    "name": "LeiaMe",
+    "description": "Leitor de PDF e EPUB com voz local",
+    "short_name": "LeiaMe",
+    "categories": [
+        "education",
+        "productivity"
+    ],
+    "start_url": "./index.html",
+    "scope": "./",
+    "scope_extensions": [
+        {
+            "type": "origin",
+            "origin": "https://paescoelho.github.io/LeiaMe/"
+        }
+    ],
     "edge_side_panel": {},
     "launch_handler": {
         "client_mode": "auto"
@@ -15,10 +23,12 @@
     "lang": "en",
     "dir": "ltr",
     "display": "fullscreen",
-    "background_color": "#000000",
-    "theme_color": "#654ef0",
+    "background_color": "#1a1816",
+    "theme_color": "#2f6f66",
     "prefer_related_applications": true,
-    "display_override": ["fullscreen"],
+    "display_override": [
+        "fullscreen"
+    ],
     "orientation": "any",
     "icons": [
         {

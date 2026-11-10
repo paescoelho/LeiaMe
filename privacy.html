@@ -4,29 +4,29 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="color-scheme" content="light dark" />
-        <title>Privacy Policy — PocketReader</title>
+        <title>Privacy Policy — LeiaMe</title>
         <meta
             name="description"
-            content="PocketReader privacy policy, including local storage and optional Google Drive synchronization."
+            content="LeiaMe privacy policy, including local storage and optional Google Drive synchronization."
         />
         <style>
             :root {
                 color-scheme: light dark;
-                --background: #f7f7fb;
-                --surface: #ffffff;
-                --text: #202124;
-                --muted: #5f6368;
-                --border: #dadce0;
-                --accent: #654ef0;
+                --background: #f4efe6;
+                --surface: #fbf8f2;
+                --text: #2a2520;
+                --muted: #6b6155;
+                --border: #ddd4c6;
+                --accent: #2f6f66;
             }
             @media (prefers-color-scheme: dark) {
                 :root {
-                    --background: #0f1115;
-                    --surface: #181b22;
-                    --text: #f1f3f4;
-                    --muted: #bdc1c6;
-                    --border: #343842;
-                    --accent: #a99bff;
+                    --background: #1a1816;
+                    --surface: #24211d;
+                    --text: #ebe4d6;
+                    --muted: #a99f90;
+                    --border: #3d372f;
+                    --accent: #7fb8ad;
                 }
             }
             * { box-sizing: border-box; }
@@ -58,17 +58,18 @@
     <body>
         <main>
             <nav aria-label="Policy navigation">
-                <a href="./">PocketReader</a>
+                <a href="./">LeiaMe</a>
                 <a href="./terms.html">Terms of Service</a>
-                <a href="https://github.com/charlesneimog/PocketReader">Source code</a>
+                <a href="https://github.com/paescoelho/LeiaMe">Source code</a>
             </nav>
 
             <h1>Privacy Policy</h1>
             <p class="updated">Effective July 30, 2026</p>
+            <p class="updated">LeiaMe é um fork do <a href="https://github.com/charlesneimog/PocketReader">PocketReader</a>, de Charles Neimog, distribuído sob a GPL-3.0.</p>
 
             <p>
-                PocketReader is an open-source, offline-first PDF and EPUB reader. This policy explains what data
-                PocketReader processes and what happens when you optionally connect a self-hosted server or Google
+                LeiaMe is an open-source, offline-first PDF and EPUB reader. This policy explains what data
+                LeiaMe processes and what happens when you optionally connect a self-hosted server or Google
                 Drive.
             </p>
 
@@ -76,26 +77,26 @@
             <p>
                 By default, documents, reading progress, highlights, comments, preferences, and generated caches are
                 stored locally in your browser using browser storage such as IndexedDB and local storage. Local
-                text-to-speech runs on your device. PocketReader does not include advertising or analytics telemetry.
+                text-to-speech runs on your device. LeiaMe does not include advertising or analytics telemetry.
             </p>
 
             <h2>Google Drive synchronization</h2>
             <p>
-                If you choose <strong>Continue with Google</strong>, PocketReader requests the limited
-                <code>drive.file</code> permission. PocketReader uses this permission to create a visible
-                <code>PocketReader</code> folder in your Google Drive and to create, read, update, download, or delete
-                only the documents and synchronization metadata made available to PocketReader under that permission.
+                If you choose <strong>Continue with Google</strong>, LeiaMe requests the limited
+                <code>drive.file</code> permission. LeiaMe uses this permission to create a visible
+                <code>LeiaMe</code> folder in your Google Drive and to create, read, update, download, or delete
+                only the documents and synchronization metadata made available to LeiaMe under that permission.
                 Metadata can include reading position, highlights, comments, voice choice, and translation settings.
             </p>
             <p>
                 Google access tokens are kept temporarily in browser memory and browser session storage so that a page
                 reload does not immediately require authorization again. They are not placed in URLs or sent to a
-                PocketReader developer-operated server. Session credentials expire and are removed when you disconnect.
-                PocketReader does not sell Google user data or use it for advertising, credit decisions, or user
+                LeiaMe developer-operated server. Session credentials expire and are removed when you disconnect.
+                LeiaMe does not sell Google user data or use it for advertising, credit decisions, or user
                 profiling. Google user data is used only to provide the Drive synchronization feature requested by you.
             </p>
             <p>
-                PocketReader's use and transfer to any other app of information received from Google APIs adheres to
+                LeiaMe's use and transfer to any other app of information received from Google APIs adheres to
                 the
                 <a href="https://developers.google.com/terms/api-services-user-data-policy"
                     >Google API Services User Data Policy</a
@@ -104,7 +105,7 @@
 
             <h2>Self-hosted server</h2>
             <p>
-                If you configure and sign in to a self-hosted PocketReader server, documents and synchronization data
+                If you configure and sign in to a self-hosted LeiaMe server, documents and synchronization data
                 are sent to that server. The server operator controls that deployment and is responsible for its
                 security, retention, and privacy practices. Choosing self-host synchronization disables Drive
                 synchronization for the active session.
@@ -112,12 +113,12 @@
 
             <h2>Reading summary emails</h2>
             <p>
-                A self-hosted PocketReader server can use the account email address also used for password recovery to
+                A self-hosted LeiaMe server can use the account email address also used for password recovery to
                 send weekly, monthly, and yearly reading summaries. These summaries are generated from synchronized
                 reward data and can include active reading time, reading-day count, earned growth points, trees
                 completed during the summary period, and the reflections saved when those trees were planted. The
                 server stores the email preference, browser-reported timezone, and a delivery record used to prevent
-                duplicate messages. You can turn all reading summary emails off in PocketReader Settings.
+                duplicate messages. You can turn all reading summary emails off in LeiaMe Settings.
             </p>
 
             <h2>Translation</h2>
@@ -129,27 +130,27 @@
 
             <h2>Sharing and retention</h2>
             <p>
-                The PocketReader project does not sell or rent personal data. Data may be processed by Google when you
+                The LeiaMe project does not sell or rent personal data. Data may be processed by Google when you
                 explicitly use Google authorization, Drive, or translation features, subject to Google's terms and
                 privacy policy. Files stored in Drive remain in your account until you delete them. Disconnecting
-                PocketReader does not automatically delete the <code>PocketReader</code> folder or its contents.
+                LeiaMe does not automatically delete the <code>LeiaMe</code> folder or its contents.
             </p>
 
             <h2>Your controls</h2>
             <ul>
-                <li>You can use PocketReader without connecting Google Drive or a self-hosted server.</li>
-                <li>You can remove locally stored documents and highlights from PocketReader.</li>
-                <li>You can opt out of reading summary emails from PocketReader Settings.</li>
-                <li>You can delete PocketReader files directly from your Google Drive.</li>
+                <li>You can use LeiaMe without connecting Google Drive or a self-hosted server.</li>
+                <li>You can remove locally stored documents and highlights from LeiaMe.</li>
+                <li>You can opt out of reading summary emails from LeiaMe Settings.</li>
+                <li>You can delete LeiaMe files directly from your Google Drive.</li>
                 <li>
-                    You can revoke PocketReader's Google access from your
+                    You can revoke LeiaMe's Google access from your
                     <a href="https://myaccount.google.com/connections">Google Account connections</a>.
                 </li>
             </ul>
 
             <h2>Changes</h2>
             <p>
-                This policy may be updated when PocketReader's behavior changes. The effective date above identifies
+                This policy may be updated when LeiaMe's behavior changes. The effective date above identifies
                 the current version.
             </p>
 
@@ -157,11 +158,11 @@
             <p>
                 Questions about privacy can be sent to
                 <a href="mailto:charlesneimog@outlook.com">charlesneimog@outlook.com</a> or raised in the
-                <a href="https://github.com/charlesneimog/PocketReader/issues">project issue tracker</a>.
+                <a href="https://github.com/paescoelho/LeiaMe/issues">project issue tracker</a>.
             </p>
 
             <footer>
-                <a href="./">Return to PocketReader</a>
+                <a href="./">Return to LeiaMe</a>
                 <a href="./terms.html">Terms of Service</a>
             </footer>
         </main>

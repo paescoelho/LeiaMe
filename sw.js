@@ -1,15 +1,15 @@
 const APP_VERSION = "0.49.2+1";
 const IDB_VERSION = 1;
-const cacheName = `PocketReader-v${APP_VERSION}`;
-const runtimeCache = `PocketReader-runtime-v${APP_VERSION}`;
+const cacheName = `LeiaMe-v${APP_VERSION}`;
+const runtimeCache = `LeiaMe-runtime-v${APP_VERSION}`;
 let coepCredentialless = true;
 
 // Determine the base path (works for both root and subpath deployments)
 const getBasePath = () => {
     const path = self.location.pathname;
-    // If hosted in subdirectory like /PocketReader/
-    if (path.includes("/PocketReader/")) {
-        return "/PocketReader";
+    // If hosted in subdirectory like /LeiaMe/
+    if (path.includes("/LeiaMe/")) {
+        return "/LeiaMe";
     }
     return "";
 };

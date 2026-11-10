@@ -1,7 +1,7 @@
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
 const DRIVE_API = "https://www.googleapis.com/drive/v3";
 const DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3";
-const FOLDER_NAME = "PocketReader";
+const FOLDER_NAME = "LeiaMe";
 const SESSION_TOKEN_KEY = "pocketreader.googleDriveSession";
 const REWARDS_RECORD_ID = "__reading_rewards__";
 
@@ -732,7 +732,7 @@ export class GoogleDriveSync {
             if (downloadedCount) details.push(`${downloadedCount} downloaded`);
             if (removedCount) details.push(`${removedCount} removed locally`);
             if (!records.length) {
-                this.app.ui?.showInfo?.("Google Drive: no registered PocketReader files found");
+                this.app.ui?.showInfo?.("Google Drive: no registered LeiaMe files found");
             } else {
                 const suffix = details.length ? ` — ${details.join(", ")}` : " — files are up to date";
                 this.app.ui?.showInfo?.(`Google Drive sync complete${suffix}`);

@@ -2,8 +2,8 @@ import "./../../../thirdparty/foliate-js/view.js";
 import { Overlayer } from "./../../../thirdparty/foliate-js/overlayer.js";
 import { EVENTS } from "../../constants/events.js";
 
-const ACTIVE_SENTENCE_COLOR = "rgb(120, 190, 255)";
-const HOVER_SENTENCE_COLOR = "rgb(148, 206, 255)";
+const ACTIVE_SENTENCE_COLOR = "rgb(150, 200, 189)";
+const HOVER_SENTENCE_COLOR = "rgb(186, 220, 211)";
 const AMOLED_TEXT_COLORS = [
     "#f5f5f5",
     "#dddddd",

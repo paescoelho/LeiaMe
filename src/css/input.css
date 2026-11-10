@@ -2,10 +2,35 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: #654ef0;
-    --color-background-light: #f6f7f8;
-    --color-background-dark: #101922;
-    --color-highlight-yellow: #fcba03;
+    /* LeiaMe — papel creme + tinta verde-petróleo */
+    --color-primary: #2f6f66;
+    --color-background-light: #f4efe6;
+    --color-background-dark: #1a1816;
+    --color-highlight-yellow: #e8b04b;
+
+    /* Cinzas quentes (substituem slate/gray frios do Tailwind) */
+    --color-slate-50: #faf8f4;
+    --color-slate-100: #f3eee6;
+    --color-slate-200: #e7e0d4;
+    --color-slate-300: #d5ccbd;
+    --color-slate-400: #a99f90;
+    --color-slate-500: #7e7466;
+    --color-slate-600: #61584c;
+    --color-slate-700: #4a433b;
+    --color-slate-800: #332e28;
+    --color-slate-900: #24211d;
+    --color-slate-950: #171512;
+    --color-gray-50: #faf8f4;
+    --color-gray-100: #f3eee6;
+    --color-gray-200: #e7e0d4;
+    --color-gray-300: #d5ccbd;
+    --color-gray-400: #a99f90;
+    --color-gray-500: #7e7466;
+    --color-gray-600: #61584c;
+    --color-gray-700: #4a433b;
+    --color-gray-800: #332e28;
+    --color-gray-900: #24211d;
+    --color-gray-950: #171512;
     --font-display: "Inter", sans-serif;
     --radius-default: 0.25rem;
     --radius-full: 9999px;

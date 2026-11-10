@@ -9,12 +9,13 @@
             };
         </script>
         <script src="./threads.js"></script>
-        <title>PocketReader - AI TTS reader</title>
+        <title>LeiaMe — leitor de PDF e EPUB com voz</title>
 
         <!-- Web Manifest -->
         <link rel="manifest" href="manifest.webmanifest" />
-        <meta name="theme-color" content="#2b2b2b" />
-        <meta name="description" content="Listen to your podcasts with local IA" />
+        <meta name="theme-color" content="#f4efe6" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#1a1816" media="(prefers-color-scheme: dark)" />
+        <meta name="description" content="LeiaMe — leitor de PDF e EPUB com leitura em voz alta local" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -22,12 +23,9 @@
         <!-- Favicon -->
         <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16x16.png" />
-        <link rel="apple-touch-icon" href="/assets/icons/mask-512.png" />
+        <link rel="apple-touch-icon" href="./assets/icons/mask-512.png" />
 
         <!-- PWA -->
-        <link rel="manifest" href="manifest.webmanifest" />
-        <meta name="theme-color" content="#2b2b2b" />
-        <meta name="description" content="Listen to your podcasts with local IA" />
 
         <!-- Font -->
         <script>
@@ -112,7 +110,7 @@
         >
             <img src="./assets/icons/icon-192.png" alt="App Icon" class="w-24 h-24" />
             <div class="flex flex-col items-center">
-                <h1 class="text-2xl font-bold text-text-primary dark:text-white">PocketReader</h1>
+                <h1 class="brand-title text-3xl text-slate-800 dark:text-white">LeiaMe</h1>
                 <span id="appversion-p" class="text-[10px] font-medium text-gray-300 dark:text-gray-300 -mt-1"></span>
             </div>
 
@@ -155,7 +153,7 @@
                     <img src="./assets/icons/icon-512.png" alt="App Icon" class="w-24 h-24" />
                 </div>
 
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">PocketReader</h1>
+                <h1 class="brand-title text-4xl text-gray-900 dark:text-white mb-2">LeiaMe</h1>
                 <h3 class="text-6l font-bold text-gray-900 dark:text-white mb-2">Please open a PDF or EPUB file.</h3>
                 <div class="hidden sm:block space-y-4 text-left">
                     <div class="flex items-center p-3 bg-background-light dark:bg-background-dark rounded-lg">
@@ -241,7 +239,7 @@
                     <div class="flex items-center gap-3">
                         <img src="./assets/icons/icon-192.png" alt="App Icon" class="w-10 h-10" />
                         <div>
-                            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-200">PocketReader</h2>
+                            <h2 class="brand-title text-2xl text-slate-800 dark:text-slate-200">LeiaMe</h2>
                             <p id="auth-status" class="text-xs text-slate-500 dark:text-slate-400"></p>
                         </div>
                     </div>
@@ -492,7 +490,7 @@
                             <span>Use server speech when available</span>
                             <input id="server-tts-enabled" type="checkbox" role="switch"
                                 aria-describedby="server-tts-description tts-provider-status"
-                                class="h-5 w-5 accent-blue-500" />
+                                class="h-5 w-5 accent-primary" />
                         </label>
                         <p id="server-tts-description" class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                             Your server generates speech with the selected voice. This device handles speech when the server is unavailable.
@@ -530,7 +528,7 @@
                                 max="2"
                                 step="0.1"
                                 value="1"
-                                class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full appearance-none cursor-pointer accent-blue-500"
+                                class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full appearance-none cursor-pointer accent-primary"
                             />
                             <button
                                 id="btn-speed-increase"
