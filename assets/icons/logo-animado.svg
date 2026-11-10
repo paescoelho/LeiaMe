@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 720" width="800" height="720" role="img" aria-label="LeiaMe">
+  <title>LeiaMe</title>
+  <style>
+    :root { --ink: #2a2520; --teal: #2f6f66; --teal-d: #24574f; --brass: #c8964a; --terra: #a8573a; --sage: #6aa99d; --paper: #fbf8f2; }
+    @media (prefers-color-scheme: dark) {
+      :root { --ink: #ebe4d6; --teal: #3b8378; --teal-d: #2f6f66; --paper: #f4efe6; }
+    }
+    .ink { stroke: var(--ink); }
+    .txt { fill: var(--ink); }
+    .accent { fill: var(--teal); }
+
+    /* 1. Livros sobem, um de cada vez */
+    .rise { opacity: 0; transform-box: fill-box; animation: rise .7s cubic-bezier(.2,.8,.2,1.15) forwards; }
+    .b1 { animation-delay: .05s; } .b2 { animation-delay: .2s; } .b3 { animation-delay: .35s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* 2. Livros "respiram" como barras de equalizador */
+    .eq { transform-box: fill-box; transform-origin: 50% 100%; animation: eq 1.6s ease-in-out infinite alternate; }
+    .eq1 { animation-delay: 1.2s; } .eq2 { animation-delay: 1.5s; animation-duration: 1.3s; } .eq3 { animation-delay: 1.35s; animation-duration: 1.8s; }
+    @keyframes eq { 0% { transform: scaleY(1); } 100% { transform: scaleY(1.06); } }
+
+    /* 3. Prateleira e arco do fone se desenham */
+    .shelf { stroke-dasharray: 300; stroke-dashoffset: 300; animation: draw .6s ease-out .45s forwards; }
+    .band  { stroke-dasharray: 640; stroke-dashoffset: 640; animation: draw .9s cubic-bezier(.6,0,.3,1) .6s forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    /* 4. Conchas do fone encaixam */
+    .cup { opacity: 0; transform-box: fill-box; transform-origin: 50% 50%; animation: pop .45s cubic-bezier(.3,1.6,.5,1) forwards; }
+    .cupL { animation-delay: 1.25s; } .cupR { animation-delay: 1.35s; }
+    @keyframes pop { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+
+    /* 5. Ondas sonoras pulsam sem parar */
+    .wave { fill: none; stroke: var(--brass); stroke-width: 9; stroke-linecap: round; opacity: 0; transform-box: view-box; animation: wave 1.8s ease-out infinite; }
+    .w2 { animation-delay: .3s; }
+    .wl { transform-origin: 175px 405px; } .wr { transform-origin: 625px 405px; }
+    .first { animation-delay: 1.7s; } .first.w2 { animation-delay: 2s; }
+    @keyframes wave { 0% { opacity: 0; transform: scale(.85); } 30% { opacity: .95; } 100% { opacity: 0; transform: scale(1.15); } }
+
+    /* 6. Nome aparece */
+    .name { opacity: 0; transform-box: fill-box; animation: name .8s cubic-bezier(.2,.8,.2,1) 1.55s forwards; }
+    @keyframes name { from { opacity: 0; transform: translateY(24px); letter-spacing: 18px; } to { opacity: 1; transform: translateY(0); letter-spacing: 2px; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rise, .cup, .name { animation: none; opacity: 1; }
+      .shelf, .band { animation: none; stroke-dashoffset: 0; }
+      .eq, .wave { animation: none; }
+      .wave { opacity: .9; }
+    }
+  </style>
+
+  <!-- Livros (barras do equalizador) -->
+  <g class="rise b1"><g class="eq eq1">
+    <rect x="282" y="322" width="74" height="178" rx="7" fill="var(--brass)"/>
+    <rect x="282" y="322" width="74" height="178" rx="7" fill="none" class="ink" stroke-width="5"/>
+    <path d="M296 352 H342 M296 364 H330 M296 468 H342" class="ink" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+  </g></g>
+  <g class="rise b2"><g class="eq eq2">
+    <rect x="364" y="262" width="80" height="238" rx="7" fill="var(--terra)"/>
+    <rect x="364" y="262" width="80" height="238" rx="7" fill="none" class="ink" stroke-width="5"/>
+    <path d="M380 294 H428 M380 306 H414 M380 410 H428 M380 468 H428" class="ink" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+  </g></g>
+  <g class="rise b3"><g class="eq eq3">
+    <rect x="452" y="296" width="70" height="204" rx="7" fill="var(--sage)"/>
+    <rect x="452" y="296" width="70" height="204" rx="7" fill="none" class="ink" stroke-width="5"/>
+    <path d="M466 326 H508 M466 338 H496 M466 468 H508" class="ink" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+  </g></g>
+
+  <!-- Prateleira -->
+  <path class="shelf ink" d="M262 506 H542" stroke-width="9" stroke-linecap="round" fill="none"/>
+
+  <!-- Arco do fone -->
+  <path class="band ink" d="M212 372 C 212 150, 588 150, 588 372" fill="none" stroke-width="15" stroke-linecap="round"/>
+
+  <!-- Conchas -->
+  <g class="cup cupL">
+    <rect x="184" y="346" width="56" height="128" rx="26" fill="var(--teal)"/>
+    <rect x="222" y="358" width="22" height="104" rx="10" fill="var(--teal-d)"/>
+    <rect x="184" y="346" width="56" height="128" rx="26" fill="none" class="ink" stroke-width="5"/>
+  </g>
+  <g class="cup cupR">
+    <rect x="560" y="346" width="56" height="128" rx="26" fill="var(--teal)"/>
+    <rect x="556" y="358" width="22" height="104" rx="10" fill="var(--teal-d)"/>
+    <rect x="560" y="346" width="56" height="128" rx="26" fill="none" class="ink" stroke-width="5"/>
+  </g>
+
+  <!-- Ondas sonoras -->
+  <path class="wave wl first" d="M160 372 Q 140 410 160 448"/>
+  <path class="wave wl first w2" d="M132 352 Q 102 410 132 468"/>
+  <path class="wave wr first" d="M640 372 Q 660 410 640 448"/>
+  <path class="wave wr first w2" d="M668 352 Q 698 410 668 468"/>
+
+  <!-- Nome -->
+  <text class="name txt" x="400" y="640" text-anchor="middle"
+        font-family="'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif"
+        font-size="112" font-weight="600" letter-spacing="2">Leia<tspan class="accent">Me</tspan></text>
+</svg>
