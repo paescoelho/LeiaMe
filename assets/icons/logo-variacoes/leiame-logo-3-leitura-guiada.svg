@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 170 520 490" width="520" height="490" role="img" aria-label="LeiaMe">
+  <title>LeiaMe</title>
+  <style>
+    :root { --ink:#2a2520; --teal:#2f6f66; --teal-d:#24574f; --brass:#c8964a; --terra:#a8573a; --sage:#6aa99d; --paper:#fbf8f2; --line:#cfc5b4; }
+    @media (prefers-color-scheme: dark) { :root { --ink:#ebe4d6; --teal:#3b8378; --teal-d:#2f6f66; --paper:#f4efe6; } }
+    .ink { stroke: var(--ink); } .txt { fill: var(--ink); } .accent { fill: var(--teal); }
+    .rise { opacity:0; transform-box:fill-box; animation: rise .7s cubic-bezier(.2,.8,.2,1.15) forwards; }
+    @keyframes rise { from { opacity:0; transform:translateY(60px); } to { opacity:1; transform:none; } }
+    .draw { animation: draw .9s cubic-bezier(.6,0,.3,1) forwards; }
+    @keyframes draw { to { stroke-dashoffset:0; } }
+    .cup { opacity:0; transform-box:fill-box; transform-origin:50% 50%; animation: pop .45s cubic-bezier(.3,1.6,.5,1) forwards; }
+    @keyframes pop { from { opacity:0; transform:scale(.4); } to { opacity:1; transform:none; } }
+    .wave { fill:none; stroke:var(--brass); stroke-width:8; stroke-linecap:round; opacity:0; transform-box:view-box; animation: wave 1.8s ease-out infinite; }
+    @keyframes wave { 0% { opacity:0; transform:scale(.85); } 30% { opacity:.95; } 100% { opacity:0; transform:scale(1.15); } }
+    .name { opacity:0; transform-box:fill-box; animation: name .8s cubic-bezier(.2,.8,.2,1) forwards; }
+    @keyframes name { from { opacity:0; transform:translateY(24px); letter-spacing:14px; } to { opacity:1; transform:none; letter-spacing:1px; } }
+    @media (prefers-reduced-motion: reduce) { * { animation:none !important; opacity:1 !important; stroke-dashoffset:0 !important; } }
+
+    .page { opacity:0; transform-box:fill-box; transform-origin:50% 100%; animation: pageIn .6s cubic-bezier(.2,.8,.2,1.1) .05s forwards; }
+    @keyframes pageIn { from { opacity:0; transform:translateY(40px) rotate(-4deg); } to { opacity:1; transform:none; } }
+    .hl { fill:var(--sage); opacity:.45; transform-box:fill-box; transform-origin:0 50%; transform:scaleX(0); animation: hl 5.6s linear 1.4s infinite; }
+    @keyframes hl {
+      0% { transform:translateY(0) scaleX(0); } 21% { transform:translateY(0) scaleX(1); } 25% { transform:translateY(0) scaleX(1); opacity:.45; }
+      25.01% { transform:translateY(38px) scaleX(0); } 46% { transform:translateY(38px) scaleX(1); } 50% { transform:translateY(38px) scaleX(1); }
+      50.01% { transform:translateY(76px) scaleX(0); } 71% { transform:translateY(76px) scaleX(1); } 75% { transform:translateY(76px) scaleX(1); }
+      75.01% { transform:translateY(114px) scaleX(0); } 96% { transform:translateY(114px) scaleX(1); } 100% { transform:translateY(114px) scaleX(1); opacity:0; } }
+  </style>
+  <g class="page">
+    <path d="M206 272 H362 L394 304 V500 H206 Z" fill="var(--paper)" class="ink" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M362 272 V304 H394" fill="none" class="ink" stroke-width="5" stroke-linejoin="round"/>
+    <rect class="hl" x="226" y="320" width="148" height="22" rx="5"/>
+    <path d="M232 331 H368 M232 369 H352 M232 407 H368 M232 445 H330" stroke="var(--line)" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <path d="M232 296 H312" stroke="var(--ink)" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+  </g>
+  <path class="draw ink" style="stroke-dasharray:800;stroke-dashoffset:800;animation-delay:0.6s" d="M156 368 C 156 160, 444 160, 444 368" fill="none" stroke-width="14" stroke-linecap="round"/>
+  <g class="cup" style="animation-delay:1.25s">
+    <rect x="131" y="342" width="50" height="124" rx="24" fill="var(--teal)"/>
+    <rect x="165" y="354" width="20" height="100" rx="9" fill="var(--teal-d)"/>
+    <rect x="131" y="342" width="50" height="124" rx="24" fill="none" class="ink" stroke-width="5"/>
+  </g>
+  <g class="cup" style="animation-delay:1.35s">
+    <rect x="419" y="342" width="50" height="124" rx="24" fill="var(--teal)"/>
+    <rect x="415" y="354" width="20" height="100" rx="9" fill="var(--teal-d)"/>
+    <rect x="419" y="342" width="50" height="124" rx="24" fill="none" class="ink" stroke-width="5"/>
+  </g>
+  <path class="wave" style="transform-origin:131px 404.0px;animation-delay:1.7s" d="M115 368.0 Q 96.6 404.0 115 440.0"/>
+  <path class="wave" style="transform-origin:131px 404.0px;animation-delay:2.0s" d="M91 348.0 Q 51.0 404.0 91 460.0"/>
+  <path class="wave" style="transform-origin:469px 404.0px;animation-delay:1.7s" d="M485 368.0 Q 503.4 404.0 485 440.0"/>
+  <path class="wave" style="transform-origin:469px 404.0px;animation-delay:2.0s" d="M509 348.0 Q 549.0 404.0 509 460.0"/>
+  <text class="name txt" style="animation-delay:1.55s" x="300" y="636" text-anchor="middle" font-family="'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif" font-size="100" font-weight="600" letter-spacing="1">Leia<tspan class="accent">Me</tspan></text>
+</svg>

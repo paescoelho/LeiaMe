@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="90 96 420 548" width="420" height="548" role="img" aria-label="LeiaMe">
+  <title>LeiaMe</title>
+  <style>
+    :root { --ink:#2a2520; --teal:#2f6f66; --teal-d:#24574f; --brass:#c8964a; --terra:#a8573a; --sage:#6aa99d; --paper:#fbf8f2; --line:#cfc5b4; }
+    @media (prefers-color-scheme: dark) { :root { --ink:#ebe4d6; --teal:#3b8378; --teal-d:#2f6f66; --paper:#f4efe6; } }
+    .ink { stroke: var(--ink); } .txt { fill: var(--ink); } .accent { fill: var(--teal); }
+    .rise { opacity:0; transform-box:fill-box; animation: rise .7s cubic-bezier(.2,.8,.2,1.15) forwards; }
+    @keyframes rise { from { opacity:0; transform:translateY(60px); } to { opacity:1; transform:none; } }
+    .draw { animation: draw .9s cubic-bezier(.6,0,.3,1) forwards; }
+    @keyframes draw { to { stroke-dashoffset:0; } }
+    .cup { opacity:0; transform-box:fill-box; transform-origin:50% 50%; animation: pop .45s cubic-bezier(.3,1.6,.5,1) forwards; }
+    @keyframes pop { from { opacity:0; transform:scale(.4); } to { opacity:1; transform:none; } }
+    .wave { fill:none; stroke:var(--brass); stroke-width:8; stroke-linecap:round; opacity:0; transform-box:view-box; animation: wave 1.8s ease-out infinite; }
+    @keyframes wave { 0% { opacity:0; transform:scale(.85); } 30% { opacity:.95; } 100% { opacity:0; transform:scale(1.15); } }
+    .name { opacity:0; transform-box:fill-box; animation: name .8s cubic-bezier(.2,.8,.2,1) forwards; }
+    @keyframes name { from { opacity:0; transform:translateY(24px); letter-spacing:14px; } to { opacity:1; transform:none; letter-spacing:1px; } }
+    @media (prefers-reduced-motion: reduce) { * { animation:none !important; opacity:1 !important; stroke-dashoffset:0 !important; } }
+
+    .disc { opacity:0; transform-box:fill-box; transform-origin:50% 50%; animation: pop .6s cubic-bezier(.3,1.5,.5,1) forwards; }
+    .ring { transform-box:view-box; transform-origin:300px 300px; animation: spin 24s linear infinite; }
+    .ringIn { opacity:0; animation: fade .8s ease 1.4s forwards; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    @keyframes fade { to { opacity:1; } }
+    .seloInk { stroke:#f4efe6; }
+  </style>
+  <defs><path id="circ" d="M300 300 m -158 0 a 158 158 0 1 1 316 0 a 158 158 0 1 1 -316 0"/></defs>
+  <circle class="disc" cx="300" cy="300" r="196" fill="var(--teal)"/>
+  <circle class="disc" style="animation-delay:.1s" cx="300" cy="300" r="128" fill="var(--teal-d)"/>
+  <g class="ringIn"><g class="ring"><text font-family="'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif" font-size="25" font-weight="600" fill="#f4efe6"><textPath href="#circ" textLength="985" lengthAdjust="spacing">LEIAME · LEIA E OUÇA · LEIAME · LEIA E OUÇA · </textPath></text></g></g>
+  <g class="rise" style="animation-delay:0.45s"><rect x="246" y="262" width="34" height="98" rx="5" fill="var(--brass)" stroke="#f4efe6" stroke-width="4"/>
+    <path d="M254 278 H272 M254 287 H266" stroke="#2a2520" stroke-width="3.5" stroke-linecap="round" opacity=".45"/></g>
+  <g class="rise" style="animation-delay:0.58s"><rect x="285" y="230" width="38" height="130" rx="5" fill="var(--terra)" stroke="#f4efe6" stroke-width="4"/>
+    <path d="M293 246 H315 M293 255 H309" stroke="#2a2520" stroke-width="3.5" stroke-linecap="round" opacity=".45"/></g>
+  <g class="rise" style="animation-delay:0.71s"><rect x="328" y="250" width="32" height="110" rx="5" fill="var(--sage)" stroke="#f4efe6" stroke-width="4"/>
+    <path d="M336 266 H352 M336 275 H346" stroke="#2a2520" stroke-width="3.5" stroke-linecap="round" opacity=".45"/></g>
+  <path class="rise" style="animation-delay:.8s" d="M234 362 H366" stroke="#f4efe6" stroke-width="6" stroke-linecap="round"/>
+  <path class="draw" style="stroke-dasharray:400;stroke-dashoffset:400;animation-delay:.9s" d="M226 316 C 226 182, 374 182, 374 316" fill="none" stroke="#f4efe6" stroke-width="10" stroke-linecap="round"/>
+  <g class="cup" style="animation-delay:1.3s"><rect x="210" y="300" width="32" height="70" rx="15" fill="var(--brass)" stroke="#f4efe6" stroke-width="4"/></g>
+  <g class="cup" style="animation-delay:1.4s"><rect x="358" y="300" width="32" height="70" rx="15" fill="var(--brass)" stroke="#f4efe6" stroke-width="4"/></g>
+  <text class="name txt" style="animation-delay:1.6s" x="300" y="612" text-anchor="middle" font-family="'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif" font-size="84" font-weight="600" letter-spacing="1">Leia<tspan class="accent">Me</tspan></text>
+</svg>
